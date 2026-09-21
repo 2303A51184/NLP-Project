@@ -1,0 +1,191 @@
+import pandas as pd
+import numpy as np
+import re
+
+file_path = "RAG_Warangal_Medical_Professional_Realistic_Noise_Dataset (1).csv"
+
+df = pd.read_csv(file_path)
+
+print("========== STEP 1: LOAD DATASET ==========")
+print("Dataset Shape:", df.shape)
+print("\nFirst 5 Records:")
+print(df.head())
+
+print("\n========== STEP 2: DATA INFORMATION ==========")
+print(df.info())
+
+print("\n========== STEP 3: MISSING VALUES ==========")
+
+missing = df.isnull().sum()
+
+print(missing[missing > 0])
+
+missing_percentage = (df.isnull().sum() / len(df)) * 100
+
+missing_report = pd.DataFrame({
+    "Missing_Count": df.isnull().sum(),
+    "Missing_Percentage": missing_percentage
+})
+
+print("\nMissing Value Report:")
+print(missing_report[missing_report["Missing_Count"] > 0])
+
+print("\n========== STEP 4: DUPLICATE CHECK ==========")
+
+duplicates = df.duplicated().sum()
+
+print("Duplicate Rows:", duplicates)
+
+df = df.drop_duplicates()
+
+print("Shape After Removing Duplicates:", df.shape)
+
+print("\n========== STEP 5: CLEAN COLUMN NAMES ==========")
+
+df.columns = (
+    df.columns
+    .str.strip()
+    .str.lower()
+    .str.replace(r"[^a-z0-9]+", "_", regex=True)
+    .str.strip("_")
+)
+
+print("Cleaned Column Names:")
+print(df.columns.tolist())
+
+print("\n========== STEP 6: IDENTIFY TEXT COLUMNS ==========")
+
+text_columns = df.select_dtypes(include=["object"]).columns.tolist()
+
+print("Text Columns:")
+print(text_columns)
+
+print("\n========== STEP 7: HANDLE MISSING TEXT VALUES ==========")
+
+missing_text_values = {
+    "",
+    " ",
+    "na",
+    "n/a",
+    "nan",
+    "none",
+    "null",
+    "not available",
+    "not_applicable",
+    "unknown"
+}
+
+for column in text_columns:
+
+    df[column] = df[column].apply(
+        lambda x:
+        np.nan
+        if isinstance(x, str) and x.strip().lower() in missing_text_values
+        else x
+    )
+
+print("Missing text values identified.")
+
+print("\n========== STEP 8: NLP TEXT CLEANING ==========")
+
+def clean_text(text):
+
+    if pd.isna(text):
+        return ""
+
+    text = str(text)
+
+    text = text.lower()
+
+    text = re.sub(r"[\r\n\t]+", " ", text)
+
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+
+    text = re.sub(r"\s+", " ", text)
+
+    text = text.strip()
+
+    return text
+
+
+for column in text_columns:
+
+    df[column] = df[column].fillna("")
+
+    df[column + "_clean"] = df[column].apply(clean_text)
+
+
+print("NLP cleaning completed.")
+
+print("\n========== STEP 9: BEFORE AND AFTER ==========")
+
+if len(text_columns) > 0:
+
+    column = text_columns[0]
+
+    print("\nColumn:", column)
+
+    print("\nOriginal Text:")
+    print(df[column].iloc[0])
+
+    print("\nCleaned Text:")
+    print(df[column + "_clean"].iloc[0])
+
+print("\n========== STEP 10: CREATE RAG TEXT ==========")
+
+clean_columns = []
+
+for column in text_columns:
+
+    clean_columns.append(column + "_clean")
+
+
+df["rag_text"] = df[clean_columns].apply(
+    lambda row:
+    " ".join(
+        str(value)
+        for value in row
+        if str(value).strip()
+    ),
+    axis=1
+)
+
+
+df["rag_text"] = df["rag_text"].apply(clean_text)
+
+print("RAG text created successfully.")
+
+print("\nExample RAG Text:")
+
+print(df["rag_text"].iloc[0])
+
+print("\n========== STEP 11: FINAL DATASET ==========")
+
+print("Final Shape:", df.shape)
+
+print("\nFirst 5 Cleaned Records:")
+
+print(
+    df[
+        ["rag_text"]
+    ].head()
+)
+
+print("\n========== STEP 12: SAVE CLEANED DATASET ==========")
+
+output_file = "cleaned_RAG_Warangal_medical_dataset.csv"
+
+df.to_csv(
+    output_file,
+    index=False
+)
+
+print("Cleaned dataset saved as:")
+print(output_file)
+
+print("\n========== COMPLETED ==========")
+
+print("Original Rows: 12000")
+print("Final Rows:", len(df))
+print("Original Columns: 50")
+print("Final Columns:", len(df.columns))
