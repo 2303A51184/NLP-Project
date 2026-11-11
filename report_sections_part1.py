@@ -195,16 +195,33 @@ def generate_preliminary_pages(doc):
 
     r_names = p_auth.add_run(
         "B. SAI TEJASWI  (Roll No: 2303A51184)\n"
-        "V. ABHILASH  (Roll No: 2303A51227)\n"
+        "V. ABHILASH  (Roll No: 2303A51227)\n\n"
     )
     r_names.font.name = "Times New Roman"
     r_names.font.size = Pt(13)
     r_names.font.bold = True
     r_names.font.color.rgb = RGBColor(0x26, 0x37, 0x46)
 
+    p_guide = doc.add_paragraph()
+    p_guide.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_guide.paragraph_format.space_before = Pt(18)
+    r_g1 = p_guide.add_run("Under the Esteemed Guidance of:\n")
+    r_g1.font.name = "Times New Roman"
+    r_g1.font.size = Pt(11.5)
+    r_g1.font.italic = True
+    r_g2 = p_guide.add_run("Dr. RUPESH MISHRA\n")
+    r_g2.font.name = "Times New Roman"
+    r_g2.font.size = Pt(13)
+    r_g2.font.bold = True
+    r_g2.font.color.rgb = RGBColor(0x16, 0x7D, 0x83)
+    r_g3 = p_guide.add_run("Department of Computer Science & Engineering\n")
+    r_g3.font.name = "Times New Roman"
+    r_g3.font.size = Pt(11)
+    r_g3.font.color.rgb = RGBColor(0x64, 0x74, 0x8B)
+
     p_loc = doc.add_paragraph()
     p_loc.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_loc.paragraph_format.space_before = Pt(40)
+    p_loc.paragraph_format.space_before = Pt(30)
     r_loc = p_loc.add_run(
         "SCHOOL OF COMPUTER SCIENCE & ARTIFICIAL INTELLIGENCE\n"
         "SR UNIVERSITY\n"
@@ -244,7 +261,7 @@ def generate_preliminary_pages(doc):
         t_sig.columns[i].width = Inches(2.09)
     
     c1 = t_sig.cell(0, 0); c2 = t_sig.cell(0, 1); c3 = t_sig.cell(0, 2)
-    c1.text = "____________________\nInternal Guide / Supervisor\nDept. of CSE, SR University"
+    c1.text = "____________________\nDr. Rupesh Mishra\nInternal Guide / Supervisor\nDept. of CSE, SR University"
     c2.text = "____________________\nHead of the Department\nDept. of CSE, SR University"
     c3.text = "____________________\nExternal Examiner\nExternal Examination Board"
     
@@ -300,7 +317,7 @@ def generate_preliminary_pages(doc):
     p_ack.add_run(
         "The completion of this final-year B.Tech project would not have been possible without the collective "
         "guidance, constructive criticism, and encouragement of numerous individuals.\n\n"
-        "First and foremost, we express our profound gratitude to our project guide for their invaluable guidance, "
+        "First and foremost, we express our profound gratitude to our project guide, Dr. Rupesh Mishra, for his invaluable guidance, "
         "technical mentorship, and continuous encouragement throughout the conception, system design, retrieval optimization, "
         "and evaluation phases of this research project.\n\n"
         "We express our heartfelt thanks to the Head of the Department of Computer Science & Engineering, SR University, "

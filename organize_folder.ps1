@@ -1,6 +1,19 @@
 $workspaceDocs = "c:\Users\hp\OneDrive\Desktop\tejus nlp\Project_Documentation"
 $desktopDocs = "C:\Users\hp\OneDrive\Desktop\Warangal_HealthRAG_Project_Documentation"
 
+# First convert updated docx to legacy .doc via Word COM
+$srcDocx = (Resolve-Path "B.Tech_Project_Report_RAG_Warangal_Medical_System.docx").Path
+$dstDoc = [System.IO.Path]::ChangeExtension($srcDocx, ".doc")
+Write-Host "Updating legacy .doc file from docx..."
+$word = New-Object -ComObject Word.Application
+$word.Visible = $false
+$docObj = $word.Documents.Open($srcDocx)
+$wdFormatDoc = 0
+$docObj.SaveAs([ref]$dstDoc, [ref]$wdFormatDoc)
+$docObj.Close()
+$word.Quit()
+Write-Host "Legacy .doc updated successfully!"
+
 # Create directories
 New-Item -ItemType Directory -Path $workspaceDocs -Force | Out-Null
 New-Item -ItemType Directory -Path $desktopDocs -Force | Out-Null
