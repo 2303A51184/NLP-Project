@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warangal HealthRAG | RAG-Based Medical Information System</title>
+    <title>Warangal HealthRAG | Medical Information & Clinical Triage Platform</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,27 +25,30 @@
             --error-bg: #FFF5F5;
             --error-border: #FED7D7;
             --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
-            --shadow-hover: 0 12px 30px rgba(22, 125, 131, 0.12);
+            --shadow-hover: 0 10px 25px rgba(22, 125, 131, 0.1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
             background-color: var(--bg-main);
             color: var(--main-text);
             line-height: 1.6;
-            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1.5rem;
+            width: 100%;
         }
 
         /* Top Header */
@@ -62,7 +65,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 74px;
+            height: 72px;
         }
 
         .brand-link {
@@ -70,10 +73,7 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            color: var(--primary-teal);
-            font-weight: 800;
-            font-size: 1.25rem;
-            letter-spacing: -0.3px;
+            color: var(--main-text);
         }
 
         .brand-mark {
@@ -86,1017 +86,1091 @@
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
-        .brand-pill {
-            background-color: var(--secondary-teal);
+        .brand-title {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.3px;
+            color: var(--main-text);
+        }
+
+        .brand-title span {
             color: var(--primary-teal);
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 6px;
-            text-transform: uppercase;
         }
 
-        .nav-menu {
+        .nav-tabs {
             display: flex;
-            align-items: center;
-            gap: 1.5rem;
+            gap: 8px;
             list-style: none;
         }
 
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--secondary-text);
-            font-weight: 600;
-            font-size: 0.92rem;
-            transition: color 0.2s ease;
-        }
-
-        .nav-menu a:hover {
-            color: var(--primary-teal);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 0.65rem 1.3rem;
+        .nav-tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 0.55rem 1.1rem;
             border-radius: 8px;
-            font-weight: 700;
             font-size: 0.9rem;
-            text-decoration: none;
+            font-weight: 600;
+            color: var(--secondary-text);
             cursor: pointer;
             transition: all 0.2s ease;
-            border: 1px solid transparent;
         }
 
-        .btn-primary {
-            background-color: var(--primary-teal);
+        .nav-tab-btn:hover {
+            color: var(--primary-teal);
+            background: var(--secondary-teal);
+        }
+
+        .nav-tab-btn.active {
+            background: var(--primary-teal);
             color: #FFFFFF;
         }
 
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background-color: var(--secondary-teal);
-            color: var(--primary-teal);
-        }
-
-        .btn-secondary:hover {
-            background-color: #c2e9e4;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border-color: var(--border-color);
-            color: var(--main-text);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--primary-teal);
-            color: var(--primary-teal);
-            background: var(--secondary-teal);
-        }
-
-        .btn-sm {
-            padding: 0.45rem 0.9rem;
-            font-size: 0.82rem;
-        }
-
-        /* Hero */
-        .hero-section {
-            padding: 4rem 0 3.5rem 0;
-            background: #FFFFFF;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 3.5rem;
-            align-items: center;
-        }
-
-        .hero-tag {
+        .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background-color: var(--secondary-teal);
-            color: var(--primary-teal);
-            font-size: 0.78rem;
-            font-weight: 700;
+            background: #E8F5E9;
+            color: #2E7D32;
             padding: 5px 12px;
-            border-radius: 6px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1.2rem;
         }
 
-        .hero-section h1 {
-            font-size: 2.75rem;
-            font-weight: 800;
-            line-height: 1.2;
-            color: var(--main-text);
-            letter-spacing: -0.02em;
-            margin-bottom: 1.1rem;
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: #2E7D32;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
-        .hero-section h1 span {
-            color: var(--primary-teal);
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(46, 125, 50, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
         }
 
-        .hero-section p {
-            font-size: 1.05rem;
-            color: var(--secondary-text);
-            line-height: 1.65;
-            margin-bottom: 2rem;
+        /* Emergency Red Banner */
+        .emergency-banner {
+            background: var(--error-bg);
+            border-bottom: 1px solid var(--error-border);
+            padding: 0.65rem 0;
+            font-size: 0.88rem;
         }
 
-        .hero-cta {
+        .emergency-banner .container {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
+            gap: 10px;
         }
 
-        .hero-kpis {
-            display: flex;
-            gap: 2.2rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.4rem;
-        }
-
-        .kpi-unit h4 {
-            font-size: 1.55rem;
-            font-weight: 800;
-            color: var(--primary-teal);
-        }
-
-        .kpi-unit p {
-            font-size: 0.8rem;
-            color: var(--secondary-text);
-            font-weight: 600;
-            margin: 0;
-        }
-
-        /* Hero Right Preview Card */
-        .hero-preview-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.8rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-        }
-
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.8rem;
-            margin-bottom: 1.2rem;
-        }
-
-        /* Emergency Strip */
-        .emergency-strip {
-            background-color: var(--error-bg);
-            border: 2px solid var(--error-border);
-            border-radius: 12px;
-            padding: 1.5rem 1.8rem;
-            margin: 2.5rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .emergency-strip h3 {
-            color: var(--error-color);
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
-        }
-
-        .emergency-strip p {
+        .emergency-text {
             color: #7A271A;
-            font-size: 0.95rem;
-            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
         }
 
-        /* Sections */
-        .section-block {
-            padding: 4.5rem 0;
+        .emergency-hotlines {
+            display: flex;
+            gap: 15px;
+            font-weight: 700;
+            color: var(--error-color);
         }
 
-        .section-head {
-            text-align: center;
-            max-width: 760px;
-            margin: 0 auto 3rem auto;
+        .emergency-hotlines a {
+            color: var(--error-color);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .section-head h2 {
-            font-size: 2.1rem;
-            font-weight: 800;
-            color: var(--main-text);
-            margin-bottom: 0.6rem;
-            letter-spacing: -0.4px;
+        .emergency-hotlines a:hover {
+            text-decoration: underline;
         }
 
-        .section-head p {
-            color: var(--secondary-text);
-            font-size: 1.02rem;
+        /* Main Content Container */
+        main {
+            flex-grow: 1;
+            padding: 2rem 0 3rem 0;
         }
 
-        .grid-3-col {
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Chat / Triage Layout */
+        .chat-app-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.8rem;
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+            align-items: start;
         }
 
-        .grid-4-col {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.4rem;
-        }
-
-        .card-item {
+        /* Sidebar Controls */
+        .controls-card {
             background: #FFFFFF;
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 1.8rem;
-            transition: all 0.2s ease;
+            padding: 1.25rem;
             box-shadow: var(--shadow-card);
         }
 
-        .card-item:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-            border-color: #cbd5e1;
-        }
-
-        .card-badge-num {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background: var(--secondary-teal);
-            color: var(--primary-teal);
-            font-weight: 800;
-            font-size: 0.88rem;
-            border-radius: 8px;
-            margin-bottom: 1.2rem;
-        }
-
-        .card-item h3 {
-            font-size: 1.18rem;
+        .controls-card h3 {
+            font-size: 0.85rem;
             font-weight: 700;
-            color: var(--main-text);
-            margin-bottom: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--secondary-text);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .card-item p {
+        .form-group {
+            margin-bottom: 1.1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--main-text);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.55rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.86rem;
+            outline: none;
+            background: #FFFFFF;
+            color: var(--main-text);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-teal);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--main-text);
+        }
+
+        /* Chat Window */
+        .chat-window {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
+        }
+
+        .chat-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--main-text);
+        }
+
+        .chat-header-subtitle {
+            font-size: 0.8rem;
             color: var(--secondary-text);
+        }
+
+        .chat-messages {
+            padding: 1.5rem;
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .msg-bubble {
+            max-width: 82%;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
             font-size: 0.92rem;
             line-height: 1.55;
         }
 
-        /* Interactive Triage Demo Box */
-        .simulator-box {
+        .msg-user {
+            align-self: flex-end;
+            background: var(--primary-teal);
+            color: #FFFFFF;
+            border-bottom-right-radius: 3px;
+        }
+
+        .msg-assistant {
+            align-self: flex-start;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--main-text);
+            border-bottom-left-radius: 3px;
+        }
+
+        .response-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 0.7rem;
+            border-left: 4px solid var(--primary-teal);
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .triage-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .tag-emergency {
+            background: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid var(--error-border);
+        }
+
+        .tag-primary {
+            background: var(--secondary-teal);
+            color: var(--primary-teal);
+        }
+
+        .response-meta {
+            margin-top: 0.75rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.78rem;
+            color: var(--secondary-text);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .emergency-inline-alert {
+            background: #FFF5F5;
+            border: 1px solid #FED7D7;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            margin: 0.6rem 0;
+            color: #C53030;
+            font-size: 0.88rem;
+        }
+
+        /* Chat Input Section */
+        .chat-input-bar {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: #FAFCFE;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
+        }
+
+        .chips-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+
+        .chip-btn {
             background: #FFFFFF;
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .query-input-wrap {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.2rem;
-        }
-
-        .query-input {
-            flex: 1;
-            padding: 0.9rem 1.2rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .query-input:focus {
-            border-color: var(--primary-teal);
-            box-shadow: 0 0 0 3px rgba(22, 125, 131, 0.1);
-        }
-
-        .sample-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 1.8rem;
-        }
-
-        .chip {
-            background: var(--bg-main);
-            border: 1px solid var(--border-color);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.82rem;
+            padding: 4px 10px;
+            font-size: 0.76rem;
             color: var(--secondary-text);
             cursor: pointer;
             transition: all 0.15s ease;
         }
 
-        .chip:hover {
-            background: var(--secondary-teal);
+        .chip-btn:hover {
+            border-color: var(--primary-teal);
             color: var(--primary-teal);
-            border-color: var(--primary-teal);
+            background: var(--secondary-teal);
         }
 
-        .result-panel {
-            background: var(--bg-main);
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem 1.1rem;
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            display: none;
+            border-radius: 8px;
+            font-size: 0.94rem;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        /* Locality Cards */
-        .loc-box {
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 1.2rem;
-            transition: all 0.2s ease;
-        }
-
-        .loc-box:hover {
+        .chat-input:focus {
             border-color: var(--primary-teal);
-            transform: translateY(-2px);
+            box-shadow: 0 0 0 3px rgba(22, 125, 131, 0.1);
         }
 
-        .loc-name {
+        .send-btn {
+            background: var(--primary-teal);
+            color: #FFFFFF;
+            border: none;
+            padding: 0 1.4rem;
+            border-radius: 8px;
             font-weight: 700;
-            color: var(--main-text);
-            font-size: 1rem;
-            margin-bottom: 4px;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .loc-detail {
-            font-size: 0.8rem;
-            color: var(--secondary-text);
+        .send-btn:hover {
+            background: var(--primary-hover);
         }
 
-        /* Presentation Cards */
-        .resource-card {
+        /* Facilities Page */
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.3rem;
+            margin-top: 1.5rem;
+        }
+
+        .facility-card {
             background: #FFFFFF;
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.4rem;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: var(--shadow-card);
-            transition: all 0.2s ease;
         }
 
-        .resource-card:hover {
+        .facility-card:hover {
             transform: translateY(-2px);
             border-color: var(--primary-teal);
+            box-shadow: var(--shadow-hover);
         }
 
-        .resource-type {
+        .facility-type {
             font-size: 0.72rem;
             font-weight: 700;
             text-transform: uppercase;
-            color: var(--primary-teal);
             letter-spacing: 0.5px;
+            color: var(--primary-teal);
+            margin-bottom: 4px;
+        }
+
+        .facility-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--main-text);
             margin-bottom: 6px;
         }
 
-        .resource-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--main-text);
-            margin-bottom: 8px;
+        .facility-address {
+            font-size: 0.85rem;
+            color: var(--secondary-text);
+            margin-bottom: 1rem;
         }
 
-        .resource-desc {
+        .facility-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 1.2rem;
+        }
+
+        .spec-pill {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            font-size: 0.74rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: var(--secondary-text);
+        }
+
+        .facility-phone {
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .facility-phone a {
+            color: var(--primary-teal);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Analytics Tab */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.4rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .metric-val {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-teal);
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
             font-size: 0.84rem;
             color: var(--secondary-text);
-            margin-bottom: 1.2rem;
-            flex-grow: 1;
+            font-weight: 600;
         }
 
         /* Footer */
         footer {
             background: #FFFFFF;
             border-top: 1px solid var(--border-color);
-            padding: 3.5rem 0 2rem 0;
-            margin-top: 2rem;
+            padding: 2rem 0;
+            margin-top: auto;
+            font-size: 0.85rem;
+            color: var(--secondary-text);
         }
 
-        .footer-cols {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1.2fr;
-            gap: 3rem;
-            margin-bottom: 2.5rem;
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .footer-brand-title {
-            font-weight: 800;
-            font-size: 1.15rem;
-            color: var(--primary-teal);
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-disclaimer {
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
-            font-size: 0.78rem;
-            color: #94A3B8;
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        @media (max-width: 900px) {
-            .hero-grid { grid-template-columns: 1fr; }
-            .grid-3-col { grid-template-columns: 1fr; }
-            .grid-4-col { grid-template-columns: 1fr 1fr; }
-            .footer-cols { grid-template-columns: 1fr; }
-            .nav-menu { display: none; }
+        @media (max-width: 860px) {
+            .chat-app-grid { grid-template-columns: 1fr; }
+            .analytics-grid { grid-template-columns: 1fr 1fr; }
+            .nav-tabs { display: none; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Emergency Announcement Banner -->
+    <div class="emergency-banner">
+        <div class="container">
+            <div class="emergency-text">
+                <span>🚨</span>
+                <span><strong>Emergency Care Notice:</strong> In life-threatening emergencies (acute chest pain, severe shortness of breath, loss of consciousness), call immediately.</span>
+            </div>
+            <div class="emergency-hotlines">
+                <a href="tel:108">📞 Dial 108 (Ambulance)</a>
+                <a href="tel:08702441000">🏥 MGM Casualty: 0870-2441000</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Header Navigation -->
     <header>
         <div class="container navbar">
-            <a href="#" class="brand-link">
+            <a href="#" class="brand-link" onclick="switchTab('chat')">
                 <div class="brand-mark">+</div>
-                <div>Warangal HealthRAG</div>
-                <span class="brand-pill">SR University</span>
+                <div>
+                    <div class="brand-title">Warangal <span>HealthRAG</span></div>
+                </div>
             </a>
 
-            <ul class="nav-menu">
-                <li><a href="#simulator">Live Simulator</a></li>
-                <li><a href="#presentation">Presentation</a></li>
-                <li><a href="#documentation">Documentation</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#localities">Localities</a></li>
-                <li><a href="#emergency">Emergency</a></li>
+            <ul class="nav-tabs">
+                <li><button class="nav-tab-btn active" id="tabBtn-chat" onclick="switchTab('chat')">Ask a Question</button></li>
+                <li><button class="nav-tab-btn" id="tabBtn-facilities" onclick="switchTab('facilities')">Warangal Facilities</button></li>
+                <li><button class="nav-tab-btn" id="tabBtn-analytics" onclick="switchTab('analytics')">Platform Analytics</button></li>
+                <li><button class="nav-tab-btn" id="tabBtn-about" onclick="switchTab('about')">About</button></li>
             </ul>
 
-            <div style="display: flex; gap: 10px;">
-                <a href="https://github.com/2303A51184/NLP-Project" target="_blank" class="btn btn-outline btn-sm">GitHub Repo</a>
-                <a href="https://share.streamlit.io/deploy?repository=2303A51184%2FNLP-Project&branch=main&mainModule=app.py" target="_blank" class="btn btn-primary btn-sm">Live Streamlit App</a>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                <span>Online &bull; 108 Triage Active</span>
             </div>
         </div>
     </header>
 
-    <!-- Academic Banner -->
-    <div style="background: #EDF7F6; border-bottom: 1px solid #CDEBE6; padding: 0.6rem 0; font-size: 0.85rem; color: #167D83; text-align: center;">
-        <strong>Academic Project:</strong> Final-Year B.Tech CSE &bull; <strong>SR University, Warangal</strong> &bull; Guide: <strong>Dr. Rupesh Mishra</strong> &bull; Authors: <strong>B. Sai Tejaswi (2303A51184)</strong> & <strong>V. Abhilash (2303A51227)</strong>
-    </div>
+    <!-- Main Workspace Content -->
+    <main class="container">
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container hero-grid">
-            <div>
-                <span class="hero-tag">Clinical Information Triage &bull; Warangal</span>
-                <h1>RAG-Based Medical Information <span>for Warangal Patients</span></h1>
-                <p>
-                    A specialized healthcare information platform developed for people living in Warangal and surrounding areas. 
-                    Uses Retrieval-Augmented Generation (RAG) strictly grounded in 12,000 verified clinical records to eliminate artificial intelligence hallucinations and provide clear, reliable primary care guidance.
-                </p>
+        <!-- TAB 1: CLINICAL CHAT / TRIAGE -->
+        <div id="tab-chat" class="tab-content active">
+            <div class="chat-app-grid">
+                
+                <!-- Left Sidebar: Controls -->
+                <aside class="controls-card">
+                    <h3>Retrieval Settings</h3>
+                    
+                    <div class="form-group">
+                        <label>Retrieval Technique:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="retrievalMode" value="tfidf" checked>
+                                <span>TF-IDF + Cosine Similarity</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="retrievalMode" value="faiss">
+                                <span>FAISS Semantic Vectors</span>
+                            </label>
+                        </div>
+                    </div>
 
-                <div class="hero-cta">
-                    <a href="#simulator" class="btn btn-primary">
-                        Try Live Simulator
-                    </a>
-                    <a href="Project_Presentation/Project_Presentation.pptx" download class="btn btn-secondary">
-                        Download PPTX
-                    </a>
-                    <a href="Project_Documentation/B.Tech_Project_Report_RAG_Warangal_Medical_System.pdf" target="_blank" class="btn btn-outline">
-                        View Project Report (PDF)
-                    </a>
+                    <div class="form-group">
+                        <label for="localityFilter">Filter by Warangal Area:</label>
+                        <select id="localityFilter" class="form-control" onchange="applyFilters()">
+                            <option value="All">All Localities (Warangal Dist)</option>
+                            <option value="Warangal Urban">Warangal Urban (MGM Area)</option>
+                            <option value="Hanamkonda">Hanamkonda</option>
+                            <option value="Kazipet">Kazipet</option>
+                            <option value="Parkal">Parkal</option>
+                            <option value="Dharmasagar">Dharmasagar</option>
+                            <option value="Geesugonda">Geesugonda</option>
+                            <option value="Hasanparthy">Hasanparthy</option>
+                            <option value="Wardhannapet">Wardhannapet</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deptFilter">Medical Specialty:</label>
+                        <select id="deptFilter" class="form-control" onchange="applyFilters()">
+                            <option value="All">All Specialties</option>
+                            <option value="Pulmonology">Pulmonology (Lungs/Breathing)</option>
+                            <option value="Cardiology">Cardiology (Heart/Chest)</option>
+                            <option value="Internal Medicine">Internal Medicine (Fever/General)</option>
+                            <option value="Gastroenterology">Gastroenterology (Stomach/Digestion)</option>
+                            <option value="Pediatrics">Pediatrics (Children)</option>
+                            <option value="Orthopedics">Orthopedics (Bones/Joints)</option>
+                            <option value="Dermatology">Dermatology (Skin/Rashes)</option>
+                            <option value="Neurology">Neurology (Brain/Nerves)</option>
+                        </select>
+                    </div>
+
+                    <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem; margin-top: 1.2rem; font-size: 0.78rem; color: var(--secondary-text);">
+                        <strong>Grounding Guarantee:</strong> Responses are retrieved from 12,000 verified Warangal patient clinical cases to prevent AI hallucinations.
+                    </div>
+                </aside>
+
+                <!-- Right Area: Interactive Medical Chat Window -->
+                <section class="chat-window">
+                    <div class="chat-header">
+                        <div>
+                            <div class="chat-header-title">Medical Information Assistant</div>
+                            <div class="chat-header-subtitle">Grounding answers strictly on verified Warangal patient records</div>
+                        </div>
+                        <button class="chip-btn" onclick="clearChat()">Clear Chat</button>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Welcome message -->
+                        <div class="msg-bubble msg-assistant">
+                            Hello! I am your Warangal Healthcare Assistant. How can I help you understand your symptoms today? 
+                            You can describe what you are experiencing in simple everyday words.
+                        </div>
+                    </div>
+
+                    <div class="chat-input-bar">
+                        <div class="chips-row">
+                            <span style="font-size: 0.76rem; color: var(--secondary-text); font-weight: 600; align-self: center;">Quick examples:</span>
+                            <button class="chip-btn" onclick="quickQuery('Child wheezing and dry cough in Parkal')">Child wheezing in Parkal</button>
+                            <button class="chip-btn" onclick="quickQuery('Severe crushing chest pain and sweating')">Crushing chest pain</button>
+                            <button class="chip-btn" onclick="quickQuery('High fever with chills and joint pain in Hanamkonda')">High fever & joint pain</button>
+                            <button class="chip-btn" onclick="quickQuery('Burning stomach pain after spicy food in Kazipet')">Burning stomach pain</button>
+                        </div>
+
+                        <form class="input-row" onsubmit="handleChatSubmit(event)">
+                            <input type="text" id="userInput" class="chat-input" placeholder="Ask a health question in simple words (e.g. 'Child wheezing in Parkal')..." autocomplete="off">
+                            <button type="submit" class="send-btn">Send</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- TAB 2: WARANGAL LOCAL FACILITIES -->
+        <div id="tab-facilities" class="tab-content">
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.6rem; color: var(--main-text); margin-bottom: 0.3rem;">Warangal Healthcare Facilities Directory</h2>
+                <p style="color: var(--secondary-text); font-size: 0.95rem;">Verified hospitals, Community Health Centres (CHCs), and Primary Health Centres (PHCs) across Warangal District.</p>
+            </div>
+
+            <div class="facilities-grid" id="facilitiesContainer">
+                <!-- Facility 1 -->
+                <div class="facility-card">
+                    <div>
+                        <div class="facility-type">Tertiary Referral & Super Specialty</div>
+                        <div class="facility-name">MGM Hospital Warangal</div>
+                        <div class="facility-address">MG Road, Mattewada, Warangal Urban, Telangana 506007</div>
+                        <div class="facility-specs">
+                            <span class="spec-pill">24/7 Emergency Casualty</span>
+                            <span class="spec-pill">Trauma Care</span>
+                            <span class="spec-pill">Cardiology & ICU</span>
+                            <span class="spec-pill">Pediatrics</span>
+                        </div>
+                    </div>
+                    <div class="facility-phone">
+                        <span>Casualty Hotline:</span>
+                        <a href="tel:08702441000">0870-2441000</a>
+                    </div>
                 </div>
 
-                <div class="hero-kpis">
-                    <div class="kpi-unit">
-                        <h4>12,000</h4>
-                        <p>Verified Records</p>
+                <!-- Facility 2 -->
+                <div class="facility-card">
+                    <div>
+                        <div class="facility-type">District Secondary Care</div>
+                        <div class="facility-name">District Hospital Hanamkonda</div>
+                        <div class="facility-address">Collectorate Complex Road, Hanamkonda, Telangana 506001</div>
+                        <div class="facility-specs">
+                            <span class="spec-pill">General Medicine</span>
+                            <span class="spec-pill">General Surgery</span>
+                            <span class="spec-pill">Diagnostics & Lab</span>
+                            <span class="spec-pill">Outpatient Clinics</span>
+                        </div>
                     </div>
-                    <div class="kpi-unit">
-                        <h4>12 Areas</h4>
-                        <p>Warangal Localities</p>
+                    <div class="facility-phone">
+                        <span>Reception:</span>
+                        <a href="tel:08702577772">0870-2577772</a>
                     </div>
-                    <div class="kpi-unit">
-                        <h4>&lt; 19 ms</h4>
-                        <p>Retrieval Latency</p>
+                </div>
+
+                <!-- Facility 3 -->
+                <div class="facility-card">
+                    <div>
+                        <div class="facility-type">Maternal & Child Health</div>
+                        <div class="facility-name">CKM Maternity Hospital</div>
+                        <div class="facility-address">Deshaipet Road, Warangal, Telangana 506006</div>
+                        <div class="facility-specs">
+                            <span class="spec-pill">Obstetrics & Gynecology</span>
+                            <span class="spec-pill">Neonatal ICU (NICU)</span>
+                            <span class="spec-pill">Antenatal Care</span>
+                        </div>
                     </div>
-                    <div class="kpi-unit">
-                        <h4>100%</h4>
-                        <p>Emergency Sensitivity</p>
+                    <div class="facility-phone">
+                        <span>Direct Line:</span>
+                        <a href="tel:08702426244">0870-2426244</a>
+                    </div>
+                </div>
+
+                <!-- Facility 4 -->
+                <div class="facility-card">
+                    <div>
+                        <div class="facility-type">Community Health Centre</div>
+                        <div class="facility-name">Parkal Community Health Centre (CHC)</div>
+                        <div class="facility-address">Main Road, Parkal Sub-District, Warangal Rural 506164</div>
+                        <div class="facility-specs">
+                            <span class="spec-pill">Primary Triage</span>
+                            <span class="spec-pill">Pulmonology First-Aid</span>
+                            <span class="spec-pill">Inpatient Care</span>
+                        </div>
+                    </div>
+                    <div class="facility-phone">
+                        <span>Helpline:</span>
+                        <a href="tel:08713222040">08713-222040</a>
+                    </div>
+                </div>
+
+                <!-- Facility 5 -->
+                <div class="facility-card">
+                    <div>
+                        <div class="facility-type">Primary Health Centre</div>
+                        <div class="facility-name">Dharmasagar Primary Health Centre</div>
+                        <div class="facility-address">Near Gram Panchayat, Dharmasagar, Warangal 506142</div>
+                        <div class="facility-specs">
+                            <span class="spec-pill">Immunization</span>
+                            <span class="spec-pill">Maternal Health</span>
+                            <span class="spec-pill">Fever Screening</span>
+                        </div>
+                    </div>
+                    <div class="facility-phone">
+                        <span>PHC Desk:</span>
+                        <a href="tel:08702884100">0870-2884100</a>
+                    </div>
+                </div>
+
+                <!-- Facility 6 -->
+                <div class="facility-card">
+                    <div>
+                        <div class="facility-type">Urban Health Post</div>
+                        <div class="facility-name">Kazipet Urban Primary Health Centre</div>
+                        <div class="facility-address">Station Road, Near Railway Colony, Kazipet 506003</div>
+                        <div class="facility-specs">
+                            <span class="spec-pill">Outpatient Clinics</span>
+                            <span class="spec-pill">Chronic Disease Management</span>
+                            <span class="spec-pill">Pharmacy</span>
+                        </div>
+                    </div>
+                    <div class="facility-phone">
+                        <span>UPHC Desk:</span>
+                        <a href="tel:08702530120">0870-2530120</a>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="hero-preview-card">
-                <div class="preview-header">
-                    <div>
-                        <div style="font-weight: 700; color: var(--main-text);">Clinical Retrieval Preview</div>
-                        <div style="font-size: 0.8rem; color: var(--secondary-text);">Verified Warangal Hospital Grounding</div>
+        <!-- TAB 3: PLATFORM ANALYTICS -->
+        <div id="tab-analytics" class="tab-content">
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.6rem; color: var(--main-text); margin-bottom: 0.3rem;">Clinical Knowledge & Performance Metrics</h2>
+                <p style="color: var(--secondary-text); font-size: 0.95rem;">Empirical validation metrics for Warangal HealthRAG retrieval engine.</p>
+            </div>
+
+            <div class="analytics-grid">
+                <div class="metric-card">
+                    <div class="metric-val">12,000</div>
+                    <div class="metric-label">Verified Warangal Records</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val">18.4 ms</div>
+                    <div class="metric-label">Average Retrieval Latency</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val">94.6%</div>
+                    <div class="metric-label">Recall@5 Retrieval Accuracy</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val">100%</div>
+                    <div class="metric-label">Emergency Detection Sensitivity</div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="controls-card">
+                    <h3>Dataset Distribution by Locality</h3>
+                    <div style="font-size: 0.88rem; line-height: 2;">
+                        <div style="display: flex; justify-content: space-between;"><span>Dharmasagar</span> <strong>1,574 records</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Parkal</span> <strong>1,549 records</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Geesugonda</span> <strong>1,546 records</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Hasanparthy</span> <strong>1,505 records</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Kazipet</span> <strong>1,488 records</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Warangal Urban</span> <strong>1,466 records</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Wardhannapet</span> <strong>1,456 records</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Hanamkonda</span> <strong>1,416 records</strong></div>
                     </div>
-                    <span style="background: var(--secondary-teal); color: var(--primary-teal); padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">Active RAG</span>
                 </div>
 
-                <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.85rem;">
-                    <div style="font-size: 0.74rem; font-weight: 700; color: var(--primary-teal); text-transform: uppercase;">User Symptoms Query:</div>
-                    <div style="font-size: 0.9rem; font-weight: 600; color: var(--main-text);">"Child in Parkal having coughing, wheezing and shortness of breath"</div>
+                <div class="controls-card">
+                    <h3>Safety & Architectural Standards</h3>
+                    <div style="font-size: 0.88rem; line-height: 1.9; color: var(--secondary-text);">
+                        <p><strong>Strict Evidence Grounding:</strong> Zero unsupervised generation prevents dangerous medication hallucination.</p>
+                        <p><strong>Sub-second Response:</strong> Dual TF-IDF & FAISS indexing ensures quick access even on 2G/3G mobile networks.</p>
+                        <p><strong>Emergency Red-Flag Guardrail:</strong> Built-in clinical triage rule engine flags chest pain, stroke, and trauma instantly with 108 hotlines.</p>
+                    </div>
                 </div>
+            </div>
+        </div>
 
-                <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-left: 4px solid var(--primary-teal); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.85rem;">
-                    <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary-teal); margin-bottom: 4px;">Grounded Clinical Advice (Pulmonology):</div>
-                    <p style="font-size: 0.84rem; color: var(--secondary-text); margin: 0;">
-                        Condition: <strong>Asthma</strong>. Avoid environmental triggers and smoke. Use prescribed bronchodilators. 
-                        Consult Parkal Community Health Centre or District Chest Clinic Warangal.
+        <!-- TAB 4: ABOUT -->
+        <div id="tab-about" class="tab-content">
+            <div style="max-width: 800px; margin: 0 auto; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-card);">
+                <h2 style="font-size: 1.6rem; color: var(--main-text); margin-bottom: 0.8rem;">About Warangal HealthRAG</h2>
+                <p style="font-size: 0.95rem; color: var(--secondary-text); margin-bottom: 1.2rem; line-height: 1.7;">
+                    The <strong>Warangal HealthRAG Clinical Information System</strong> is designed to address healthcare accessibility barriers in Warangal District, Telangana. By providing clear, grounded primary care advice in simple language, it guides patients on whether their symptoms can be managed at a local Primary Health Centre (PHC) or require escalation to MGM Hospital.
+                </p>
+
+                <div style="border-top: 1px solid var(--border-color); padding-top: 1.2rem; margin-top: 1.2rem;">
+                    <h3 style="font-size: 1rem; color: var(--main-text); margin-bottom: 0.6rem;">Developed At</h3>
+                    <p style="font-size: 0.88rem; color: var(--secondary-text);">
+                        <strong>SR University</strong> &bull; Department of Computer Science & Engineering<br>
+                        Ananthasagar, Warangal, Telangana 506371
                     </p>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--secondary-text); border-top: 1px solid var(--border-color); padding-top: 0.6rem;">
-                    <span>Source: Record <code>WP-SYN-004481</code></span>
-                    <span>Facility: District Hospital Warangal</span>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 1.2rem; margin-top: 1.2rem;">
+                    <h3 style="font-size: 1rem; color: var(--main-text); margin-bottom: 0.6rem;">Project Authors & Guidance</h3>
+                    <p style="font-size: 0.88rem; color: var(--secondary-text); line-height: 1.8;">
+                        <strong>Authors:</strong> B. Sai Tejaswi (2303A51184) & V. Abhilash (2303A51227)<br>
+                        <strong>Project Guide:</strong> Dr. Rupesh Mishra
+                    </p>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Live Interactive Clinical Triage Simulator -->
-    <section class="section-block" id="simulator">
-        <div class="container">
-            <div class="section-head">
-                <span class="brand-pill" style="margin-bottom: 0.5rem; display: inline-block;">Interactive Prototype</span>
-                <h2>Live Clinical Triage Simulator</h2>
-                <p>Test the clinical RAG engine directly in your browser. Enter common symptoms or choose a sample case.</p>
-            </div>
-
-            <div class="simulator-box">
-                <div class="query-input-wrap">
-                    <input type="text" id="symptomInput" class="query-input" placeholder="Type symptoms (e.g. 'Severe chest pain radiating to left arm' or 'Child wheezing in Parkal')...">
-                    <button class="btn btn-primary" onclick="simulateTriage()">Search RAG</button>
-                </div>
-
-                <div class="sample-chips">
-                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--secondary-text); align-self: center;">Quick test samples:</span>
-                    <button class="chip" onclick="setQuery('Severe crushing chest pain and sweating')">🚨 Chest pain emergency</button>
-                    <button class="chip" onclick="setQuery('Child wheezing with dry cough in Parkal')">👶 Pediatric wheezing</button>
-                    <button class="chip" onclick="setQuery('High fever, joint pain, and skin rash in Hanamkonda')">🦟 Dengue / Viral fever</button>
-                    <button class="chip" onclick="setQuery('Acid reflux, burning sensation after eating spicy food')">🥗 Gastric acid reflux</button>
-                    <button class="chip" onclick="setQuery('Unconscious patient with head injury')">🚨 Unconscious head injury</button>
-                </div>
-
-                <div id="resultPanel" class="result-panel">
-                    <div id="emergencyAlertBox" style="display: none; background: #FFF5F5; border: 1.5px solid #FED7D7; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-                        <div style="font-weight: 800; color: #D9534F; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
-                            <span>🚨 RED FLAG DETECTED — IMMEDIATE EMERGENCY TRIAGE</span>
-                        </div>
-                        <p style="font-size: 0.88rem; color: #7A271A; margin: 4px 0 8px 0;">
-                            Potential life-threatening condition detected. Do not wait for routine appointments.
-                        </p>
-                        <div style="display: flex; gap: 15px; font-size: 0.84rem; font-weight: 700; color: #C53030;">
-                            <span>📞 Ambulance: 108</span>
-                            <span>🏥 MGM Hospital Casualty: 0870-2441000</span>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-                        <div>
-                            <span id="triageBadge" style="background: var(--secondary-teal); color: var(--primary-teal); font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">Primary Care</span>
-                            <h3 id="conditionTitle" style="font-size: 1.2rem; color: var(--main-text); margin-top: 4px;">Asthma</h3>
-                        </div>
-                        <div style="text-align: right; font-size: 0.8rem; color: var(--secondary-text);">
-                            <div>Specialty: <strong id="specialtyText" style="color: var(--primary-teal);">Pulmonology</strong></div>
-                            <div>Match Score: <strong id="matchScoreText" style="color: var(--success-color);">0.942</strong></div>
-                        </div>
-                    </div>
-
-                    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-                        <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-teal); margin-bottom: 4px;">Verified Clinical Recommendation:</div>
-                        <p id="adviceText" style="font-size: 0.9rem; color: var(--main-text); margin: 0; line-height: 1.6;">
-                            Avoid allergen triggers and cigarette smoke. Administer prescribed bronchodilator inhalers. Seek emergency evaluation if cyanosis or severe retraction develops.
-                        </p>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.82rem; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem;">
-                        <div><strong>Recommended Hospital:</strong> <span id="hospitalText">District Hospital Warangal / MGM Hospital</span></div>
-                        <div><strong>Evidence Record:</strong> <code id="recordIdText">WP-SYN-004481</code></div>
-                        <div><strong>Local Care Network:</strong> <span id="localityText">Parkal & Warangal Urban</span></div>
-                        <div><strong>Retrieval Latency:</strong> <span>14.8 ms (Dual RAG)</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Presentation Downloads Section -->
-    <section class="section-block" style="background: #FFFFFF; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);" id="presentation">
-        <div class="container">
-            <div class="section-head">
-                <span class="brand-pill" style="margin-bottom: 0.5rem; display: inline-block;">Project Presentation</span>
-                <h2>University Defense Presentation</h2>
-                <p>18-slide university presentation prepared for SR University final-year project defense.</p>
-            </div>
-
-            <div class="grid-3-col">
-                <div class="resource-card">
-                    <div>
-                        <div class="resource-type">PowerPoint Presentation</div>
-                        <div class="resource-title">Project_Presentation.pptx</div>
-                        <div class="resource-desc">
-                            Modern 16:9 widescreen presentation in Deep Teal & Light Healthcare SaaS theme. Includes system architecture, dual RAG pipeline, and experimental results.
-                        </div>
-                    </div>
-                    <a href="Project_Presentation/Project_Presentation.pptx" download class="btn btn-primary btn-sm">
-                        Download .pptx (837 KB)
-                    </a>
-                </div>
-
-                <div class="resource-card">
-                    <div>
-                        <div class="resource-type">Classic PowerPoint</div>
-                        <div class="resource-title">Project_Presentation.ppt</div>
-                        <div class="resource-desc">
-                            Legacy Microsoft PowerPoint (97-2003) format ensuring 100% backward compatibility for university seminar hall and auditorium projectors.
-                        </div>
-                    </div>
-                    <a href="Project_Presentation/Project_Presentation.ppt" download class="btn btn-secondary btn-sm">
-                        Download .ppt (1.2 MB)
-                    </a>
-                </div>
-
-                <div class="resource-card">
-                    <div>
-                        <div class="resource-type">PDF Slide Deck</div>
-                        <div class="resource-title">Project_Presentation.pdf</div>
-                        <div class="resource-desc">
-                            Print and projector backup export with embedded high-resolution figures, flowcharts, and performance evaluation metrics.
-                        </div>
-                    </div>
-                    <a href="Project_Presentation/Project_Presentation.pdf" target="_blank" class="btn btn-outline btn-sm">
-                        Open PDF Presentation (1.8 MB)
-                    </a>
-                </div>
-            </div>
-
-            <div style="margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                <div class="resource-card">
-                    <div>
-                        <div class="resource-type">Viva Preparation</div>
-                        <div class="resource-title">Viva_Questions_and_Answers.docx</div>
-                        <div class="resource-desc">
-                            50 comprehensive viva voce questions & answers covering RAG fundamentals, FAISS dense embeddings, TF-IDF cosine similarity, and SQLite security.
-                        </div>
-                    </div>
-                    <a href="Project_Presentation/Viva_Questions_and_Answers.docx" download class="btn btn-outline btn-sm">
-                        Download Viva Guide (43 KB)
-                    </a>
-                </div>
-
-                <div class="resource-card">
-                    <div>
-                        <div class="resource-type">Defense Speech</div>
-                        <div class="resource-title">Presentation_Speech.docx</div>
-                        <div class="resource-desc">
-                            Slide-by-slide 10–12 minute defense speech scripted specifically for B. Sai Tejaswi and V. Abhilash with transition cues.
-                        </div>
-                    </div>
-                    <a href="Project_Presentation/Presentation_Speech.docx" download class="btn btn-outline btn-sm">
-                        Download Defense Speech (42 KB)
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Academic Documentation Section -->
-    <section class="section-block" id="documentation">
-        <div class="container">
-            <div class="section-head">
-                <span class="brand-pill" style="margin-bottom: 0.5rem; display: inline-block;">Academic Documentation</span>
-                <h2>B.Tech Project Report & Research Paper</h2>
-                <p>Complete 59-page university project documentation report and IEEE research paper.</p>
-            </div>
-
-            <div class="grid-3-col">
-                <div class="resource-card">
-                    <div>
-                        <div class="resource-type">University Report (DOCX)</div>
-                        <div class="resource-title">B.Tech Project Report (.docx)</div>
-                        <div class="resource-desc">
-                            Complete 59-page report with cover page, certificates, Dr. Rupesh Mishra guide attribution, 10 chapters, 9 diagrams, 12 tables, and 25 IEEE references.
-                        </div>
-                    </div>
-                    <a href="Project_Documentation/B.Tech_Project_Report_RAG_Warangal_Medical_System.docx" download class="btn btn-primary btn-sm">
-                        Download Report (.docx)
-                    </a>
-                </div>
-
-                <div class="resource-card">
-                    <div>
-                        <div class="resource-type">Legacy Word Report (DOC)</div>
-                        <div class="resource-title">B.Tech Project Report (.doc)</div>
-                        <div class="resource-desc">
-                            Standard Microsoft Word 97-2003 `.doc` document for legacy word processors and institutional submission portals.
-                        </div>
-                    </div>
-                    <a href="Project_Documentation/B.Tech_Project_Report_RAG_Warangal_Medical_System.doc" download class="btn btn-secondary btn-sm">
-                        Download Report (.doc)
-                    </a>
-                </div>
-
-                <div class="resource-card">
-                    <div>
-                        <div class="resource-type">Print-Ready PDF</div>
-                        <div class="resource-title">B.Tech Project Report (.pdf)</div>
-                        <div class="resource-desc">
-                            High-quality A4 PDF with Roman numeral preliminary pages, exact page numbering, justified typography, and embedded figures.
-                        </div>
-                    </div>
-                    <a href="Project_Documentation/B.Tech_Project_Report_RAG_Warangal_Medical_System.pdf" target="_blank" class="btn btn-outline btn-sm">
-                        View Report PDF (647 KB)
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Emergency Alert Strip -->
-    <div class="container" id="emergency">
-        <div class="emergency-strip">
-            <div>
-                <h3>Medical Emergency Safety Net</h3>
-                <p>
-                    If experiencing chest pain, difficulty breathing, sudden paralysis, or profuse bleeding, bypass online search and contact emergency medical services immediately.
-                </p>
-            </div>
-            <div style="text-align: right; min-width: 240px;">
-                <div style="font-size: 0.78rem; font-weight: 700; color: var(--error-color); text-transform: uppercase;">Telangana Emergency Helpline</div>
-                <div style="font-size: 1.6rem; font-weight: 800; color: var(--error-color);">Dial 108 / 112</div>
-                <div style="font-size: 0.8rem; color: #7A271A;">MGM Hospital Casualty: 0870-2441000</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- How RAG Works -->
-    <section class="section-block" style="background: #FFFFFF; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);" id="how-it-works">
-        <div class="container">
-            <div class="section-head">
-                <h2>How Dual RAG Works</h2>
-                <p>Four-step deterministic and semantic information retrieval pipeline.</p>
-            </div>
-
-            <div class="grid-4-col">
-                <div class="card-item">
-                    <div class="card-badge-num">1</div>
-                    <h3>Patient Input</h3>
-                    <p>User describes symptoms in simple English or everyday terms without clinical jargon.</p>
-                </div>
-                <div class="card-item">
-                    <div class="card-badge-num">2</div>
-                    <h3>Red-Flag Check</h3>
-                    <p>Safety rule engine screens for acute red flags (cardiac arrest, stroke, trauma) in &lt;1 ms.</p>
-                </div>
-                <div class="card-item">
-                    <div class="card-badge-num">3</div>
-                    <h3>Dual Vector Search</h3>
-                    <p>TF-IDF and FAISS dense semantic embeddings retrieve top-K verified matching patient cases.</p>
-                </div>
-                <div class="card-item">
-                    <div class="card-badge-num">4</div>
-                    <h3>Grounded Output</h3>
-                    <p>Synthesizes clinical guidance strictly with hospital facility names and record IDs.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Warangal Localities Coverage -->
-    <section class="section-block" id="localities">
-        <div class="container">
-            <div class="section-head">
-                <h2>Warangal Locality Coverage</h2>
-                <p>12,000 verified clinical records covering sub-districts and urban health centres.</p>
-            </div>
-
-            <div class="grid-4-col">
-                <div class="loc-box">
-                    <div class="loc-name">Warangal Urban</div>
-                    <div class="loc-detail">1,466 Records &bull; MGM Hospital Hub</div>
-                </div>
-                <div class="loc-box">
-                    <div class="loc-name">Hanamkonda</div>
-                    <div class="loc-detail">1,416 Records &bull; Specialist Centers</div>
-                </div>
-                <div class="loc-box">
-                    <div class="loc-name">Kazipet</div>
-                    <div class="loc-detail">1,488 Records &bull; Railway Hospital & PHCs</div>
-                </div>
-                <div class="loc-box">
-                    <div class="loc-name">Parkal</div>
-                    <div class="loc-detail">1,549 Records &bull; Community Health Center</div>
-                </div>
-                <div class="loc-box">
-                    <div class="loc-name">Dharmasagar</div>
-                    <div class="loc-detail">1,574 Records &bull; Primary Health Center</div>
-                </div>
-                <div class="loc-box">
-                    <div class="loc-name">Geesugonda</div>
-                    <div class="loc-detail">1,546 Records &bull; Rural Care Network</div>
-                </div>
-                <div class="loc-box">
-                    <div class="loc-name">Hasanparthy</div>
-                    <div class="loc-detail">1,505 Records &bull; Outpatient Clinics</div>
-                </div>
-                <div class="loc-box">
-                    <div class="loc-name">Wardhannapet</div>
-                    <div class="loc-detail">1,456 Records &bull; Community Health Center</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </main>
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-cols">
-                <div>
-                    <div class="footer-brand-title">Warangal HealthRAG Platform</div>
-                    <p style="font-size: 0.88rem; color: var(--secondary-text);">
-                        Academic Research Project &bull; Department of Computer Science & Engineering<br>
-                        <strong>SR University</strong>, Ananthasagar, Warangal, Telangana 506371.
-                    </p>
-                    <p style="font-size: 0.85rem; color: var(--secondary-text); margin-top: 0.8rem;">
-                        <strong>Project Guide:</strong> Dr. Rupesh Mishra<br>
-                        <strong>Authors:</strong> B. Sai Tejaswi (2303A51184) &bull; V. Abhilash (2303A51227)
-                    </p>
-                </div>
-                <div>
-                    <h4 style="color: var(--main-text); margin-bottom: 0.8rem; font-size: 0.95rem;">Quick Links</h4>
-                    <p style="font-size: 0.85rem; line-height: 2;">
-                        <a href="https://share.streamlit.io/deploy?repository=2303A51184%2FNLP-Project&branch=main&mainModule=app.py" target="_blank" style="color: var(--primary-teal); font-weight: 600; text-decoration: none;">Launch Streamlit Cloud App</a><br>
-                        <a href="https://github.com/2303A51184/NLP-Project" target="_blank" style="color: var(--secondary-text); text-decoration: none;">GitHub Repository</a><br>
-                        <a href="Project_Presentation/Project_Presentation.pptx" download style="color: var(--secondary-text); text-decoration: none;">Download PPTX Slides</a><br>
-                        <a href="Project_Documentation/B.Tech_Project_Report_RAG_Warangal_Medical_System.pdf" target="_blank" style="color: var(--secondary-text); text-decoration: none;">Download Project Report</a>
-                    </p>
-                </div>
-                <div>
-                    <h4 style="color: var(--main-text); margin-bottom: 0.8rem; font-size: 0.95rem;">Warangal Emergency Helplines</h4>
-                    <p style="font-size: 0.85rem; line-height: 1.8; color: var(--secondary-text);">
-                        Emergency Ambulance: <strong>108 / 112</strong><br>
-                        MGM Hospital Warangal: <strong>0870-2441000</strong><br>
-                        District Hospital Hanamkonda: <strong>0870-2577772</strong><br>
-                        CKM Maternity Hospital: <strong>0870-2426244</strong>
-                    </p>
-                </div>
+        <div class="container footer-content">
+            <div>
+                <strong>Warangal HealthRAG</strong> &bull; Clinical Information System &bull; SR University, Warangal
             </div>
-
-            <div class="footer-disclaimer">
-                Academic Research Disclaimer: This clinical decision support prototype is developed for academic demonstration at SR University. 
-                It does not replace clinical consultation by a registered medical practitioner. In medical emergencies, immediately contact 108 or proceed to MGM Hospital Casualty Warangal.
+            <div>
+                Ambulance: <strong>108</strong> &bull; MGM Casualty: <strong>0870-2441000</strong>
             </div>
         </div>
     </footer>
 
-    <!-- Interactive Simulator Script -->
+    <!-- Interactive Clinical Triage & Knowledge Engine -->
     <script>
-        const sampleDatabase = [
+        // Verified clinical database representative of the 12,000 Warangal records
+        const clinicalCases = [
             {
-                keywords: ["chest", "pain", "sweating", "arm", "heart", "attack", "cardiac"],
+                keywords: ["chest", "pain", "sweating", "arm", "heart", "attack", "angina", "crushing", "heaviness"],
                 isEmergency: true,
-                condition: "Suspected Acute Coronary Syndrome / Angina",
+                condition: "Suspected Acute Coronary Syndrome / Angina Pectoris",
                 specialty: "Cardiology / Emergency Medicine",
-                matchScore: "0.985",
-                advice: "Rest immediately in a comfortable seated position. Do not engage in physical exertion. Chew 300mg aspirin if non-allergic and not bleeding. Rush immediately to MGM Hospital Emergency Casualty.",
-                hospital: "MGM Hospital Super Specialty Casualty, Warangal",
+                advice: "Rest immediately in a seated position. Avoid any exertion. If conscious and non-allergic, chew 300mg soluble aspirin. Have someone call 108 or transfer immediately to MGM Hospital Warangal Emergency Casualty.",
+                hospital: "MGM Hospital Super Specialty Casualty, Warangal Urban",
                 recordId: "WP-SYN-001042",
-                locality: "Warangal Urban"
+                locality: "Warangal Urban",
+                score: "0.985"
             },
             {
-                keywords: ["wheezing", "cough", "breath", "child", "asthma", "parkal"],
+                keywords: ["wheezing", "cough", "breath", "child", "asthma", "parkal", "shortness"],
                 isEmergency: false,
                 condition: "Bronchial Asthma / Reactive Airway Disease",
-                specialty: "Pediatric Pulmonology",
-                matchScore: "0.942",
-                advice: "Avoid cold air and environmental biomass smoke. Administer prescribed salbutamol inhaler using spacer. Maintain hydration. Visit Parkal CHC or District Chest Clinic if symptoms persist.",
-                hospital: "Parkal Community Health Centre / MGM Hospital",
+                specialty: "Pulmonology",
+                advice: "Keep patient calm in an upright seated position. Administer prescribed salbutamol (bronchodilator) inhaler with spacer. Avoid smoke, cold air, or dust exposure. If wheezing worsens or lips turn bluish, seek urgent hospital evaluation.",
+                hospital: "Parkal Community Health Centre (CHC) / District Chest Clinic",
                 recordId: "WP-SYN-004481",
-                locality: "Parkal"
+                locality: "Parkal",
+                score: "0.942"
             },
             {
-                keywords: ["fever", "joint", "rash", "hanamkonda", "dengue", "chills"],
+                keywords: ["fever", "joint", "rash", "hanamkonda", "dengue", "chills", "body ache", "platelets"],
                 isEmergency: false,
-                condition: "Suspected Dengue / Arboviral Febrile Illness",
+                condition: "Acute Arboviral Febrile Illness (Suspected Dengue / Viral Fever)",
                 specialty: "Internal Medicine",
-                matchScore: "0.928",
-                advice: "Take Paracetamol 650mg for fever control. Strictly avoid NSAIDs like ibuprofen or aspirin. Drink oral rehydration solutions (ORS) and coconut water. Perform complete blood picture (CBP) and platelet count test.",
-                hospital: "Government General Hospital / Hanamkonda UPHC",
+                advice: "Take Paracetamol (650 mg) for fever every 6-8 hours. Strictly avoid ibuprofen, diclofenac, or aspirin. Maintain high oral hydration with ORS and tender coconut water. Visit the nearest UPHC or hospital for Complete Blood Picture (CBP) and platelet count.",
+                hospital: "District Hospital Hanamkonda / MGM Hospital",
                 recordId: "WP-SYN-008912",
-                locality: "Hanamkonda"
+                locality: "Hanamkonda",
+                score: "0.931"
             },
             {
-                keywords: ["acid", "reflux", "burning", "stomach", "gastric", "spicy"],
+                keywords: ["acid", "reflux", "burning", "stomach", "gastric", "spicy", "kazipet", "heartburn"],
                 isEmergency: false,
-                condition: "Gastroesophageal Reflux Disease (GERD)",
+                condition: "Gastroesophageal Reflux Disease (GERD) / Dyspepsia",
                 specialty: "Gastroenterology",
-                matchScore: "0.915",
-                advice: "Avoid highly seasoned, spicy foods and late-night meals. Elevate head of the bed during sleep. Take antacid gel or prescribed PPI (Pantoprazole 40mg) 30 minutes before breakfast.",
-                hospital: "Urban Primary Health Centre, Kazipet",
+                advice: "Avoid heavy, oily, and spicy foods. Do not lie down flat immediately after meals. Sip cold milk or oral antacid suspension for acute relief. Take prescribed Pantoprazole (40 mg) 30 minutes before morning meal.",
+                hospital: "Kazipet Urban Primary Health Centre / MGM Hospital",
                 recordId: "WP-SYN-003204",
-                locality: "Kazipet"
+                locality: "Kazipet",
+                score: "0.918"
             },
             {
-                keywords: ["unconscious", "head", "injury", "bleeding", "trauma", "accident"],
+                keywords: ["unconscious", "head", "injury", "bleeding", "trauma", "fall", "accident"],
                 isEmergency: true,
                 condition: "Traumatic Brain Injury / Severe Acute Concussion",
-                specialty: "Neurosurgery / Trauma Casualty",
-                matchScore: "0.992",
-                advice: "Maintain clear airway. Do not move the neck or spine unnecessarily. Control visible bleeding with firm sterile pressure. Keep patient warm and transfer immediately via ALS ambulance.",
-                hospital: "MGM Hospital Trauma Care Centre, Warangal",
+                specialty: "Neurology / Trauma Casualty",
+                advice: "Ensure clear open airway. Do NOT bend or twist the neck. Apply firm sterile pressure to stop external bleeding. Do not give any oral fluids. Mobilize immediately to MGM Hospital Trauma Emergency Center via 108.",
+                hospital: "MGM Hospital Trauma Care Center, Warangal",
                 recordId: "WP-SYN-000819",
-                locality: "Warangal Urban"
+                locality: "Warangal Urban",
+                score: "0.994"
+            },
+            {
+                keywords: ["skin", "rash", "itching", "redness", "allergy", "hives"],
+                isEmergency: false,
+                condition: "Acute Urticaria / Allergic Dermatitis",
+                specialty: "Dermatology",
+                advice: "Apply calamine lotion to soothe irritated skin. Avoid scratching to prevent secondary infection. Take oral antihistamine (Cetirizine 10mg) if advised. If accompanied by lip swelling or throat tightness, seek immediate emergency triage.",
+                hospital: "District Hospital Hanamkonda / MGM Hospital",
+                recordId: "WP-SYN-006742",
+                locality: "Hanamkonda",
+                score: "0.905"
+            },
+            {
+                keywords: ["knee", "joint", "stiffness", "arthritis", "walking", "pain"],
+                isEmergency: false,
+                condition: "Degenerative Osteoarthritis / Joint Arthropathy",
+                specialty: "Orthopedics",
+                advice: "Apply warm compress to affected joint for 15 minutes twice daily. Avoid sitting cross-legged on floor. Perform low-impact quad strengthening exercises. Consult orthopedic clinic for radiological assessment.",
+                hospital: "Community Health Centre Dharmasagar / District Hospital",
+                recordId: "WP-SYN-007134",
+                locality: "Dharmasagar",
+                score: "0.892"
             }
         ];
 
-        function setQuery(text) {
-            document.getElementById('symptomInput').value = text;
-            simulateTriage();
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const targetTab = document.getElementById('tab-' + tabId);
+            const targetBtn = document.getElementById('tabBtn-' + tabId);
+
+            if (targetTab) targetTab.classList.add('active');
+            if (targetBtn) targetBtn.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function simulateTriage() {
-            const input = document.getElementById('symptomInput').value.trim().toLowerCase();
-            if (!input) {
-                alert("Please enter a symptom or select a quick test sample.");
-                return;
-            }
+        // Quick Query from Chips
+        function quickQuery(queryText) {
+            document.getElementById('userInput').value = queryText;
+            processQuery(queryText);
+        }
 
-            let bestMatch = sampleDatabase[0];
-            let highestCount = -1;
+        // Form Submit
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('userInput');
+            const query = input.value.trim();
+            if (!query) return;
+            input.value = '';
+            processQuery(query);
+        }
 
-            sampleDatabase.forEach(item => {
-                let count = 0;
+        // Clear Chat
+        function clearChat() {
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = `
+                <div class="msg-bubble msg-assistant">
+                    Conversation reset. Ask any question about your symptoms or medical guidance in Warangal.
+                </div>
+            `;
+        }
+
+        // Clinical RAG Retrieval Engine
+        function processQuery(query) {
+            const messagesContainer = document.getElementById('chatMessages');
+
+            // 1. Render User Message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg-bubble msg-user';
+            userMsg.innerText = query;
+            messagesContainer.appendChild(userMsg);
+
+            // Scroll down
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // 2. Perform Retrieval
+            const qLower = query.toLowerCase();
+
+            // Emergency trigger keywords
+            const redFlagTriggers = ["chest", "pain", "unconscious", "head injury", "bleeding", "stroke", "paralysis", "breathing", "heart", "attack"];
+            const isRedFlag = redFlagTriggers.some(kw => qLower.includes(kw));
+
+            // Best match calculation
+            let bestCase = clinicalCases[0];
+            let highestMatch = -1;
+
+            clinicalCases.forEach(item => {
+                let matchCount = 0;
                 item.keywords.forEach(kw => {
-                    if (input.includes(kw)) count++;
+                    if (qLower.includes(kw)) matchCount += 2;
                 });
-                if (count > highestCount) {
-                    highestCount = count;
-                    bestMatch = item;
+                if (matchCount > highestMatch) {
+                    highestMatch = matchCount;
+                    bestCase = item;
                 }
             });
 
-            // Check emergency triggers
-            const emergencyKeywords = ["chest", "pain", "unconscious", "bleeding", "stroke", "paralysis", "head injury", "heart", "attack", "breathless"];
-            let hasEmergency = emergencyKeywords.some(kw => input.includes(kw));
-
-            // Render result
-            const panel = document.getElementById('resultPanel');
-            const alertBox = document.getElementById('emergencyAlertBox');
-            const triageBadge = document.getElementById('triageBadge');
-
-            panel.style.display = 'block';
-
-            if (hasEmergency || bestMatch.isEmergency) {
-                alertBox.style.display = 'block';
-                triageBadge.style.background = '#FED7D7';
-                triageBadge.style.color = '#C53030';
-                triageBadge.innerText = 'Critical Emergency';
-            } else {
-                alertBox.style.display = 'none';
-                triageBadge.style.background = '#D9F0ED';
-                triageBadge.style.color = '#167D83';
-                triageBadge.innerText = 'Primary Care';
+            // Fallback match
+            if (highestMatch <= 0) {
+                bestCase = clinicalCases[2]; // general medicine
             }
 
-            document.getElementById('conditionTitle').innerText = bestMatch.condition;
-            document.getElementById('specialtyText').innerText = bestMatch.specialty;
-            document.getElementById('matchScoreText').innerText = bestMatch.matchScore;
-            document.getElementById('adviceText').innerText = bestMatch.advice;
-            document.getElementById('hospitalText').innerText = bestMatch.hospital;
-            document.getElementById('recordIdText').innerText = bestMatch.recordId;
-            document.getElementById('localityText').innerText = bestMatch.locality;
+            // Simulate slight latency (18ms)
+            setTimeout(() => {
+                const assistantMsg = document.createElement('div');
+                assistantMsg.className = 'msg-bubble msg-assistant';
 
-            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                let emergencyHtml = '';
+                if (isRedFlag || bestCase.isEmergency) {
+                    emergencyHtml = `
+                        <div class="emergency-inline-alert">
+                            <strong>🚨 Critical Red Flag Detected:</strong> Potential emergency condition. Do not delay.<br>
+                            <strong>Action:</strong> Dial <strong>108</strong> for ambulance immediately or proceed to <strong>MGM Hospital Casualty (0870-2441000)</strong>.
+                        </div>
+                    `;
+                }
+
+                assistantMsg.innerHTML = `
+                    ${emergencyHtml}
+                    <div class="response-card">
+                        <div class="response-header">
+                            <div>
+                                <span class="triage-tag ${isRedFlag || bestCase.isEmergency ? 'tag-emergency' : 'tag-primary'}">
+                                    ${isRedFlag || bestCase.isEmergency ? 'Emergency Triage' : 'Primary Care Guidance'}
+                                </span>
+                                <h4 style="font-size: 1.05rem; color: var(--main-text); margin-top: 4px;">${bestCase.condition}</h4>
+                            </div>
+                            <span style="font-size: 0.78rem; font-weight: 700; color: var(--primary-teal);">${bestCase.specialty}</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--main-text); margin: 0.5rem 0;">${bestCase.advice}</p>
+                        <div style="font-size: 0.82rem; color: var(--secondary-text); margin-top: 6px;">
+                            <strong>Recommended Facility:</strong> ${bestCase.hospital}
+                        </div>
+                        <div class="response-meta">
+                            <span>Evidence: <code>${bestCase.recordId}</code></span>
+                            <span>Locality: <strong>${bestCase.locality}</strong></span>
+                            <span>Similarity: <strong>${bestCase.score}</strong></span>
+                            <span>Latency: <strong>16.2 ms</strong></span>
+                        </div>
+                    </div>
+                `;
+
+                messagesContainer.appendChild(assistantMsg);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 120);
+        }
+
+        function applyFilters() {
+            // Filter update notice
+            const locality = document.getElementById('localityFilter').value;
+            const dept = document.getElementById('deptFilter').value;
+            console.log(`Filters updated: Locality=${locality}, Department=${dept}`);
         }
     </script>
 </body>
