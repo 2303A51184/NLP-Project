@@ -1038,24 +1038,40 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
                                 unsafe_allow_html=True,
                             )
 
+    # Quick Sample Questions Chips (when no messages or at the start)
+    if not st.session_state.messages:
+        st.markdown("<p style='font-size: 0.85rem; font-weight: 600; color: var(--secondary-text); margin-bottom: 0.4rem;'>Sample health questions you can test:</p>", unsafe_allow_html=True)
+        sq_cols = st.columns(3)
+        sample_chips = [
+            "Severe chest pain and sweating",
+            "Child coughing and fever in Kazipet",
+            "High blood pressure warning signs"
+        ]
+        for sc_idx, chip_text in enumerate(sample_chips):
+            with sq_cols[sc_idx]:
+                if st.button(chip_text, key=f"chat_chip_{sc_idx}", use_container_width=True):
+                    st.session_state.messages.append({"role": "user", "content": chip_text})
+                    st.rerun()
+
     # Chat Input
     query_input = st.chat_input("Ask a health question in simple words (e.g. 'Child wheezing in Parkal')...")
     if query_input:
         st.session_state.messages.append({"role": "user", "content": query_input})
-        with st.chat_message("user"):
-            st.markdown(query_input)
+        st.rerun()
 
+    # If the last message is from the user without an assistant response, process it immediately!
+    if st.session_state.messages and st.session_state.messages[-1]["role"] == "user":
+        active_query = st.session_state.messages[-1]["content"]
         with st.chat_message("assistant"):
             with st.spinner("Reviewing Warangal verified clinical records..."):
                 t0 = time.time()
 
                 # Step 1: Pre-retrieval Red-Flag Check
-                # First check query text directly so emergency detection is never delayed
-                immediate_rf = check_red_flags(query_input)
+                immediate_rf = check_red_flags(active_query)
 
                 # Step 2: Retrieve Chunks
                 top_chunks = get_relevant_chunks(
-                    query=query_input,
+                    query=active_query,
                     df=df,
                     tfidf_vectorizer=tfidf_vectorizer,
                     tfidf_matrix=tfidf_matrix,
@@ -1068,14 +1084,14 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
                 )
 
                 # Comprehensive check combining chunks
-                red_flag_info = check_red_flags(query_input, top_chunks)
+                red_flag_info = check_red_flags(active_query, top_chunks)
 
                 # Step 3: Grounded Answer Synthesis
                 max_sim = top_chunks['similarity_score'].max() if not top_chunks.empty else 0.0
                 if max_sim < 0.05 and not red_flag_info["is_emergency"]:
                     response_text = "Sorry, we could not find sufficiently relevant information in our medical knowledge base. Please consult a qualified healthcare professional."
                 else:
-                    response_text = generate_grounded_response(query_input, top_chunks, red_flag_info)
+                    response_text = generate_grounded_response(active_query, top_chunks, red_flag_info)
 
                 elapsed_ms = (time.time() - t0) * 1000
 
@@ -1164,7 +1180,7 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
             auth_db.log_query(
                 user_id=uid,
                 user_email=uemail,
-                query_text=query_input,
+                query_text=active_query,
                 response_text=response_text,
                 is_emergency=red_flag_info["is_emergency"],
                 matched_triggers=red_flag_info["matched_triggers"],
@@ -1173,6 +1189,7 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
                 department=mdept,
                 locality=mloc
             )
+            st.rerun()
 
 
 # ---------------------------------------------------------
