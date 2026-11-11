@@ -1,5 +1,4 @@
 import os
-import re
 import time
 import datetime
 import numpy as np
@@ -23,268 +22,352 @@ import auth_db
 # ---------------------------------------------------------
 st.set_page_config(
     page_title="Warangal HealthRAG | Medical Information System",
-    page_icon="🏥",
+    page_icon="⚕️",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 # ---------------------------------------------------------
-# Professional Healthcare SaaS Design System (CSS)
+# Professional Healthcare SaaS Design System (Light Theme Only)
 # ---------------------------------------------------------
 st.markdown(
     """
     <style>
-    /* Google Fonts & Base Variables */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
     :root {
-        --primary-teal: #005f73;
-        --teal-dark: #0a4650;
-        --teal-light: #e0f2fe;
-        --medical-blue: #0284c7;
-        --accent-mint: #10b981;
-        --mint-light: #d1fae5;
-        --emergency-red: #dc2626;
-        --emergency-bg: #fef2f2;
-        --bg-white: #ffffff;
-        --bg-slate: #f8fafc;
-        --border-slate: #e2e8f0;
-        --text-slate-900: #0f172a;
-        --text-slate-600: #475569;
-        --text-slate-400: #94a3b8;
+        --bg-main: #F7FAFC;
+        --card-bg: #FFFFFF;
+        --primary-teal: #167D83;
+        --primary-hover: #116267;
+        --secondary-teal: #D9F0ED;
+        --main-text: #263746;
+        --secondary-text: #64748B;
+        --border-color: #E5EBEF;
+        --success-color: #248A61;
+        --warning-color: #D99A36;
+        --error-color: #D9534F;
+        --error-bg: #FFF5F5;
+        --error-border: #FED7D7;
     }
 
-    * {
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Enforce light background across entire window */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        background-color: var(--bg-main) !important;
+        color: var(--main-text) !important;
+        font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif !important;
+    }
+
+    [data-testid="stSidebar"] {
+        background-color: #FFFFFF !important;
+        border-right: 1px solid var(--border-color) !important;
     }
 
     .main .block-container {
-        padding-top: 1rem;
-        padding-bottom: 3rem;
-        max-width: 1240px;
+        padding-top: 1.2rem !important;
+        padding-bottom: 2.5rem !important;
+        max-width: 1220px !important;
     }
 
     /* Top Navigation Bar */
-    .top-navbar {
-        background-color: #ffffff;
-        border-bottom: 1px solid #e2e8f0;
-        padding: 0.85rem 1.5rem;
+    .saas-nav {
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
         border-radius: 12px;
-        margin-bottom: 1.5rem;
+        padding: 0.85rem 1.4rem;
+        margin-bottom: 1.4rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
-    .brand-logo {
+    .brand-group {
         display: flex;
         align-items: center;
         gap: 12px;
-        font-weight: 800;
-        font-size: 1.25rem;
-        color: #005f73;
-        letter-spacing: -0.5px;
     }
-    .brand-badge {
-        background-color: #e0f2fe;
-        color: #0284c7;
-        padding: 3px 9px;
-        border-radius: 999px;
+    .brand-mark {
+        width: 36px;
+        height: 36px;
+        background: var(--primary-teal);
+        color: white;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+    }
+    .brand-title {
+        font-weight: 800;
+        font-size: 1.15rem;
+        color: var(--primary-teal);
+        letter-spacing: -0.3px;
+        margin: 0;
+    }
+    .brand-tag {
+        background: var(--secondary-teal);
+        color: var(--primary-teal);
         font-size: 0.72rem;
         font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 6px;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
     }
 
-    /* Hero Section */
-    .hero-container {
-        background: linear-gradient(145deg, #005f73 0%, #0a4650 100%);
-        border-radius: 20px;
-        padding: 3rem 2.5rem;
-        color: white;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 25px -5px rgba(0, 95, 115, 0.25);
-        position: relative;
-        overflow: hidden;
+    /* Hero Banner */
+    .saas-hero {
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.8rem 2.4rem;
+        margin-bottom: 1.8rem;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.02);
     }
-    .hero-container h1 {
-        font-size: 2.45rem;
+    .saas-hero h1 {
+        font-size: 2.35rem;
         font-weight: 800;
-        line-height: 1.2;
-        margin-bottom: 0.8rem;
-        color: #ffffff !important;
+        color: var(--main-text);
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+        margin-bottom: 0.75rem;
     }
-    .hero-container p {
-        font-size: 1.12rem;
-        color: #e0f2fe;
-        max-width: 720px;
+    .saas-hero h1 span {
+        color: var(--primary-teal);
+    }
+    .saas-hero p {
+        font-size: 1.05rem;
+        color: var(--secondary-text);
+        max-width: 760px;
         line-height: 1.6;
         margin-bottom: 1.8rem;
     }
-    .hero-stats-row {
-        display: flex;
-        gap: 2rem;
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid rgba(255,255,255,0.15);
+    .hero-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.2rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 1.4rem;
+        margin-top: 1.2rem;
     }
-    .hero-stat-item h3 {
-        font-size: 1.55rem;
+    .hero-stat-card {
+        background: var(--bg-main);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0.9rem 1.1rem;
+    }
+    .hero-stat-num {
+        font-size: 1.45rem;
         font-weight: 800;
-        color: #10b981;
-        margin: 0;
+        color: var(--primary-teal);
     }
-    .hero-stat-item p {
-        font-size: 0.85rem;
-        color: #cbd5e1;
-        margin: 0;
+    .hero-stat-label {
+        font-size: 0.8rem;
+        color: var(--secondary-text);
+        font-weight: 600;
     }
 
-    /* Cards & Containers */
+    /* Professional Cards */
     .saas-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 14px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        margin-bottom: 1.2rem;
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.4rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        margin-bottom: 1rem;
     }
-    .saas-card:hover {
-        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-    }
-    .card-title {
-        font-size: 1.15rem;
+    .saas-card-title {
+        font-size: 1.08rem;
         font-weight: 700;
-        color: #0f172a;
+        color: var(--main-text);
         margin-bottom: 0.4rem;
+    }
+    .saas-card-sub {
+        font-size: 0.85rem;
+        color: var(--secondary-text);
+        margin-bottom: 0.8rem;
+    }
+
+    /* Emergency Alert Component */
+    .emergency-alert-card {
+        background-color: var(--error-bg);
+        border: 2px solid var(--error-border);
+        border-radius: 12px;
+        padding: 1.4rem;
+        margin: 1.2rem 0;
+        color: #7A271A;
+    }
+    .emergency-alert-head {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--error-color);
         display: flex;
         align-items: center;
         gap: 8px;
+        margin-bottom: 0.4rem;
     }
-    .card-subtitle {
-        font-size: 0.88rem;
-        color: #64748b;
+    .emergency-alert-body {
+        font-size: 0.95rem;
+        color: #7A271A;
+        line-height: 1.5;
         margin-bottom: 1rem;
     }
-
-    /* Emergency Safety Box */
-    .emergency-alert-banner {
-        background-color: #fef2f2;
-        border: 2px solid #ef4444;
-        border-radius: 14px;
-        padding: 1.5rem;
-        margin: 1.2rem 0;
-        box-shadow: 0 6px 16px -2px rgba(220, 38, 38, 0.15);
-        color: #991b1b;
-    }
-    .emergency-alert-title {
-        font-size: 1.3rem;
-        font-weight: 800;
-        color: #dc2626;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 0.6rem;
-    }
-    .emergency-grid {
+    .emergency-chips {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1rem;
-        margin-top: 1rem;
-        padding-top: 0.8rem;
-        border-top: 1px solid #fecaca;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 0.8rem;
     }
-    .emergency-contact-chip {
-        background: #ffffff;
-        border: 1px solid #fca5a5;
+    .emergency-chip-item {
+        background: #FFFFFF;
+        border: 1px solid #FED7D7;
         border-radius: 8px;
-        padding: 0.75rem 1rem;
+        padding: 0.65rem 0.9rem;
     }
-    .emergency-contact-label {
-        font-size: 0.78rem;
+    .emergency-chip-label {
+        font-size: 0.72rem;
         font-weight: 700;
-        color: #b91c1c;
+        color: var(--error-color);
         text-transform: uppercase;
     }
-    .emergency-contact-num {
-        font-size: 1.1rem;
+    .emergency-chip-val {
+        font-size: 1.05rem;
         font-weight: 800;
-        color: #1e293b;
+        color: var(--main-text);
     }
 
-    /* Verification & Evidence Card */
-    .evidence-box {
-        background: #f8fafc;
-        border: 1px solid #cbd5e1;
-        border-left: 4px solid #0284c7;
-        border-radius: 10px;
-        padding: 1.1rem;
-        margin: 0.8rem 0;
+    /* Evidence Inspector Box */
+    .evidence-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--primary-teal);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.6rem 0;
     }
-    .evidence-header {
+    .evidence-meta-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 0.5rem;
-        margin-bottom: 0.6rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.5rem;
     }
-    .score-badge {
-        background-color: #e0f2fe;
-        color: #0369a1;
-        padding: 3px 8px;
+    .badge-sim {
+        background-color: var(--secondary-teal);
+        color: var(--primary-teal);
+        padding: 2px 8px;
         border-radius: 6px;
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         font-weight: 700;
     }
-    .source-text-block {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
+    .badge-prio {
+        background-color: #F1F5F9;
+        color: #475569;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    .evidence-text-snippet {
+        background: var(--bg-main);
+        border: 1px solid var(--border-color);
         border-radius: 6px;
-        padding: 0.75rem;
-        font-size: 0.85rem;
-        color: #334155;
+        padding: 0.7rem;
+        font-size: 0.84rem;
+        color: var(--secondary-text);
         font-style: italic;
         line-height: 1.5;
     }
 
-    /* KPI Metric Tiles */
-    .kpi-tile {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1.1rem;
-        text-align: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    /* Split Login Page Styles */
+    .split-login-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+        align-items: center;
+        padding: 1.5rem 0;
     }
-    .kpi-title {
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+    .login-brand-panel {
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.8rem 2.2rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.02);
     }
-    .kpi-val {
-        font-size: 1.85rem;
+    .login-brand-panel h2 {
+        font-size: 2rem;
         font-weight: 800;
-        color: #005f73;
-        margin: 0.2rem 0;
+        color: var(--main-text);
+        margin-bottom: 0.8rem;
+        line-height: 1.25;
     }
-    .kpi-sub {
-        font-size: 0.78rem;
-        color: #10b981;
-        font-weight: 600;
+    .login-brand-panel h2 span {
+        color: var(--primary-teal);
+    }
+    .login-brand-panel p {
+        font-size: 0.98rem;
+        color: var(--secondary-text);
+        line-height: 1.6;
+        margin-bottom: 1.8rem;
+    }
+    .feature-point {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 1.1rem;
+        align-items: flex-start;
+    }
+    .feature-point-dot {
+        width: 22px;
+        height: 22px;
+        background: var(--secondary-teal);
+        color: var(--primary-teal);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 800;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    .feature-point-text h4 {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--main-text);
+        margin: 0;
+    }
+    .feature-point-text p {
+        font-size: 0.82rem;
+        color: var(--secondary-text);
+        margin: 0;
+    }
+
+    /* Buttons & Inputs */
+    button[kind="primary"] {
+        background-color: var(--primary-teal) !important;
+        border-color: var(--primary-teal) !important;
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+    }
+    button[kind="primary"]:hover {
+        background-color: var(--primary-hover) !important;
+        border-color: var(--primary-hover) !important;
+    }
+    button[kind="secondary"] {
+        border-color: var(--border-color) !important;
+        color: var(--main-text) !important;
+        border-radius: 8px !important;
     }
 
     /* Footer */
-    .platform-footer {
-        border-top: 1px solid #e2e8f0;
+    .saas-footer {
+        border-top: 1px solid var(--border-color);
         margin-top: 3.5rem;
-        padding-top: 1.8rem;
+        padding-top: 1.6rem;
         text-align: center;
-        font-size: 0.85rem;
-        color: #64748b;
+        font-size: 0.84rem;
+        color: var(--secondary-text);
     }
     </style>
     """,
@@ -297,26 +380,26 @@ st.markdown(
 # ---------------------------------------------------------
 DATA_PATH = "cleaned_RAG_Warangal_medical_dataset.csv"
 
-@st.cache_data(show_spinner="Loading Warangal Medical Knowledge Dataset...")
+@st.cache_data(show_spinner="Loading Warangal clinical dataset...")
 def get_cached_dataset(file_path: str = DATA_PATH) -> pd.DataFrame:
     return load_medical_dataset(file_path)
 
-@st.cache_resource(show_spinner="Initializing Sparse TF-IDF Vector Engine...")
+@st.cache_resource(show_spinner="Initializing sparse TF-IDF retrieval index...")
 def get_cached_tfidf(search_texts: list):
     return init_tfidf_engine(search_texts)
 
-@st.cache_resource(show_spinner="Loading SentenceTransformers & FAISS Vector Index...")
+@st.cache_resource(show_spinner="Loading dense vector embeddings (all-MiniLM-L6-v2)...")
 def get_cached_faiss(search_texts: list):
     return init_faiss_engine(search_texts)
 
 
 # ---------------------------------------------------------
-# Session State Initialization
+# Session State & Navigation Router
 # ---------------------------------------------------------
 if "page" not in st.session_state:
     st.session_state.page = "home"
 if "user" not in st.session_state:
-    st.session_state.user = None  # None = Guest, or dict(id, email, full_name, role)
+    st.session_state.user = None
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "faiss_loaded" not in st.session_state:
@@ -326,7 +409,7 @@ if "faiss_loaded" not in st.session_state:
 if "auth_mode" not in st.session_state:
     st.session_state.auth_mode = "login"
 
-# URL Query parameter handling (e.g. ?page=admin, ?page=chat)
+# URL Query parameter handling
 query_params = st.query_params
 if "page" in query_params:
     target_page = query_params["page"]
@@ -335,18 +418,20 @@ if "page" in query_params:
 
 
 # ---------------------------------------------------------
-# Navigation Bar Component
+# Top Navigation Bar
 # ---------------------------------------------------------
 def render_navbar():
-    c_brand, c_nav, c_user = st.columns([3.2, 5.0, 2.8], vertical_alignment="center")
+    c_brand, c_nav, c_user = st.columns([3.0, 5.2, 2.8], vertical_alignment="center")
 
     with c_brand:
         st.markdown(
             """
-            <div class="brand-logo">
-                <span>🏥</span>
-                <span>Warangal HealthRAG</span>
-                <span class="brand-badge">SR University</span>
+            <div class="brand-group">
+                <div class="brand-mark">+</div>
+                <div>
+                    <h3 class="brand-title">Warangal HealthRAG</h3>
+                    <span class="brand-tag">Clinical Triage Portal</span>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -355,22 +440,22 @@ def render_navbar():
     with c_nav:
         n1, n2, n3, n4 = st.columns(4)
         with n1:
-            if st.button("🏠 Home", use_container_width=True, type="primary" if st.session_state.page == "home" else "secondary"):
+            if st.button("Home", use_container_width=True, type="primary" if st.session_state.page == "home" else "secondary"):
                 st.session_state.page = "home"
                 st.query_params["page"] = "home"
                 st.rerun()
         with n2:
-            if st.button("💬 Ask Health Q", use_container_width=True, type="primary" if st.session_state.page == "chat" else "secondary"):
+            if st.button("Ask a Question", use_container_width=True, type="primary" if st.session_state.page == "chat" else "secondary"):
                 st.session_state.page = "chat"
                 st.query_params["page"] = "chat"
                 st.rerun()
         with n3:
-            if st.button("📍 Local Facilities", use_container_width=True, type="primary" if st.session_state.page == "local_info" else "secondary"):
+            if st.button("Local Facilities", use_container_width=True, type="primary" if st.session_state.page == "local_info" else "secondary"):
                 st.session_state.page = "local_info"
                 st.query_params["page"] = "local_info"
                 st.rerun()
         with n4:
-            if st.button("📊 Analytics", use_container_width=True, type="primary" if st.session_state.page == "analytics" else "secondary"):
+            if st.button("Analytics", use_container_width=True, type="primary" if st.session_state.page == "analytics" else "secondary"):
                 st.session_state.page = "analytics"
                 st.query_params["page"] = "analytics"
                 st.rerun()
@@ -380,14 +465,13 @@ def render_navbar():
             u_role = st.session_state.user.get("role", "user")
             u_name = st.session_state.user.get("full_name", "Patient")
 
-            u1, u2 = st.columns([2, 1])
+            u1, u2 = st.columns([1.8, 1.2])
             with u1:
-                # Dashboard or Admin button based on role
-                btn_label = f"🛡️ Admin Portal" if u_role == "admin" else f"👤 {u_name.split()[0]}"
-                target = "admin" if u_role == "admin" else "dashboard"
-                if st.button(btn_label, use_container_width=True, type="primary" if st.session_state.page in ["dashboard", "admin"] else "secondary"):
-                    st.session_state.page = target
-                    st.query_params["page"] = target
+                btn_title = "Admin Panel" if u_role == "admin" else u_name.split()[0]
+                target_route = "admin" if u_role == "admin" else "dashboard"
+                if st.button(btn_title, use_container_width=True, type="primary" if st.session_state.page in ["dashboard", "admin"] else "secondary"):
+                    st.session_state.page = target_route
+                    st.query_params["page"] = target_route
                     st.rerun()
             with u2:
                 if st.button("Logout", use_container_width=True):
@@ -395,49 +479,47 @@ def render_navbar():
                     st.session_state.user = None
                     st.session_state.page = "home"
                     st.query_params["page"] = "home"
-                    st.success("Logged out successfully.")
                     st.rerun()
         else:
-            if st.button("🔐 Login / Register", use_container_width=True, type="primary" if st.session_state.page == "auth" else "secondary"):
+            if st.button("Sign In / Register", use_container_width=True, type="primary" if st.session_state.page == "auth" else "secondary"):
                 st.session_state.page = "auth"
                 st.query_params["page"] = "auth"
                 st.rerun()
 
-    st.markdown("<hr style='margin: 0.5rem 0 1.5rem 0; border: none; border-bottom: 1px solid #e2e8f0;'>", unsafe_allow_html=True)
+    st.markdown("<hr style='margin: 0.4rem 0 1.2rem 0; border: none; border-bottom: 1px solid #E5EBEF;'>", unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------
-# VIEW 1: Landing Page (Public Homepage)
+# VIEW 1: Homepage (Clean Healthcare SaaS Landing)
 # ---------------------------------------------------------
 def render_home_page(df: pd.DataFrame):
-    # Hero Section
     st.markdown(
         """
-        <div class="hero-container">
-            <span style="background: rgba(255,255,255,0.18); padding: 5px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px;">
-                ⭐ CLINICAL DECISION SUPPORT & LOCALIZED TRIAGE PLATFORM
+        <div class="saas-hero">
+            <span style="background: var(--secondary-teal); color: var(--primary-teal); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">
+                Grounded Clinical Decision Support
             </span>
-            <h1 style="margin-top: 1rem;">Healthcare Information Made Simpler for Warangal</h1>
+            <h1 style="margin-top: 0.9rem;">Better Health Information <span>Starts Here.</span></h1>
             <p>
-                Get clear, understandable primary health guidance grounded strictly in verified clinical knowledge 
-                tailored for patients in Hanamkonda, Kazipet, Parkal, Dharmasagar, Geesugonda, Hasanparthy, and Wardhannapet.
+                Understand health information through locally relevant medical knowledge designed for people across Warangal. 
+                Strictly grounded in 12,000 verified clinical records to eliminate artificial intelligence hallucinations and ensure patient safety.
             </p>
-            <div class="hero-stats-row">
-                <div class="hero-stat-item">
-                    <h3>12,000</h3>
-                    <p>Verified Clinical Records</p>
+            <div class="hero-stat-grid">
+                <div class="hero-stat-card">
+                    <div class="hero-stat-num">12,000</div>
+                    <div class="hero-stat-label">Verified Clinical Records</div>
                 </div>
-                <div class="hero-stat-item">
-                    <h3>8 Localities</h3>
-                    <p>Warangal District Sub-districts</p>
+                <div class="hero-stat-card">
+                    <div class="hero-stat-num">8 Localities</div>
+                    <div class="hero-stat-label">Warangal Sub-Districts</div>
                 </div>
-                <div class="hero-stat-item">
-                    <h3>&lt; 35 ms</h3>
-                    <p>Real-Time Grounded Retrieval</p>
+                <div class="hero-stat-card">
+                    <div class="hero-stat-num">&lt; 35 ms</div>
+                    <div class="hero-stat-label">Real-Time Search Latency</div>
                 </div>
-                <div class="hero-stat-item">
-                    <h3>100% Safety</h3>
-                    <p>Zero-Latency Red-Flag Triage</p>
+                <div class="hero-stat-card">
+                    <div class="hero-stat-num">100%</div>
+                    <div class="hero-stat-label">Emergency Triage Sensitivity</div>
                 </div>
             </div>
         </div>
@@ -445,15 +527,14 @@ def render_home_page(df: pd.DataFrame):
         unsafe_allow_html=True,
     )
 
-    # Call-to-action buttons
-    c_btn1, c_btn2, _ = st.columns([2, 2.2, 5])
-    with c_btn1:
-        if st.button("👉 Ask a Health Question", type="primary", use_container_width=True):
+    c_act1, c_act2, _ = st.columns([1.8, 1.8, 4.4])
+    with c_act1:
+        if st.button("Ask a Question", type="primary", use_container_width=True):
             st.session_state.page = "chat"
             st.query_params["page"] = "chat"
             st.rerun()
-    with c_btn2:
-        if st.button("📍 Explore Local Facilities", type="secondary", use_container_width=True):
+    with c_act2:
+        if st.button("Explore Local Features", type="secondary", use_container_width=True):
             st.session_state.page = "local_info"
             st.query_params["page"] = "local_info"
             st.rerun()
@@ -461,87 +542,72 @@ def render_home_page(df: pd.DataFrame):
     st.write("")
     st.write("")
 
-    # Section 1 & 2: Why This System Matters & About The Project
-    c1, c2 = st.columns(2)
+    # Three Core Pillars
+    c1, c2, c3 = st.columns(3)
     with c1:
         st.markdown(
             """
-            <div class="saas-card" style="min-height: 250px;">
-                <div class="card-title">🔍 Why This System Matters in Warangal</div>
-                <div class="card-subtitle">Addressing rural-urban healthcare access inequalities</div>
-                <p style="font-size: 0.92rem; color: #475569; line-height: 1.6;">
-                    Tertiary centers like <strong>MGM Hospital Warangal</strong> and <strong>District Hospital Warangal</strong> face intense daily patient inflow. 
-                    Patients residing in surrounding villages often travel long distances without knowing whether their condition can be managed at a local Primary Health Centre (PHC) 
-                    or requires urgent casualty intervention.
-                </p>
-                <p style="font-size: 0.92rem; color: #475569; line-height: 1.6;">
-                    Generic AI chatbots routinely <em>hallucinate</em> unverified diagnoses or prescribe wrong medications. 
-                    This platform solves this by <strong>strictly anchoring</strong> every response to a verified medical dataset of 12,000 cases.
+            <div class="saas-card" style="min-height: 220px;">
+                <div class="saas-card-title">Reliable Information Retrieval</div>
+                <div class="saas-card-sub">Strictly anti-hallucination architecture</div>
+                <p style="font-size: 0.9rem; color: var(--secondary-text); line-height: 1.6;">
+                    Unlike standard generative models that speculate on medication or diagnosis, 
+                    answers are derived strictly from authenticated clinical records mapped to specific departments.
                 </p>
             </div>
             """,
             unsafe_allow_html=True,
         )
-
     with c2:
         st.markdown(
             """
-            <div class="saas-card" style="min-height: 250px;">
-                <div class="card-title">⚡ How Retrieval-Augmented Generation (RAG) Works</div>
-                <div class="card-subtitle">Transparent, evidence-based AI decision support</div>
-                <ol style="font-size: 0.88rem; color: #475569; line-height: 1.7; padding-left: 1.2rem;">
-                    <li><strong>Patient Query:</strong> User describes symptoms in simple words (e.g. <em>"Child wheezing in Parkal"</em>).</li>
-                    <li><strong>Emergency Safety Scan:</strong> Deterministic rule-based filter checks for acute red-flag emergencies.</li>
-                    <li><strong>Vector Retrieval:</strong> System matches question with top-5 verified clinical evidence records using TF-IDF or FAISS.</li>
-                    <li><strong>Grounded Synthesis:</strong> AI generates understandable primary care advice derived <em>only</em> from retrieved chunks.</li>
-                    <li><strong>Evidence Verification:</strong> Patient or doctor can inspect exact source IDs (<code>WP-SYN-XXXX</code>) and similarity match %.</li>
-                </ol>
+            <div class="saas-card" style="min-height: 220px;">
+                <div class="saas-card-title">Local Healthcare Knowledge</div>
+                <div class="saas-card-sub">Contextualized for Warangal District</div>
+                <p style="font-size: 0.9rem; color: var(--secondary-text); line-height: 1.6;">
+                    Guidance maps symptoms to actual facilities across Hanamkonda, Kazipet, Parkal, Dharmasagar, Geesugonda, Hasanparthy, and Wardhannapet.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with c3:
+        st.markdown(
+            """
+            <div class="saas-card" style="min-height: 220px;">
+                <div class="saas-card-title">Emergency Awareness</div>
+                <div class="saas-card-sub">Pre-retrieval safety guardrail</div>
+                <p style="font-size: 0.9rem; color: var(--secondary-text); line-height: 1.6;">
+                    Life-threatening symptoms (chest pain, acute breathing difficulty, stroke signs, sudden numbness) immediately trigger 108 and MGM Hospital casualty alerts.
+                </p>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    # Section 3: Warangal Local Coverage Highlights
-    st.markdown("<h3 style='color: #0f172a; margin-top: 1.5rem;'>📍 Comprehensive Warangal District Coverage</h3>", unsafe_allow_html=True)
-    st.caption("Grounded data covering 8 key municipal and rural clusters:")
-
-    loc_cols = st.columns(4)
-    localities = ["Warangal", "Hanamkonda", "Kazipet", "Parkal", "Dharmasagar", "Geesugonda", "Hasanparthy", "Wardhannapet"]
-    for i, loc in enumerate(localities):
-        count = len(df[df['locality'].str.lower() == loc.lower()]) if 'locality' in df.columns else 1500
-        with loc_cols[i % 4]:
-            st.markdown(
-                f"""
-                <div class="saas-card" style="padding: 1rem; text-align: center; margin-bottom: 0.8rem;">
-                    <div style="font-weight: 700; color: #005f73; font-size: 1.05rem;">{loc}</div>
-                    <div style="font-size: 0.8rem; color: #64748b;">{count:,} Verified Records</div>
-                    <div style="font-size: 0.75rem; color: #10b981; font-weight: 600; margin-top: 4px;">PHC & CHC Grounded</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-    # Section 4: Emergency Awareness Banner
+    # Emergency Awareness Strip
     st.markdown(
         """
-        <div class="emergency-alert-banner">
-            <div class="emergency-alert-title">🚨 Dedicated Warangal Emergency Escalation Guardrails</div>
-            <p style="margin: 0; font-size: 0.95rem;">
-                If your question indicates critical red flags (severe chest pain, choking, stroke symptoms, sudden numbness, or unconsciousness), 
-                the system suspends general advice and immediately activates the local casualty alert hotline.
-            </p>
-            <div class="emergency-grid">
-                <div class="emergency-contact-chip">
-                    <div class="emergency-contact-label">Telangana Emergency Ambulance</div>
-                    <div class="emergency-contact-num">Dial 108 / 112</div>
+        <div class="emergency-alert-card">
+            <div class="emergency-alert-head">
+                <span>⚠️</span>
+                <span>Medical Emergency Alert</span>
+            </div>
+            <div class="emergency-alert-body">
+                Your symptoms may require immediate medical attention. Please contact emergency services or visit the nearest emergency department.
+            </div>
+            <div class="emergency-chips">
+                <div class="emergency-chip-item">
+                    <div class="emergency-chip-label">Emergency Ambulance Service</div>
+                    <div class="emergency-chip-val">Dial 108 / 112</div>
                 </div>
-                <div class="emergency-contact-chip">
-                    <div class="emergency-contact-label">MGM Hospital Warangal (Casualty)</div>
-                    <div class="emergency-contact-num">0870-2441000</div>
+                <div class="emergency-chip-item">
+                    <div class="emergency-chip-label">MGM Hospital Warangal (Emergency)</div>
+                    <div class="emergency-chip-val">0870-2441000</div>
                 </div>
-                <div class="emergency-contact-chip">
-                    <div class="emergency-contact-label">District Hospital Warangal</div>
-                    <div class="emergency-contact-num">0870-2577772</div>
+                <div class="emergency-chip-item">
+                    <div class="emergency-chip-label">District Hospital Warangal</div>
+                    <div class="emergency-chip-val">0870-2577772</div>
                 </div>
             </div>
         </div>
@@ -551,88 +617,149 @@ def render_home_page(df: pd.DataFrame):
 
 
 # ---------------------------------------------------------
-# VIEW 2: Authentication (Login, Signup, Forgot Password)
+# VIEW 2: Authentication (Split-Screen Professional Layout)
 # ---------------------------------------------------------
 def render_auth_page():
-    st.markdown("<h2 style='text-align: center; color: #005f73; font-weight: 800;'>Patient & Clinician Portal</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #64748b; margin-bottom: 2rem;'>Sign in to save your medical queries, access personalized care history, and view clinic appointments.</p>", unsafe_allow_html=True)
+    c_left, c_right = st.columns([1.1, 1.0], gap="large")
 
-    c_left, c_form, c_right = st.columns([1.5, 2.5, 1.5])
-    with c_form:
-        tabs = st.tabs(["🔐 Sign In", "📝 Create Patient Account", "🔑 Forgot Password"])
+    # LEFT PANEL: Brand & Value Proposition
+    with c_left:
+        st.markdown(
+            """
+            <div class="login-brand-panel">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;">
+                    <div class="brand-mark">+</div>
+                    <span style="font-size: 1.15rem; font-weight: 800; color: var(--primary-teal);">Warangal HealthRAG</span>
+                </div>
+                <h2>Healthcare Information, <span>Made Simpler.</span></h2>
+                <p>
+                    A specialized clinical retrieval system developed by researchers at SR University. 
+                    Designed to help residents of Warangal District understand primary care guidance, 
+                    verify local clinic facilities, and receive rapid emergency escalation when needed.
+                </p>
+                <div class="feature-point">
+                    <div class="feature-point-dot">1</div>
+                    <div class="feature-point-text">
+                        <h4>Reliable Information Retrieval</h4>
+                        <p>Strictly bounded to 12,000 verified clinical cases with zero hallucination.</p>
+                    </div>
+                </div>
+                <div class="feature-point">
+                    <div class="feature-point-dot">2</div>
+                    <div class="feature-point-text">
+                        <h4>Local Healthcare Knowledge</h4>
+                        <p>Addresses specific healthcare centers across 8 sub-districts of Warangal.</p>
+                    </div>
+                </div>
+                <div class="feature-point">
+                    <div class="feature-point-dot">3</div>
+                    <div class="feature-point-text">
+                        <h4>Emergency Awareness</h4>
+                        <p>Immediate routing to MGM Hospital casualty hotlines for critical symptoms.</p>
+                    </div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-        # Tab 1: Login
-        with tabs[0]:
-            st.markdown("#### Access Your Health Portal")
-            login_email = st.text_input("Registered Email Address", placeholder="name@example.com", key="login_email")
-            login_password = st.text_input("Password", type="password", placeholder="••••••••", key="login_pass")
+    # RIGHT PANEL: Clean Auth Card (No Public Passwords)
+    with c_right:
+        auth_mode = st.radio("Choose Action:", ["Sign In", "Create Patient Account", "Forgot Password"], horizontal=True, label_visibility="collapsed")
 
-            if st.button("Sign In to Account", type="primary", use_container_width=True):
-                if not login_email or not login_password:
-                    st.error("Please enter both email and password.")
-                else:
-                    user, msg = auth_db.authenticate_user(login_email, login_password)
-                    if user:
-                        st.session_state.user = user
-                        st.success(f"Welcome back, {user['full_name']}!")
-                        # Redirect based on role
-                        if user['role'] == 'admin':
-                            st.session_state.page = "admin"
-                            st.query_params["page"] = "admin"
-                        else:
-                            st.session_state.page = "dashboard"
-                            st.query_params["page"] = "dashboard"
-                        time.sleep(0.5)
-                        st.rerun()
-                    else:
-                        st.error(msg)
-
+        if auth_mode == "Sign In":
             st.markdown(
                 """
-                <div style="background: #f1f5f9; padding: 0.75rem; border-radius: 8px; font-size: 0.8rem; color: #475569; margin-top: 1.2rem;">
-                    <strong>💡 Demo Test Accounts for Reviewers / Examiners:</strong><br>
-                    • <strong>Administrator:</strong> <code>admin@warangalmed.org</code> / <code>Admin@Warangal2026</code><br>
-                    • <strong>Patient User:</strong> <code>patient@warangal.in</code> / <code>Patient@123</code>
+                <div class="saas-card" style="padding: 2.2rem 2rem;">
+                    <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--main-text); margin-bottom: 0.3rem;">Welcome Back</h3>
+                    <p style="font-size: 0.88rem; color: var(--secondary-text); margin-bottom: 1.5rem;">Sign in to access your health information portal.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
-        # Tab 2: Sign Up
-        with tabs[1]:
-            st.markdown("#### Register a New Patient Account")
-            new_name = st.text_input("Full Name", placeholder="e.g. Ramesh Kumar", key="signup_name")
-            new_email = st.text_input("Email Address", placeholder="ramesh@example.com", key="signup_email")
-            new_phone = st.text_input("Mobile Phone Number", placeholder="+91 9876543210", key="signup_phone")
-            new_pass1 = st.text_input("Create Password", type="password", placeholder="Minimum 6 characters", key="signup_p1")
-            new_pass2 = st.text_input("Confirm Password", type="password", placeholder="Re-enter password", key="signup_p2")
+            with st.form("signin_form", clear_on_submit=False):
+                email_input = st.text_input("Email Address", placeholder="name@example.com")
+                show_pwd = st.checkbox("Show password", value=False)
+                pass_input = st.text_input("Password", type="text" if show_pwd else "password", placeholder="Enter your password")
 
-            if st.button("Create Account", type="primary", use_container_width=True):
-                if new_pass1 != new_pass2:
-                    st.error("Passwords do not match. Please re-check.")
-                else:
-                    success, message = auth_db.register_user(new_name, new_email, new_phone, new_pass1)
-                    if success:
-                        st.success(message)
-                        time.sleep(1)
+                submit_login = st.form_submit_button("Sign In", type="primary", use_container_width=True)
+
+                if submit_login:
+                    if not email_input or not pass_input:
+                        st.error("Please provide both email address and password.")
                     else:
-                        st.error(message)
+                        user, msg = auth_db.authenticate_user(email_input, pass_input)
+                        if user:
+                            st.session_state.user = user
+                            st.success("Sign in successful.")
+                            st.session_state.page = "admin" if user["role"] == "admin" else "dashboard"
+                            st.query_params["page"] = st.session_state.page
+                            time.sleep(0.3)
+                            st.rerun()
+                        else:
+                            st.error(msg)
 
-        # Tab 3: Forgot Password
-        with tabs[2]:
-            st.markdown("#### Reset Your Password")
-            reset_email = st.text_input("Enter Registered Email", placeholder="name@example.com", key="reset_email")
-            new_reset_pwd = st.text_input("Enter New Password", type="password", placeholder="Minimum 6 characters", key="reset_p1")
+        elif auth_mode == "Create Patient Account":
+            st.markdown(
+                """
+                <div class="saas-card" style="padding: 2.2rem 2rem;">
+                    <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--main-text); margin-bottom: 0.3rem;">Create Account</h3>
+                    <p style="font-size: 0.88rem; color: var(--secondary-text); margin-bottom: 1.5rem;">Join Warangal HealthRAG to save queries and consultation notes.</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-            if st.button("Update Password", type="primary", use_container_width=True):
-                if not reset_email or not new_reset_pwd:
-                    st.error("Please fill in both email and new password.")
-                else:
-                    ok, msg = auth_db.update_user_password(reset_email, new_reset_pwd)
-                    if ok:
-                        st.success(msg)
+            with st.form("signup_form", clear_on_submit=False):
+                name_new = st.text_input("Full Name", placeholder="e.g. Ramesh Kumar")
+                email_new = st.text_input("Email Address", placeholder="ramesh@example.com")
+                phone_new = st.text_input("Phone Number", placeholder="+91 9876543210")
+                p1_new = st.text_input("Create Password", type="password", placeholder="Minimum 6 characters")
+                p2_new = st.text_input("Confirm Password", type="password", placeholder="Re-type password")
+
+                submit_signup = st.form_submit_button("Create Patient Account", type="primary", use_container_width=True)
+
+                if submit_signup:
+                    if p1_new != p2_new:
+                        st.error("Passwords do not match. Please verify.")
                     else:
-                        st.error(msg)
+                        ok, user_dict, message = auth_db.register_user(name_new, email_new, phone_new, p1_new)
+                        if ok and user_dict:
+                            st.session_state.user = user_dict
+                            st.success("Account created successfully! Redirecting to your dashboard...")
+                            st.session_state.page = "dashboard"
+                            st.query_params["page"] = "dashboard"
+                            time.sleep(0.5)
+                            st.rerun()
+                        else:
+                            st.error(message)
+
+        elif auth_mode == "Forgot Password":
+            st.markdown(
+                """
+                <div class="saas-card" style="padding: 2.2rem 2rem;">
+                    <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--main-text); margin-bottom: 0.3rem;">Reset Password</h3>
+                    <p style="font-size: 0.88rem; color: var(--secondary-text); margin-bottom: 1.5rem;">Update your password securely.</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            with st.form("reset_form"):
+                remail = st.text_input("Registered Email Address")
+                rnew_p = st.text_input("New Password", type="password", placeholder="Minimum 6 characters")
+                submit_reset = st.form_submit_button("Update Password", type="primary", use_container_width=True)
+
+                if submit_reset:
+                    if not remail or not rnew_p:
+                        st.error("Please fill in both email and new password.")
+                    else:
+                        ok, msg = auth_db.update_user_password(remail, rnew_p)
+                        if ok:
+                            st.success(msg)
+                        else:
+                            st.error(msg)
 
 
 # ---------------------------------------------------------
@@ -641,66 +768,71 @@ def render_auth_page():
 def render_user_dashboard(df: pd.DataFrame):
     user = st.session_state.user or {
         "id": 1,
-        "full_name": "Guest Patient",
-        "email": "guest@warangal.local",
+        "full_name": "Patient User",
+        "email": "user@warangal.local",
         "role": "user"
     }
 
     st.markdown(
         f"""
-        <div class="hero-container" style="padding: 2rem 2.2rem; margin-bottom: 1.5rem;">
-            <h2>Hello, {user['full_name']}! 👋</h2>
-            <p style="margin-bottom: 0;">How can we help you understand your health information today? All guidance is grounded in Warangal clinical records.</p>
+        <div class="saas-card" style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--main-text); margin: 0;">How can we help you today?</h2>
+                    <p style="color: var(--secondary-text); font-size: 0.92rem; margin: 4px 0 0 0;">Welcome back, {user['full_name']}. All clinical information is grounded in Warangal hospital records.</p>
+                </div>
+                <span class="brand-tag">Patient Dashboard</span>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    # Dashboard Metrics Row
     user_queries = auth_db.get_user_query_history(user.get("id"))
     saved_answers = auth_db.get_user_saved_responses(user.get("id"))
 
-    m1, m2, m3, m4 = st.columns(4)
-    with m1:
+    # Metric Cards
+    k1, k2, k3, k4 = st.columns(4)
+    with k1:
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Total Questions Asked</div>
-                <div class="kpi-val">{len(user_queries)}</div>
-                <div class="kpi-sub">Clinical History</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Questions Asked</div>
+                <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-teal); margin: 3px 0;">{len(user_queries)}</div>
+                <div style="font-size: 0.75rem; color: var(--success-color); font-weight: 600;">Personal History</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-    with m2:
+    with k2:
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Saved Answers</div>
-                <div class="kpi-val">{len(saved_answers)}</div>
-                <div class="kpi-sub">Personal Library</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Saved Answers</div>
+                <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-teal); margin: 3px 0;">{len(saved_answers)}</div>
+                <div style="font-size: 0.75rem; color: var(--primary-teal); font-weight: 600;">Personal Records</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-    with m3:
+    with k3:
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Verified Knowledge</div>
-                <div class="kpi-val">12,000</div>
-                <div class="kpi-sub">Active Records</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Indexed Records</div>
+                <div style="font-size: 1.7rem; font-weight: 800; color: var(--main-text); margin: 3px 0;">{len(df):,}</div>
+                <div style="font-size: 0.75rem; color: var(--success-color); font-weight: 600;">100% Grounded</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-    with m4:
+    with k4:
         st.markdown(
-            f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Emergency Hotline</div>
-                <div class="kpi-val" style="color: #dc2626;">108</div>
-                <div class="kpi-sub">24/7 Ambulance</div>
+            """
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Emergency Ambulance</div>
+                <div style="font-size: 1.7rem; font-weight: 800; color: var(--error-color); margin: 3px 0;">108</div>
+                <div style="font-size: 0.75rem; color: var(--error-color); font-weight: 600;">24/7 Available</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -708,19 +840,22 @@ def render_user_dashboard(df: pd.DataFrame):
 
     st.write("")
 
-    # Quick Search Bar & Example Questions
-    st.markdown("### 🔍 Search Health Information")
-    st.caption("Ask questions in simple words without medical jargon:")
+    # Large Search Box
+    st.markdown("### Search Health Information")
+    st.caption("Type any symptoms or health inquiries in simple English:")
 
-    quick_query = st.text_input("Describe your health concern in simple words...", placeholder="e.g. Symptoms of high blood pressure or where to visit in Kazipet")
-    if st.button("Search Knowledge Base", type="primary"):
-        if quick_query:
-            st.session_state.messages.append({"role": "user", "content": quick_query})
-            st.session_state.page = "chat"
-            st.query_params["page"] = "chat"
-            st.rerun()
+    c_box, c_sbtn = st.columns([5.5, 1.2])
+    with c_box:
+        dash_q = st.text_input("Search input", placeholder="Describe your health concern in simple words...", label_visibility="collapsed")
+    with c_sbtn:
+        if st.button("Search", type="primary", use_container_width=True):
+            if dash_q:
+                st.session_state.messages.append({"role": "user", "content": dash_q})
+                st.session_state.page = "chat"
+                st.query_params["page"] = "chat"
+                st.rerun()
 
-    st.markdown("<p style='font-size: 0.88rem; font-weight: 600; color: #475569; margin-top: 0.5rem;'>💡 Or click one of these common inquiries:</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size: 0.85rem; font-weight: 600; color: var(--secondary-text); margin-top: 0.4rem;'>Common sample questions:</p>", unsafe_allow_html=True)
     sample_queries = [
         "What are common symptoms of dengue?",
         "What should I know about high blood pressure?",
@@ -730,7 +865,7 @@ def render_user_dashboard(df: pd.DataFrame):
     sq_cols = st.columns(4)
     for i, sq in enumerate(sample_queries):
         with sq_cols[i]:
-            if st.button(sq, key=f"dash_sq_{i}", use_container_width=True):
+            if st.button(sq, key=f"dash_btn_sq_{i}", use_container_width=True):
                 st.session_state.messages.append({"role": "user", "content": sq})
                 st.session_state.page = "chat"
                 st.query_params["page"] = "chat"
@@ -739,17 +874,17 @@ def render_user_dashboard(df: pd.DataFrame):
     st.write("")
     st.divider()
 
-    # User History & Saved Answers Columns
-    c_hist, c_saved = st.columns(2)
-    with c_hist:
-        st.markdown("### 🕒 Recent Activity")
+    # User History & Saved Responses
+    col_hist, col_saved = st.columns(2)
+    with col_hist:
+        st.markdown("#### Recent Questions")
         if user_queries:
-            for q in user_queries[:5]:
+            for q in user_queries[:6]:
                 st.markdown(
                     f"""
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem;">
-                        <div style="font-weight: 600; font-size: 0.9rem; color: #0f172a;">{q['query_text']}</div>
-                        <div style="font-size: 0.75rem; color: #64748b; margin-top: 3px;">
+                    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+                        <div style="font-weight: 600; font-size: 0.9rem; color: var(--main-text);">{q['query_text']}</div>
+                        <div style="font-size: 0.75rem; color: var(--secondary-text); margin-top: 3px;">
                             Engine: {q['engine_used']} | Latency: {q['latency_ms']:.1f} ms | {q['timestamp']}
                         </div>
                     </div>
@@ -757,98 +892,97 @@ def render_user_dashboard(df: pd.DataFrame):
                     unsafe_allow_html=True,
                 )
         else:
-            st.info("You haven't asked any questions yet. Use the search bar above to begin!")
+            st.info("No prior questions recorded. Use the search box above to ask your first question.")
 
-    with c_saved:
-        st.markdown("### 💾 Saved Responses")
+    with col_saved:
+        st.markdown("#### Saved Responses")
         if saved_answers:
-            for s in saved_answers[:5]:
-                with st.expander(f"📌 {s['query_text'][:50]}..."):
+            for s in saved_answers[:6]:
+                with st.expander(f"Saved: {s['query_text'][:45]}..."):
                     st.markdown(s['response_text'])
                     if s.get('sources_cited'):
                         st.caption(f"Sources: {s['sources_cited']}")
         else:
-            st.info("No saved responses yet. In the chat interface, click 'Save Answer' on any response to store it here.")
+            st.info("No saved responses yet. In the Q&A interface, click 'Save Answer' to bookmark helpful guidance.")
 
 
 # ---------------------------------------------------------
-# VIEW 4: Medical RAG Chat Interface (Core Module)
+# VIEW 4: Medical RAG Chat Interface (Healthcare Assistant)
 # ---------------------------------------------------------
 def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
-    # Sidebar Controls (Filters & Top-K)
+    # Sidebar Filters
     with st.sidebar:
-        st.markdown("### ⚙️ Retrieval Settings")
+        st.markdown("### Retrieval Controls")
         engine_choice = st.radio(
             "Vector Search Technique:",
             options=["TF-IDF + Cosine Similarity", "FAISS + SentenceTransformers"],
             index=0,
-            help="TF-IDF offers instant sub-35ms keyword alignment. FAISS uses 384-dimensional dense semantic vectors."
+            help="TF-IDF offers instant sublinear search. FAISS uses 384-dimensional dense semantic vector embeddings."
         )
 
         if engine_choice.startswith("FAISS") and not st.session_state.faiss_loaded:
-            with st.spinner("Building FAISS Dense Vector Store..."):
+            with st.spinner("Building FAISS dense vector store..."):
                 f_model, f_index = get_cached_faiss(df['search_text'].tolist())
                 st.session_state.faiss_model = f_model
                 st.session_state.faiss_index = f_index
                 st.session_state.faiss_loaded = True
 
-        top_k = st.slider("Top-K Evidence Chunks:", min_value=3, max_value=8, value=5)
+        top_k = st.slider("Evidence Chunks (Top-K):", min_value=3, max_value=8, value=5)
 
         st.divider()
-        st.markdown("### 🔍 Knowledge Filters")
+        st.markdown("### Knowledge Filtering")
         departments = ["All"] + sorted([d for d in df['department'].unique() if str(d).strip() and str(d) != 'nan'])
-        dept_filter = st.selectbox("Filter by Department:", options=departments, index=0)
+        dept_filter = st.selectbox("Department:", options=departments, index=0)
 
         localities = ["All"] + sorted([l for l in df['locality'].unique() if str(l).strip() and str(l) != 'nan'])
-        locality_filter = st.selectbox("Filter by Locality:", options=localities, index=0)
+        locality_filter = st.selectbox("Warangal Locality:", options=localities, index=0)
 
         st.divider()
-        if st.button("🧹 Clear Conversation", type="secondary", use_container_width=True):
+        if st.button("Clear Conversation", type="secondary", use_container_width=True):
             st.session_state.messages = []
             st.rerun()
 
-    # Chat Header Card
+    # Chat Top Status Bar
     st.markdown(
         """
-        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.1rem 1.4rem; margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;">
+        <div class="saas-card" style="padding: 1rem 1.4rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
             <div>
-                <h3 style="margin: 0; color: #005f73; font-weight: 800;">💬 Medical Knowledge Q&A Assistant</h3>
-                <p style="margin: 0; font-size: 0.88rem; color: #64748b;">Grounded strictly in 12,000 Warangal clinical records with automatic red-flag emergency safety triage.</p>
+                <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--main-text); margin: 0;">Medical Information Assistant</h3>
+                <p style="font-size: 0.85rem; color: var(--secondary-text); margin: 0;">Grounding answers strictly on 12,000 verified Warangal patient records.</p>
             </div>
-            <div>
-                <span class="brand-badge" style="background: #dcfce7; color: #15803d;">Active Engine Online</span>
-            </div>
+            <span class="brand-tag">Online &bull; 108 Triage Active</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    # Render Chat History
+    # Render Messages
     for idx, msg in enumerate(st.session_state.messages):
         with st.chat_message(msg["role"]):
-            # Display emergency alert prominently if attached
             if msg.get("red_flag_info") and msg["red_flag_info"]["is_emergency"]:
                 triggers = ", ".join(msg["red_flag_info"]["matched_triggers"])
                 st.markdown(
                     f"""
-                    <div class="emergency-alert-banner">
-                        <div class="emergency-alert-title">🚨 MEDICAL EMERGENCY – SEEK IMMEDIATE HELP</div>
-                        <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.05rem;">
-                            Your symptoms ({triggers}) may require urgent medical attention. Do not wait for an AI response. 
-                            Contact emergency services or visit the nearest emergency department immediately.
-                        </p>
-                        <div class="emergency-grid">
-                            <div class="emergency-contact-chip">
-                                <div class="emergency-contact-label">Immediate Ambulance</div>
-                                <div class="emergency-contact-num">Call 108 / 112</div>
+                    <div class="emergency-alert-card">
+                        <div class="emergency-alert-head">
+                            <span>⚠️</span>
+                            <span>Medical Emergency Alert</span>
+                        </div>
+                        <div class="emergency-alert-body">
+                            Your symptoms ({triggers}) may require immediate medical attention. Please contact emergency services or visit the nearest emergency department.
+                        </div>
+                        <div class="emergency-chips">
+                            <div class="emergency-chip-item">
+                                <div class="emergency-chip-label">Emergency Ambulance</div>
+                                <div class="emergency-chip-val">Dial 108 / 112</div>
                             </div>
-                            <div class="emergency-contact-chip">
-                                <div class="emergency-contact-label">MGM Hospital Warangal (Emergency)</div>
-                                <div class="emergency-contact-num">0870-2441000 / 0870-2441001</div>
+                            <div class="emergency-chip-item">
+                                <div class="emergency-chip-label">MGM Hospital Warangal</div>
+                                <div class="emergency-chip-val">0870-2441000</div>
                             </div>
-                            <div class="emergency-contact-chip">
-                                <div class="emergency-contact-label">District Hospital Warangal</div>
-                                <div class="emergency-contact-num">0870-2577772</div>
+                            <div class="emergency-chip-item">
+                                <div class="emergency-chip-label">District Hospital Warangal</div>
+                                <div class="emergency-chip-val">0870-2577772</div>
                             </div>
                         </div>
                     </div>
@@ -856,23 +990,21 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
                     unsafe_allow_html=True,
                 )
 
-            # Response Content
             st.markdown(msg["content"])
 
-            # Action Buttons: Save & Copy for Assistant Messages
             if msg["role"] == "assistant":
-                col_save, col_info, _ = st.columns([1.5, 2.5, 6])
+                col_save, _ = st.columns([2, 8])
                 with col_save:
-                    if st.button("💾 Save Answer", key=f"save_btn_{idx}"):
-                        user_id = st.session_state.user["id"] if st.session_state.user else 1
-                        auth_db.save_response_for_user(user_id, "Medical Query", msg["content"])
-                        st.toast("Response saved to your Personal Health Records!", icon="✅")
+                    if st.button("Save Response", key=f"save_ans_{idx}", type="secondary"):
+                        uid = st.session_state.user["id"] if st.session_state.user else 1
+                        auth_db.save_response_for_user(uid, "Medical Query", msg["content"])
+                        st.toast("Saved to your personal dashboard records.", icon="✅")
 
-                # RAG Evidence Inspector Expander ("Verify This Answer")
+                # RAG Evidence Inspector ("Why am I seeing this answer?")
                 if msg.get("chunks") is not None and not msg["chunks"].empty:
-                    with st.expander("🔍 Verify This Answer (RAG Evidence Inspector)", expanded=False):
-                        st.caption(f"Retrieved Top-{len(msg['chunks'])} evidence records used to ground this answer:")
-                        st.caption("ℹ️ Note: Similarity score measures mathematical semantic alignment with our verified dataset and is not a clinical probability or diagnosis.")
+                    with st.expander("Why am I seeing this answer? (RAG Evidence Inspector)", expanded=False):
+                        st.caption("The system retrieved these specific records from the Warangal dataset to generate this response:")
+                        st.caption("Notice: Similarity score measures mathematical semantic proximity to our verified records, not clinical diagnostic certainty.")
 
                         for _, row in msg["chunks"].iterrows():
                             sim_pct = f"{row.get('similarity_score', 0.0) * 100:.1f}%"
@@ -885,46 +1017,45 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
 
                             st.markdown(
                                 f"""
-                                <div class="evidence-box">
-                                    <div class="evidence-header">
-                                        <span style="font-weight: 700; color: #005f73;">Record: {rec_id} | Condition: {cond}</span>
+                                <div class="evidence-card">
+                                    <div class="evidence-meta-row">
+                                        <span style="font-weight: 700; color: var(--primary-teal); font-size: 0.9rem;">Record ID: {rec_id} &bull; Condition: {cond}</span>
                                         <div>
-                                            <span class="score-badge">Similarity: {sim_pct}</span>
-                                            <span style="background: #f1f5f9; color: #475569; padding: 2px 7px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Priority: {prio}</span>
+                                            <span class="badge-sim">Similarity: {sim_pct}</span>
+                                            <span class="badge-prio">Priority: {prio}</span>
                                         </div>
                                     </div>
-                                    <div style="font-size: 0.82rem; color: #64748b; margin-bottom: 0.4rem;">
+                                    <div style="font-size: 0.8rem; color: var(--secondary-text); margin-bottom: 0.4rem;">
                                         <strong>Department:</strong> {dept} &nbsp;|&nbsp; 
                                         <strong>Locality:</strong> {loc} &nbsp;|&nbsp; 
                                         <strong>Facility:</strong> {facility}
                                     </div>
-                                    <div class="source-text-block">
+                                    <div class="evidence-text-snippet">
                                         "{row.get('rag_context_text', row.get('search_text', ''))}"
-                                    </div>
-                                    <div style="font-size: 0.78rem; color: #dc2626; margin-top: 0.4rem;">
-                                        <strong>Red Flag Alert Note:</strong> {row.get('red_flag_note', 'Seek prompt medical evaluation for worsening symptoms.')}
                                     </div>
                                 </div>
                                 """,
                                 unsafe_allow_html=True,
                             )
 
-    # Chat Input Box
-    prompt_query = st.chat_input("Describe your health symptoms or ask a question in simple words...")
-    if prompt_query:
-        # Step 1: Render user message
-        st.session_state.messages.append({"role": "user", "content": prompt_query})
+    # Chat Input
+    query_input = st.chat_input("Ask a health question in simple words (e.g. 'Child wheezing in Parkal')...")
+    if query_input:
+        st.session_state.messages.append({"role": "user", "content": query_input})
         with st.chat_message("user"):
-            st.markdown(prompt_query)
+            st.markdown(query_input)
 
-        # Step 2: Assistant processing
         with st.chat_message("assistant"):
-            with st.spinner("Analyzing verified Warangal clinical database & checking safety triggers..."):
-                start_time = time.time()
+            with st.spinner("Reviewing Warangal verified clinical records..."):
+                t0 = time.time()
 
-                # Step 3: Run RAG retrieval
+                # Step 1: Pre-retrieval Red-Flag Check
+                # First check query text directly so emergency detection is never delayed
+                immediate_rf = check_red_flags(query_input)
+
+                # Step 2: Retrieve Chunks
                 top_chunks = get_relevant_chunks(
-                    query=prompt_query,
+                    query=query_input,
                     df=df,
                     tfidf_vectorizer=tfidf_vectorizer,
                     tfidf_matrix=tfidf_matrix,
@@ -936,41 +1067,43 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
                     top_k=top_k
                 )
 
-                # Step 4: Run Safety & Red-Flag Triage
-                red_flag_info = check_red_flags(prompt_query, top_chunks)
+                # Comprehensive check combining chunks
+                red_flag_info = check_red_flags(query_input, top_chunks)
 
-                # Step 5: Check grounding threshold (strict anti-hallucination)
-                max_score = top_chunks['similarity_score'].max() if not top_chunks.empty else 0.0
-                if max_score < 0.05 and not red_flag_info["is_emergency"]:
+                # Step 3: Grounded Answer Synthesis
+                max_sim = top_chunks['similarity_score'].max() if not top_chunks.empty else 0.0
+                if max_sim < 0.05 and not red_flag_info["is_emergency"]:
                     response_text = "Sorry, we could not find sufficiently relevant information in our medical knowledge base. Please consult a qualified healthcare professional."
                 else:
-                    response_text = generate_grounded_response(prompt_query, top_chunks, red_flag_info)
+                    response_text = generate_grounded_response(query_input, top_chunks, red_flag_info)
 
-                elapsed_ms = (time.time() - start_time) * 1000
+                elapsed_ms = (time.time() - t0) * 1000
 
-                # Render emergency alert if triggered
+                # Render emergency alert if detected
                 if red_flag_info["is_emergency"]:
                     triggers = ", ".join(red_flag_info["matched_triggers"])
                     st.markdown(
                         f"""
-                        <div class="emergency-alert-banner">
-                            <div class="emergency-alert-title">🚨 MEDICAL EMERGENCY – SEEK IMMEDIATE HELP</div>
-                            <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.05rem;">
-                                Your symptoms ({triggers}) may require urgent medical attention. Do not wait for an AI response. 
-                                Contact emergency services or visit the nearest emergency department immediately.
-                            </p>
-                            <div class="emergency-grid">
-                                <div class="emergency-contact-chip">
-                                    <div class="emergency-contact-label">Immediate Ambulance</div>
-                                    <div class="emergency-contact-num">Call 108 / 112</div>
+                        <div class="emergency-alert-card">
+                            <div class="emergency-alert-head">
+                                <span>⚠️</span>
+                                <span>Medical Emergency Alert</span>
+                            </div>
+                            <div class="emergency-alert-body">
+                                Your symptoms ({triggers}) may require immediate medical attention. Please contact emergency services or visit the nearest emergency department.
+                            </div>
+                            <div class="emergency-chips">
+                                <div class="emergency-chip-item">
+                                    <div class="emergency-chip-label">Emergency Ambulance</div>
+                                    <div class="emergency-chip-val">Dial 108 / 112</div>
                                 </div>
-                                <div class="emergency-contact-chip">
-                                    <div class="emergency-contact-label">MGM Hospital Warangal (Emergency)</div>
-                                    <div class="emergency-contact-num">0870-2441000 / 0870-2441001</div>
+                                <div class="emergency-chip-item">
+                                    <div class="emergency-chip-label">MGM Hospital Warangal</div>
+                                    <div class="emergency-chip-val">0870-2441000</div>
                                 </div>
-                                <div class="emergency-contact-chip">
-                                    <div class="emergency-contact-label">District Hospital Warangal</div>
-                                    <div class="emergency-contact-num">0870-2577772</div>
+                                <div class="emergency-chip-item">
+                                    <div class="emergency-chip-label">District Hospital Warangal</div>
+                                    <div class="emergency-chip-val">0870-2577772</div>
                                 </div>
                             </div>
                         </div>
@@ -978,14 +1111,11 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
                         unsafe_allow_html=True,
                     )
 
-                # Render response text
                 st.markdown(response_text)
 
-                # Render RAG Evidence Inspector
-                with st.expander("🔍 Verify This Answer (RAG Evidence Inspector)", expanded=True):
-                    st.caption(f"Retrieved Top-{len(top_chunks)} evidence records using **{engine_choice}** (Latency: {elapsed_ms:.1f} ms):")
-                    st.caption("ℹ️ Note: Similarity score measures mathematical semantic alignment with our verified dataset and is not a clinical probability or diagnosis.")
-
+                # Render Evidence Inspector
+                with st.expander("Why am I seeing this answer? (RAG Evidence Inspector)", expanded=True):
+                    st.caption(f"Retrieved Top-{len(top_chunks)} evidence records using {engine_choice} in {elapsed_ms:.1f} ms:")
                     for _, row in top_chunks.iterrows():
                         sim_pct = f"{row.get('similarity_score', 0.0) * 100:.1f}%"
                         rec_id = row.get('patient_id', 'WP-SYN-0000')
@@ -997,31 +1127,28 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
 
                         st.markdown(
                             f"""
-                            <div class="evidence-box">
-                                <div class="evidence-header">
-                                    <span style="font-weight: 700; color: #005f73;">Record: {rec_id} | Condition: {cond}</span>
+                            <div class="evidence-card">
+                                <div class="evidence-meta-row">
+                                    <span style="font-weight: 700; color: var(--primary-teal); font-size: 0.9rem;">Record ID: {rec_id} &bull; Condition: {cond}</span>
                                     <div>
-                                        <span class="score-badge">Similarity: {sim_pct}</span>
-                                        <span style="background: #f1f5f9; color: #475569; padding: 2px 7px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Priority: {prio}</span>
+                                        <span class="badge-sim">Similarity: {sim_pct}</span>
+                                        <span class="badge-prio">Priority: {prio}</span>
                                     </div>
                                 </div>
-                                <div style="font-size: 0.82rem; color: #64748b; margin-bottom: 0.4rem;">
+                                <div style="font-size: 0.8rem; color: var(--secondary-text); margin-bottom: 0.4rem;">
                                     <strong>Department:</strong> {dept} &nbsp;|&nbsp; 
                                     <strong>Locality:</strong> {loc} &nbsp;|&nbsp; 
                                     <strong>Facility:</strong> {facility}
                                 </div>
-                                <div class="source-text-block">
+                                <div class="evidence-text-snippet">
                                     "{row.get('rag_context_text', row.get('search_text', ''))}"
-                                </div>
-                                <div style="font-size: 0.78rem; color: #dc2626; margin-top: 0.4rem;">
-                                    <strong>Red Flag Alert Note:</strong> {row.get('red_flag_note', 'Seek prompt medical evaluation for worsening symptoms.')}
                                 </div>
                             </div>
                             """,
                             unsafe_allow_html=True,
                         )
 
-            # Store in session state and log to database
+            # Store in session state and record to audit log
             st.session_state.messages.append({
                 "role": "assistant",
                 "content": response_text,
@@ -1029,22 +1156,22 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
                 "chunks": top_chunks
             })
 
-            user_id = st.session_state.user["id"] if st.session_state.user else None
-            user_email = st.session_state.user["email"] if st.session_state.user else "guest@warangal.local"
-            matched_dept = top_chunks.iloc[0].get('department', '') if not top_chunks.empty else ''
-            matched_loc = top_chunks.iloc[0].get('locality', '') if not top_chunks.empty else ''
+            uid = st.session_state.user["id"] if st.session_state.user else None
+            uemail = st.session_state.user["email"] if st.session_state.user else "guest@warangal.local"
+            mdept = top_chunks.iloc[0].get('department', '') if not top_chunks.empty else ''
+            mloc = top_chunks.iloc[0].get('locality', '') if not top_chunks.empty else ''
 
             auth_db.log_query(
-                user_id=user_id,
-                user_email=user_email,
-                query_text=prompt_query,
+                user_id=uid,
+                user_email=uemail,
+                query_text=query_input,
                 response_text=response_text,
                 is_emergency=red_flag_info["is_emergency"],
                 matched_triggers=red_flag_info["matched_triggers"],
                 latency_ms=elapsed_ms,
                 engine_used=engine_choice,
-                department=matched_dept,
-                locality=matched_loc
+                department=mdept,
+                locality=mloc
             )
 
 
@@ -1054,90 +1181,90 @@ def render_chat_page(df: pd.DataFrame, tfidf_vectorizer, tfidf_matrix):
 def render_local_info_page(df: pd.DataFrame):
     st.markdown(
         """
-        <div class="hero-container" style="padding: 2rem 2.2rem; margin-bottom: 1.5rem;">
-            <h2>📍 Warangal District Local Healthcare Directory</h2>
-            <p style="margin-bottom: 0;">Verified clinical facilities, regional department coverage, and referral routes for Warangal sub-districts.</p>
+        <div class="saas-card" style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--main-text); margin: 0 0 0.4rem 0;">Warangal District Healthcare Directory</h2>
+            <p style="color: var(--secondary-text); font-size: 0.92rem; margin: 0;">Verified clinical facilities, regional department coverage, and referral routes for Warangal sub-districts.</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
     localities = ["Warangal", "Hanamkonda", "Kazipet", "Parkal", "Dharmasagar", "Geesugonda", "Hasanparthy", "Wardhannapet"]
-    selected_loc = st.selectbox("Select Locality to View Verified Medical Resources:", options=localities, index=0)
+    selected_loc = st.selectbox("Select Locality to Explore Verified Resources:", options=localities, index=0)
 
     sub_df = df[df['locality'].str.lower() == selected_loc.lower()] if 'locality' in df.columns else df
 
-    c1, c2, c3 = st.columns(3)
-    with c1:
+    m1, m2, m3 = st.columns(3)
+    with m1:
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Locality Records</div>
-                <div class="kpi-val">{len(sub_df):,}</div>
-                <div class="kpi-sub">Verified in Dataset</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Indexed Cases</div>
+                <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary-teal); margin: 3px 0;">{len(sub_df):,}</div>
+                <div style="font-size: 0.75rem; color: var(--success-color); font-weight: 600;">Verified Dataset Records</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-    with c2:
+    with m2:
         top_dept = sub_df['department'].mode().iloc[0] if 'department' in sub_df.columns and not sub_df['department'].empty else "General Medicine"
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Primary Clinical Dept</div>
-                <div class="kpi-val" style="font-size: 1.35rem; color: #0284c7;">{top_dept}</div>
-                <div class="kpi-sub">Highest Clinical Volume</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Top Clinical Department</div>
+                <div style="font-size: 1.4rem; font-weight: 800; color: var(--main-text); margin: 3px 0;">{top_dept}</div>
+                <div style="font-size: 0.75rem; color: var(--primary-teal); font-weight: 600;">Highest Inflow Volume</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-    with c3:
+    with m3:
         st.markdown(
             """
-            <div class="kpi-tile">
-                <div class="kpi-title">Primary Referral Center</div>
-                <div class="kpi-val" style="font-size: 1.25rem;">MGM Hospital</div>
-                <div class="kpi-sub">Government Tertiary Hub</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Primary Referral Hub</div>
+                <div style="font-size: 1.4rem; font-weight: 800; color: var(--primary-teal); margin: 3px 0;">MGM Hospital</div>
+                <div style="font-size: 0.75rem; color: var(--secondary-text); font-weight: 600;">Government Tertiary Center</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
     st.write("")
-    st.markdown(f"### 🏥 Verified Healthcare Facilities in {selected_loc}")
-    st.caption("Extracted directly from authenticated Warangal dataset records:")
-
-    col_fac, col_dept = st.columns([1.2, 1])
-    with col_fac:
-        st.markdown("#### Primary Healthcare Centers & Clinics:")
+    c_fac, c_chart = st.columns([1.2, 1.0])
+    with c_fac:
+        st.markdown(f"#### Healthcare Facilities Active in {selected_loc}")
         if 'care_facility_synthetic' in sub_df.columns:
-            fac_counts = sub_df['care_facility_synthetic'].value_counts()
-            for fac_name, count in fac_counts.items():
+            counts = sub_df['care_facility_synthetic'].value_counts()
+            for fac, cnt in counts.items():
                 st.markdown(
                     f"""
-                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.85rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 600; color: #0f172a;">{fac_name}</span>
-                        <span class="brand-badge">{count} cases indexed</span>
+                    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; color: var(--main-text); font-size: 0.9rem;">{fac}</span>
+                        <span class="brand-tag">{cnt} records</span>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
-        else:
-            st.write("MGM Hospital Warangal, District Hospital Warangal, Local Primary Health Centre")
-
-    with col_dept:
-        st.markdown("#### Clinical Departments Active in this Area:")
+    with c_chart:
+        st.markdown(f"#### Department Distribution in {selected_loc}")
         if 'department' in sub_df.columns:
-            dept_counts = sub_df['department'].value_counts()
-            st.bar_chart(dept_counts)
+            st.bar_chart(sub_df['department'].value_counts())
 
 
 # ---------------------------------------------------------
 # VIEW 6: Analytics & Data Visualization
 # ---------------------------------------------------------
 def render_analytics_page(df: pd.DataFrame):
-    st.markdown("<h2 style='color: #005f73; font-weight: 800;'>📊 Healthcare Data & Retrieval Analytics</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #64748b;'>Transparent statistical distribution of the 12,000 Warangal clinical knowledge records and system activity.</p>", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="saas-card" style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--main-text); margin: 0 0 0.4rem 0;">Healthcare Analytics & Retrieval Performance</h2>
+            <p style="color: var(--secondary-text); font-size: 0.92rem; margin: 0;">Statistical distribution of the 12,000 Warangal clinical records and real-time query metrics.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     metrics = auth_db.get_admin_dashboard_metrics()
 
@@ -1145,10 +1272,10 @@ def render_analytics_page(df: pd.DataFrame):
     with c1:
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Total Records</div>
-                <div class="kpi-val">{len(df):,}</div>
-                <div class="kpi-sub">100% Verified</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Total Dataset Records</div>
+                <div style="font-size: 1.7rem; font-weight: 800; color: var(--primary-teal); margin: 3px 0;">{len(df):,}</div>
+                <div style="font-size: 0.75rem; color: var(--success-color); font-weight: 600;">Verified Knowledge</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -1156,10 +1283,10 @@ def render_analytics_page(df: pd.DataFrame):
     with c2:
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Patient Queries Logged</div>
-                <div class="kpi-val">{metrics['total_queries']}</div>
-                <div class="kpi-sub">Total Triage Sessions</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Queries Processed</div>
+                <div style="font-size: 1.7rem; font-weight: 800; color: var(--main-text); margin: 3px 0;">{metrics['total_queries']}</div>
+                <div style="font-size: 0.75rem; color: var(--primary-teal); font-weight: 600;">Database Logged</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -1167,10 +1294,10 @@ def render_analytics_page(df: pd.DataFrame):
     with c3:
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Emergency Escalations</div>
-                <div class="kpi-val" style="color: #dc2626;">{metrics['total_emergencies']}</div>
-                <div class="kpi-sub">Red-Flags Intercepted</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Emergency Flags</div>
+                <div style="font-size: 1.7rem; font-weight: 800; color: var(--error-color); margin: 3px 0;">{metrics['total_emergencies']}</div>
+                <div style="font-size: 0.75rem; color: var(--error-color); font-weight: 600;">Red-Flags Intercepted</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -1178,183 +1305,129 @@ def render_analytics_page(df: pd.DataFrame):
     with c4:
         st.markdown(
             f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Average Latency</div>
-                <div class="kpi-val" style="color: #10b981;">{metrics['avg_latency_ms']} ms</div>
-                <div class="kpi-sub">Sublinear Speed</div>
+            <div class="saas-card" style="text-align: center; padding: 1.1rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase;">Average Latency</div>
+                <div style="font-size: 1.7rem; font-weight: 800; color: var(--success-color); margin: 3px 0;">{metrics['avg_latency_ms']} ms</div>
+                <div style="font-size: 0.75rem; color: var(--success-color); font-weight: 600;">Sublinear Speed</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
     st.write("")
-    st.write("")
-
-    col_chart1, col_chart2 = st.columns(2)
-    with col_chart1:
-        st.markdown("#### Clinical Department Distribution (12,000 Records)")
+    col_d, col_l = st.columns(2)
+    with col_d:
+        st.markdown("#### Department Distribution (12,000 Records)")
         if 'department' in df.columns:
-            dept_counts = df['department'].value_counts()
-            st.bar_chart(dept_counts)
-
-    with col_chart2:
-        st.markdown("#### Locality Case Distribution (8 Warangal Localities)")
+            st.bar_chart(df['department'].value_counts())
+    with col_l:
+        st.markdown("#### Locality Case Distribution (8 Localities)")
         if 'locality' in df.columns:
-            loc_counts = df['locality'].value_counts()
-            st.bar_chart(loc_counts)
+            st.bar_chart(df['locality'].value_counts())
 
 
 # ---------------------------------------------------------
-# VIEW 7: Administrator Dashboard (Private / Role Protected)
+# VIEW 7: Administrator Dashboard (Strict Role Verification)
 # ---------------------------------------------------------
 def render_admin_dashboard(df: pd.DataFrame):
-    # Server-Side Role-Based Security Verification
     current_user = st.session_state.user
     if not current_user or current_user.get("role") != "admin":
         st.markdown(
             """
-            <div class="emergency-alert-banner" style="background: #fef2f2; border: 2px solid #ef4444; border-radius: 14px; padding: 2.5rem; text-align: center;">
-                <h1 style="color: #dc2626; margin-bottom: 0.5rem;">🚫 403 Forbidden: Administrator Privileges Required</h1>
-                <p style="font-size: 1.05rem; color: #7f1d1d; max-width: 600px; margin: 0 auto 1.5rem auto;">
-                    This section is strictly restricted to clinical administrators and healthcare engineers. 
-                    Normal users cannot access system controls, user databases, or audit logs.
+            <div class="emergency-alert-card" style="text-align: center; padding: 2.5rem 1.5rem;">
+                <h2 style="color: var(--error-color); font-weight: 800; margin-bottom: 0.5rem;">Access Denied: Administrator Privileges Required</h2>
+                <p style="color: #7A271A; font-size: 0.98rem; max-width: 600px; margin: 0 auto 1.5rem auto;">
+                    This section is strictly restricted to clinical administrators. 
+                    Normal patient sessions cannot inspect system logs, user registries, or retrieval telemetry.
                 </p>
-                <div style="font-size: 0.85rem; color: #64748b;">
-                    If you are an authorized administrator, please sign in with administrator credentials via the login portal.
-                </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-        if st.button("⬅️ Return to Public Homepage", type="primary"):
+        if st.button("Return to Homepage", type="primary"):
             st.session_state.page = "home"
             st.query_params["page"] = "home"
             st.rerun()
         return
 
-    # Authorized Admin View
-    st.markdown("<h2 style='color: #005f73; font-weight: 800;'>🛡️ Clinical Administration & System Control</h2>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color: #64748b;'>Welcome, <strong>{current_user['full_name']}</strong> (Administrator). Real-time platform management, user auditing, and RAG analytics.</p>", unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div class="saas-card" style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--main-text); margin: 0 0 0.3rem 0;">Clinical Administration Portal</h2>
+                    <p style="color: var(--secondary-text); font-size: 0.92rem; margin: 0;">Logged in as: <strong>{current_user['full_name']}</strong> ({current_user['email']})</p>
+                </div>
+                <span class="brand-tag">Administrator Verified</span>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     admin_metrics = auth_db.get_admin_dashboard_metrics()
 
-    # KPI Top Bar
-    k1, k2, k3, k4 = st.columns(4)
-    with k1:
-        st.markdown(
-            f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Registered Users</div>
-                <div class="kpi-val">{admin_metrics['total_users']}</div>
-                <div class="kpi-sub">Role Verified</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with k2:
-        st.markdown(
-            f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Total Queries</div>
-                <div class="kpi-val">{admin_metrics['total_queries']}</div>
-                <div class="kpi-sub">Database Logged</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with k3:
-        st.markdown(
-            f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Emergency Flags</div>
-                <div class="kpi-val" style="color: #dc2626;">{admin_metrics['total_emergencies']}</div>
-                <div class="kpi-sub">Intercepted Cases</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with k4:
-        st.markdown(
-            f"""
-            <div class="kpi-tile">
-                <div class="kpi-title">Avg Latency</div>
-                <div class="kpi-val" style="color: #10b981;">{admin_metrics['avg_latency_ms']} ms</div>
-                <div class="kpi-sub">Healthy Performance</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    adm_tabs = st.tabs(["User Management", "RAG Analytics", "Dataset Information", "Activity Audit Logs"])
 
-    st.write("")
-    admin_tabs = st.tabs(["👥 User Management", "📈 RAG Retrieval Analytics", "📂 Dataset Explorer", "🛡️ Security Audit Logs"])
-
-    # Tab 1: User Management
-    with admin_tabs[0]:
-        st.markdown("#### Registered User Accounts")
+    with adm_tabs[0]:
+        st.markdown("#### User Accounts Registry")
         users = auth_db.get_all_users()
         user_df = pd.DataFrame(users)
         if not user_df.empty:
             st.dataframe(user_df[["id", "full_name", "email", "phone", "role", "status", "created_at"]], use_container_width=True)
 
-            st.markdown("##### Account Status Control:")
-            c_uid, c_act = st.columns([2, 1])
-            with c_uid:
-                selected_uid = st.number_input("Enter User ID to Toggle Status (Active / Suspended):", min_value=1, step=1, value=1)
-            with c_act:
+            c_uinput, c_ubtn = st.columns([3, 1])
+            with c_uinput:
+                t_uid = st.number_input("User ID to Toggle Status (Active / Suspended):", min_value=1, step=1, value=1)
+            with c_ubtn:
                 if st.button("Toggle Status", type="secondary"):
-                    ok = auth_db.toggle_user_status(selected_uid)
-                    if ok:
-                        st.success("User status updated.")
-                        st.rerun()
-                    else:
-                        st.error("User not found.")
+                    auth_db.toggle_user_status(t_uid)
+                    st.success("User account status updated.")
+                    st.rerun()
         else:
-            st.info("No registered users found.")
+            st.info("No registered users.")
 
-    # Tab 2: RAG Retrieval Analytics
-    with admin_tabs[1]:
-        st.markdown("#### Retrieval Engine Distribution & Latency")
+    with adm_tabs[1]:
+        st.markdown("#### Retrieval Engine Telemetry")
         eng_dist = admin_metrics.get("engine_distribution", {})
         if eng_dist:
             st.bar_chart(pd.Series(eng_dist))
         else:
-            st.info("No retrieval analytics logs recorded yet.")
+            st.info("No retrieval telemetry recorded yet.")
 
-    # Tab 3: Dataset Explorer
-    with admin_tabs[2]:
+    with adm_tabs[2]:
         st.markdown(f"#### Verified Knowledge Base ({len(df):,} Records)")
         st.dataframe(df[["patient_id", "condition", "department", "locality", "symptoms", "care_advice", "care_facility_synthetic"]].head(100), use_container_width=True)
 
-    # Tab 4: Security Audit Logs
-    with admin_tabs[3]:
-        st.markdown("#### Security & User Activity Audit Trail")
+    with adm_tabs[3]:
+        st.markdown("#### Security & User Audit Trail")
         logs = auth_db.get_recent_activity_logs(50)
         if logs:
             st.dataframe(pd.DataFrame(logs), use_container_width=True)
         else:
-            st.info("No audit events logged yet.")
+            st.info("No audit logs recorded.")
 
 
 # ---------------------------------------------------------
-# Footer Component
+# Footer
 # ---------------------------------------------------------
 def render_footer():
     st.markdown(
         """
-        <div class="platform-footer">
-            <p style="font-weight: 700; color: #005f73; margin-bottom: 0.3rem;">
-                🏥 RAG-Based Medical Information System for Warangal Patients
+        <div class="saas-footer">
+            <p style="font-weight: 700; color: var(--primary-teal); margin-bottom: 0.2rem;">
+                Warangal HealthRAG &bull; Clinical Information System
             </p>
-            <p style="margin-bottom: 0.2rem;">
+            <p style="margin-bottom: 0.4rem;">
                 Department of Computer Science & Engineering | <strong>SR University</strong>, Warangal, Telangana
             </p>
-            <p style="margin-bottom: 0.5rem;">
-                <strong>Project Authors:</strong> B. Sai Tejaswi (<code>2303A51184</code>) &amp; V. Abhilash (<code>2303A51227</code>)
+            <p style="font-size: 0.8rem; color: var(--secondary-text); margin-bottom: 0.8rem;">
+                Project Authors: B. Sai Tejaswi (2303A51184) &bull; V. Abhilash (2303A51227)
             </p>
-            <p style="font-size: 0.78rem; color: #94a3b8; max-width: 800px; margin: 0.5rem auto 0 auto;">
-                Disclaimer: This academic research prototype demonstrates localized Retrieval-Augmented Generation on a synthetic Warangal medical dataset. 
-                It is designed for clinical triage support and health education, not as a replacement for clinical diagnosis by a registered medical practitioner. 
-                In all acute medical emergencies, immediately dial <strong>108</strong> or visit <strong>MGM Hospital Warangal</strong>.
+            <p style="font-size: 0.75rem; color: #94A3B8; max-width: 780px; margin: 0 auto;">
+                Academic Medical Disclaimer: This platform demonstrates localized Retrieval-Augmented Generation for academic research. 
+                It is designed to supplement health information, not replace diagnosis by a registered medical practitioner. 
+                In all acute medical emergencies, immediately dial <strong>108</strong> or proceed to <strong>MGM Hospital Warangal</strong>.
             </p>
         </div>
         """,
@@ -1363,19 +1436,15 @@ def render_footer():
 
 
 # ---------------------------------------------------------
-# Main Execution Controller
+# Main Controller
 # ---------------------------------------------------------
 def main():
-    # 1. Load clinical dataset and sparse retrieval engine
     df = get_cached_dataset(DATA_PATH)
     tfidf_vectorizer, tfidf_matrix = get_cached_tfidf(df['search_text'].tolist())
 
-    # 2. Render Navigation Header
     render_navbar()
 
-    # 3. View Routing
     current_page = st.session_state.page
-
     if current_page == "home":
         render_home_page(df)
     elif current_page == "chat":
@@ -1393,7 +1462,6 @@ def main():
     else:
         render_home_page(df)
 
-    # 4. Render Platform Footer
     render_footer()
 
 

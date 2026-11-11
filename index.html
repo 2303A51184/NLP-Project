@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warangal HealthRAG | Medical Information & Triage System</title>
+    <title>Warangal HealthRAG | Medical Information & Triage Platform</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,21 +11,21 @@
     
     <style>
         :root {
-            --primary-teal: #005f73;
-            --teal-dark: #0a4650;
-            --teal-light: #e0f2fe;
-            --medical-blue: #0284c7;
-            --accent-mint: #10b981;
-            --mint-light: #d1fae5;
-            --emergency-red: #dc2626;
-            --emergency-bg: #fef2f2;
-            --bg-white: #ffffff;
-            --bg-slate: #f8fafc;
-            --border-slate: #e2e8f0;
-            --text-dark: #0f172a;
-            --text-muted: #475569;
-            --shadow-subtle: 0 4px 20px -2px rgba(0, 95, 115, 0.08);
-            --shadow-card: 0 10px 25px -5px rgba(0,0,0,0.05);
+            --bg-main: #F7FAFC;
+            --card-bg: #FFFFFF;
+            --primary-teal: #167D83;
+            --primary-hover: #116267;
+            --secondary-teal: #D9F0ED;
+            --main-text: #263746;
+            --secondary-text: #64748B;
+            --border-color: #E5EBEF;
+            --success-color: #248A61;
+            --warning-color: #D99A36;
+            --error-color: #D9534F;
+            --error-bg: #FFF5F5;
+            --error-border: #FED7D7;
+            --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 10px 25px rgba(22, 125, 131, 0.08);
         }
 
         * {
@@ -36,37 +36,35 @@
         }
 
         body {
-            background-color: var(--bg-slate);
-            color: var(--text-dark);
+            background-color: var(--bg-main);
+            color: var(--main-text);
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1.5rem;
         }
 
-        /* Header & Navigation */
+        /* Top Header */
         header {
-            background: #ffffff;
-            border-bottom: 1px solid var(--border-slate);
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 72px;
+            height: 74px;
         }
 
-        .brand {
+        .brand-link {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -74,47 +72,48 @@
             color: var(--primary-teal);
             font-weight: 800;
             font-size: 1.25rem;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.3px;
         }
 
-        .brand-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary-teal), var(--medical-blue));
-            border-radius: 10px;
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            background: var(--primary-teal);
+            color: #FFFFFF;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            font-weight: 800;
             font-size: 1.2rem;
         }
 
-        .brand-badge {
-            background-color: var(--teal-light);
-            color: var(--medical-blue);
+        .brand-pill {
+            background-color: var(--secondary-teal);
+            color: var(--primary-teal);
             font-size: 0.72rem;
             font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 999px;
+            padding: 2px 8px;
+            border-radius: 6px;
             text-transform: uppercase;
         }
 
-        .nav-links {
+        .nav-menu {
             display: flex;
             align-items: center;
             gap: 2rem;
             list-style: none;
         }
 
-        .nav-links a {
+        .nav-menu a {
             text-decoration: none;
-            color: var(--text-muted);
+            color: var(--secondary-text);
             font-weight: 600;
             font-size: 0.92rem;
             transition: color 0.2s ease;
         }
 
-        .nav-links a:hover {
+        .nav-menu a:hover {
             color: var(--primary-teal);
         }
 
@@ -122,50 +121,42 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 0.75rem 1.4rem;
-            border-radius: 10px;
+            padding: 0.7rem 1.4rem;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.2s ease;
-            border: none;
+            border: 1px solid transparent;
         }
 
         .btn-primary {
             background-color: var(--primary-teal);
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 95, 115, 0.2);
+            color: #FFFFFF;
         }
 
         .btn-primary:hover {
-            background-color: var(--teal-dark);
-            transform: translateY(-1px);
+            background-color: var(--primary-hover);
         }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid var(--primary-teal);
-            color: var(--primary-teal);
+            border-color: var(--border-color);
+            color: var(--main-text);
         }
 
         .btn-outline:hover {
-            background-color: var(--teal-light);
+            border-color: var(--primary-teal);
+            color: var(--primary-teal);
+            background: var(--secondary-teal);
         }
 
-        .btn-emergency {
-            background-color: var(--emergency-red);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 4.5rem 0 3.5rem 0;
-            background: linear-gradient(180deg, #ffffff 0%, var(--bg-slate) 100%);
+        /* Hero */
+        .hero-section {
+            padding: 4rem 0 3rem 0;
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .hero-grid {
@@ -175,111 +166,89 @@
             align-items: center;
         }
 
-        .hero-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: var(--teal-light);
+        .hero-tag {
+            display: inline-block;
+            background-color: var(--secondary-teal);
             color: var(--primary-teal);
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 999px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 1.2rem;
         }
 
-        .hero h1 {
-            font-size: 2.85rem;
+        .hero-section h1 {
+            font-size: 2.75rem;
             font-weight: 800;
-            line-height: 1.18;
-            color: var(--text-dark);
+            line-height: 1.2;
+            color: var(--main-text);
             letter-spacing: -0.02em;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.1rem;
         }
 
-        .hero h1 span {
+        .hero-section h1 span {
             color: var(--primary-teal);
         }
 
-        .hero p {
-            font-size: 1.15rem;
-            color: var(--text-muted);
+        .hero-section p {
+            font-size: 1.1rem;
+            color: var(--secondary-text);
             line-height: 1.65;
             margin-bottom: 2rem;
         }
 
-        .hero-actions {
+        .hero-cta {
             display: flex;
             gap: 1rem;
-            align-items: center;
             margin-bottom: 2.5rem;
         }
 
-        .hero-metrics {
+        .hero-kpis {
             display: flex;
             gap: 2.5rem;
-            border-top: 1px solid var(--border-slate);
-            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.4rem;
         }
 
-        .metric h4 {
-            font-size: 1.65rem;
+        .kpi-unit h4 {
+            font-size: 1.6rem;
             font-weight: 800;
             color: var(--primary-teal);
         }
 
-        .metric p {
+        .kpi-unit p {
             font-size: 0.82rem;
-            color: var(--text-muted);
-            margin: 0;
+            color: var(--secondary-text);
             font-weight: 600;
+            margin: 0;
         }
 
-        .hero-card {
-            background: #ffffff;
-            border: 1px solid var(--border-slate);
-            border-radius: 20px;
+        /* Hero Right Preview Card */
+        .hero-preview-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
             padding: 2rem;
-            box-shadow: var(--shadow-card);
-            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
         }
 
-        .hero-card-header {
+        .preview-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.8rem;
-            border-bottom: 1px solid var(--border-slate);
+            margin-bottom: 1.2rem;
         }
 
-        .badge-live {
-            background-color: var(--mint-light);
-            color: #065f46;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .badge-live::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-mint);
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        /* Emergency Warning Strip */
-        .emergency-banner {
-            background-color: var(--emergency-bg);
-            border: 2px solid #fca5a5;
-            border-radius: 16px;
-            padding: 1.8rem;
+        /* Emergency Strip */
+        .emergency-strip {
+            background-color: var(--error-bg);
+            border: 2px solid var(--error-border);
+            border-radius: 12px;
+            padding: 1.5rem 1.8rem;
             margin: 2.5rem 0;
             display: flex;
             justify-content: space-between;
@@ -287,298 +256,245 @@
             gap: 2rem;
         }
 
-        .emergency-banner h3 {
-            color: var(--emergency-red);
-            font-size: 1.3rem;
+        .emergency-strip h3 {
+            color: var(--error-color);
+            font-size: 1.25rem;
             font-weight: 800;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.25rem;
         }
 
-        .emergency-banner p {
-            color: #7f1d1d;
+        .emergency-strip p {
+            color: #7A271A;
             font-size: 0.95rem;
             margin: 0;
         }
 
-        /* Features Section */
-        .section {
+        /* Sections */
+        .section-block {
             padding: 4.5rem 0;
         }
 
-        .section-header {
+        .section-head {
             text-align: center;
             max-width: 720px;
             margin: 0 auto 3rem auto;
         }
 
-        .section-header h2 {
-            font-size: 2.15rem;
+        .section-head h2 {
+            font-size: 2.1rem;
             font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 0.8rem;
-            letter-spacing: -0.5px;
+            color: var(--main-text);
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.4px;
         }
 
-        .section-header p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
+        .section-head p {
+            color: var(--secondary-text);
+            font-size: 1.02rem;
         }
 
-        .grid-3 {
+        .grid-3-col {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.8rem;
         }
 
-        .grid-4 {
+        .grid-4-col {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.2rem;
         }
 
-        .feature-card {
-            background: #ffffff;
-            border: 1px solid var(--border-slate);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-card);
-        }
-
-        .feature-icon {
-            width: 52px;
-            height: 52px;
-            background: var(--teal-light);
-            color: var(--primary-teal);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.6rem;
-            color: var(--text-dark);
-        }
-
-        .feature-card p {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* RAG Architecture Steps */
-        .step-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            position: relative;
-        }
-
-        .step-box {
-            background: #ffffff;
-            border: 1px solid var(--border-slate);
+        .card-item {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 1.5rem;
-            position: relative;
-        }
-
-        .step-num {
-            width: 32px;
-            height: 32px;
-            background-color: var(--primary-teal);
-            color: white;
-            border-radius: 8px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-
-        .step-box h4 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-
-        .step-box p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        /* Localities Cards */
-        .locality-card {
-            background: #ffffff;
-            border: 1px solid var(--border-slate);
-            border-radius: 12px;
-            padding: 1.2rem;
-            text-align: center;
+            padding: 1.8rem;
+            box-shadow: var(--shadow-card);
             transition: all 0.2s ease;
         }
 
-        .locality-card:hover {
+        .card-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
             border-color: var(--primary-teal);
-            box-shadow: var(--shadow-subtle);
         }
 
-        .locality-name {
-            font-weight: 800;
-            font-size: 1.1rem;
+        .card-badge-num {
+            width: 32px;
+            height: 32px;
+            background: var(--secondary-teal);
             color: var(--primary-teal);
-            margin-bottom: 0.3rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
         }
 
-        .locality-sub {
+        .card-item h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--main-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-item p {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            line-height: 1.6;
+        }
+
+        /* Locality Cards */
+        .loc-box {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .loc-name {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--primary-teal);
+            margin-bottom: 0.2rem;
+        }
+        .loc-detail {
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: var(--secondary-text);
         }
 
-        /* Authors & Footer */
+        /* Footer */
         footer {
-            background: #0f172a;
-            color: #cbd5e1;
-            padding: 4rem 0 2rem 0;
+            background: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            padding: 3.5rem 0 2rem 0;
             margin-top: 4rem;
         }
 
-        .footer-grid {
+        .footer-cols {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
             gap: 3rem;
-            padding-bottom: 3rem;
-            border-bottom: 1px solid #334155;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .footer-brand h3 {
-            color: #ffffff;
-            font-size: 1.4rem;
+        .footer-brand-title {
+            font-size: 1.25rem;
             font-weight: 800;
-            margin-bottom: 0.8rem;
+            color: var(--primary-teal);
+            margin-bottom: 0.6rem;
         }
 
-        .footer-bottom {
-            padding-top: 2rem;
+        .footer-disclaimer {
+            padding-top: 1.8rem;
             text-align: center;
-            font-size: 0.85rem;
-            color: #94a3b8;
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        /* Responsive */
         @media (max-width: 900px) {
             .hero-grid { grid-template-columns: 1fr; }
-            .grid-3 { grid-template-columns: 1fr; }
-            .grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .step-container { grid-template-columns: 1fr 1fr; }
-            .nav-links { display: none; }
+            .grid-3-col { grid-template-columns: 1fr; }
+            .grid-4-col { grid-template-columns: 1fr 1fr; }
+            .nav-menu { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header & Navigation -->
+    <!-- Header Navigation -->
     <header>
         <div class="container navbar">
-            <a href="#" class="brand">
-                <div class="brand-icon">🏥</div>
+            <a href="#" class="brand-link">
+                <div class="brand-mark">+</div>
                 <div>Warangal HealthRAG</div>
-                <span class="brand-badge">SR University</span>
+                <span class="brand-pill">SR University</span>
             </a>
-            
-            <ul class="nav-links">
-                <li><a href="#about">About Project</a></li>
-                <li><a href="#how-it-works">How RAG Works</a></li>
+
+            <ul class="nav-menu">
+                <li><a href="#about">About</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#features">Features</a></li>
-                <li><a href="#localities">Local Coverage</a></li>
-                <li><a href="#emergency">Emergency Triage</a></li>
+                <li><a href="#localities">Localities</a></li>
+                <li><a href="#emergency">Emergency</a></li>
             </ul>
 
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <a href="http://localhost:8501/?page=auth" target="_blank" class="btn btn-outline" style="padding: 0.6rem 1.1rem; font-size: 0.88rem;">Patient Login</a>
-                <a href="http://localhost:8501/?page=chat" target="_blank" class="btn btn-primary" style="padding: 0.6rem 1.1rem; font-size: 0.88rem;">Launch App 🚀</a>
+            <div style="display: flex; gap: 10px;">
+                <a href="http://localhost:8501/?page=auth" target="_blank" class="btn btn-outline">Sign In</a>
+                <a href="http://localhost:8501/?page=chat" target="_blank" class="btn btn-primary">Ask a Question</a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero-section">
         <div class="container hero-grid">
             <div>
-                <div class="hero-pill">
-                    <span>⭐</span> Verified Academic Final-Year Research Project
-                </div>
-                <h1>Healthcare Information Made <span>Simpler for Warangal</span></h1>
+                <span class="hero-tag">Clinical Information Triage</span>
+                <h1>Better Health Information <span>Starts Here.</span></h1>
                 <p>
-                    Get clear, understandable primary health information powered by locally relevant medical knowledge 
-                    and intelligent information retrieval. Strictly grounded in 12,000 verified Warangal patient records to eliminate hallucinations.
+                    Understand health information through locally relevant medical knowledge designed for people across Warangal. 
+                    Strictly grounded in 12,000 verified clinical records to eliminate artificial intelligence hallucinations and provide clear, reliable primary care guidance.
                 </p>
 
-                <div class="hero-actions">
+                <div class="hero-cta">
                     <a href="http://localhost:8501/?page=chat" target="_blank" class="btn btn-primary">
-                        💬 Ask a Health Question
+                        Ask a Question
                     </a>
                     <a href="#how-it-works" class="btn btn-outline">
-                        Explore How It Works
+                        Explore Features
                     </a>
                 </div>
 
-                <div class="hero-metrics">
-                    <div class="metric">
+                <div class="hero-kpis">
+                    <div class="kpi-unit">
                         <h4>12,000</h4>
-                        <p>Verified Clinical Records</p>
+                        <p>Verified Records</p>
                     </div>
-                    <div class="metric">
-                        <h4>8 Localities</h4>
-                        <p>Warangal District Sub-districts</p>
+                    <div class="kpi-unit">
+                        <h4>8 Areas</h4>
+                        <p>Warangal Localities</p>
                     </div>
-                    <div class="metric">
+                    <div class="kpi-unit">
                         <h4>&lt; 35 ms</h4>
-                        <p>Real-Time Retrieval Latency</p>
+                        <p>Retrieval Latency</p>
                     </div>
-                    <div class="metric">
-                        <h4 style="color: var(--accent-mint);">100%</h4>
-                        <p>Emergency Triage Sensitivity</p>
+                    <div class="kpi-unit">
+                        <h4>100%</h4>
+                        <p>Emergency Sensitivity</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Interactive Preview Card -->
-            <div class="hero-card">
-                <div class="hero-card-header">
+            <div class="hero-preview-card">
+                <div class="preview-header">
                     <div>
-                        <div style="font-weight: 700; color: var(--primary-teal);">Interactive Clinical Triage Preview</div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Grounded on Warangal Medical Dataset</div>
+                        <div style="font-weight: 700; color: var(--main-text);">Clinical Retrieval Preview</div>
+                        <div style="font-size: 0.8rem; color: var(--secondary-text);">Verified Warangal Hospital Grounding</div>
                     </div>
-                    <span class="badge-live">Live Retrieval Engine</span>
+                    <span style="background: var(--secondary-teal); color: var(--primary-teal); padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">Active</span>
                 </div>
 
-                <div style="background: var(--bg-slate); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--border-slate);">
-                    <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary-teal); margin-bottom: 4px;">USER SYMPTOMS INQUIRY:</div>
-                    <div style="font-size: 0.92rem; font-weight: 600; color: var(--text-dark);">"Child in Parkal having coughing, wheezing and shortness of breath"</div>
+                <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.85rem;">
+                    <div style="font-size: 0.74rem; font-weight: 700; color: var(--primary-teal); text-transform: uppercase;">User Symptoms Query:</div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: var(--main-text);">"Child in Parkal having coughing, wheezing and shortness of breath"</div>
                 </div>
 
-                <div style="background: #ffffff; border: 1px solid var(--teal-light); border-left: 4px solid var(--accent-mint); border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                        <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary-teal);">GROUNDED RECOMMENDATION:</span>
-                        <span style="background: var(--teal-light); color: var(--medical-blue); font-size: 0.75rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">Match: 86.4%</span>
-                    </div>
-                    <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0;">
-                        Condition: <strong>Asthma (Pulmonology Dept)</strong>.<br>
-                        Care: Avoid allergens & smoke triggers, use prescribed bronchodilator inhalers. Refer to Parkal PHC or District Chest Clinic Warangal.
+                <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-left: 4px solid var(--primary-teal); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.85rem;">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary-teal); margin-bottom: 4px;">Grounded Clinical Advice (Pulmonology):</div>
+                    <p style="font-size: 0.84rem; color: var(--secondary-text); margin: 0;">
+                        Condition: <strong>Asthma</strong>. Avoid environmental triggers and smoke. Use prescribed bronchodilators. 
+                        Consult Parkal Community Health Centre or District Chest Clinic Warangal.
                     </p>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border-slate); padding-top: 0.8rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--secondary-text); border-top: 1px solid var(--border-color); padding-top: 0.6rem;">
                     <span>Source: Record <code>WP-SYN-004481</code></span>
                     <span>Facility: District Hospital Warangal</span>
                 </div>
@@ -586,57 +502,55 @@
         </div>
     </section>
 
-    <!-- Emergency Safety Alert Banner -->
+    <!-- Emergency Alert Strip -->
     <div class="container" id="emergency">
-        <div class="emergency-banner">
+        <div class="emergency-strip">
             <div>
-                <h3>🚨 MEDICAL EMERGENCY – SEEK IMMEDIATE HELP</h3>
+                <h3>Medical Emergency Alert</h3>
                 <p>
-                    If experiencing severe chest pain, shortness of breath, sudden facial drooping, or heavy bleeding, 
-                    do not wait for an AI answer. Contact emergency services or visit the nearest hospital casualty immediately.
+                    Your symptoms may require immediate medical attention. Please contact emergency services or visit the nearest emergency department.
                 </p>
             </div>
-            <div style="text-align: right; min-width: 250px;">
-                <div style="font-size: 0.85rem; font-weight: 700; color: var(--emergency-red); text-transform: uppercase;">Telangana Emergency Helpline</div>
-                <div style="font-size: 1.8rem; font-weight: 800; color: var(--emergency-red); line-height: 1.2;">Dial 108</div>
-                <div style="font-size: 0.8rem; color: #7f1d1d;">MGM Hospital Warangal: 0870-2441000</div>
+            <div style="text-align: right; min-width: 240px;">
+                <div style="font-size: 0.78rem; font-weight: 700; color: var(--error-color); text-transform: uppercase;">Telangana Emergency Helpline</div>
+                <div style="font-size: 1.6rem; font-weight: 800; color: var(--error-color);">Dial 108</div>
+                <div style="font-size: 0.8rem; color: #7A271A;">MGM Hospital Casualty: 0870-2441000</div>
             </div>
         </div>
     </div>
 
-    <!-- About The Project -->
-    <section class="section" id="about">
+    <!-- About Section -->
+    <section class="section-block" id="about">
         <div class="container">
-            <div class="section-header">
-                <h2>Why This System Matters in Warangal</h2>
-                <p>Designed specifically to address healthcare crowding and misinformation in semi-urban and rural Telangana.</p>
+            <div class="section-head">
+                <h2>Why This System Matters</h2>
+                <p>Overcoming rural healthcare delays and eliminating dangerous AI hallucinations in Warangal.</p>
             </div>
 
-            <div class="grid-3">
-                <div class="feature-card">
-                    <div class="feature-icon">🏥</div>
-                    <h3>Relieving Referral Center Pressure</h3>
+            <div class="grid-3-col">
+                <div class="card-item">
+                    <div class="card-badge-num">1</div>
+                    <h3>Relieving Referral Centers</h3>
                     <p>
-                        Regional centers like MGM Hospital Warangal receive over 3,000 outpatients daily. 
-                        This platform helps patients assess whether their symptoms can be managed locally at a Primary Health Centre or require hospital escalation.
+                        MGM Hospital Warangal treats thousands of outpatients daily. 
+                        This platform helps patients assess whether symptoms can be managed at a local Primary Health Centre (PHC) or require hospital escalation.
                     </p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>Zero AI Hallucinations</h3>
+                <div class="card-item">
+                    <div class="card-badge-num">2</div>
+                    <h3>Zero Hallucinations</h3>
                     <p>
-                        Unlike unconstrained chatbots like ChatGPT which invent medical facts or incorrect medication names, 
-                        our system is mathematically constrained to retrieve answers derived solely from authenticated clinical records.
+                        Standard generative models routinely invent medical diagnoses or incorrect dosages. 
+                        Our system mathematically bounds responses strictly to authenticated clinical records.
                     </p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Transparent Evidence Inspector</h3>
+                <div class="card-item">
+                    <div class="card-badge-num">3</div>
+                    <h3>Evidence Transparency</h3>
                     <p>
-                        Patients and medical staff can click "Verify This Answer" under any response to inspect the exact dataset record ID, 
-                        similarity match score, and grounded text chunk used to form the recommendation.
+                        Every answer features an expandable "Why am I seeing this answer?" section displaying the exact record ID, similarity score, and department.
                     </p>
                 </div>
             </div>
@@ -644,111 +558,78 @@
     </section>
 
     <!-- How RAG Works -->
-    <section class="section" style="background: #ffffff;" id="how-it-works">
+    <section class="section-block" style="background: #FFFFFF; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);" id="how-it-works">
         <div class="container">
-            <div class="section-header">
-                <h2>How Retrieval-Augmented Generation (RAG) Works</h2>
-                <p>A multi-stage deterministic and semantic architecture delivering clinical reliability.</p>
+            <div class="section-head">
+                <h2>How RAG Works</h2>
+                <p>Four-step deterministic and semantic information retrieval pipeline.</p>
             </div>
 
-            <div class="step-container">
-                <div class="step-box">
-                    <div class="step-num">1</div>
-                    <h4>Patient Input</h4>
-                    <p>User queries symptoms in simple English or colloquial phrasing without needing technical clinical jargon.</p>
+            <div class="grid-4-col">
+                <div class="card-item">
+                    <div class="card-badge-num">A</div>
+                    <h3>1. Patient Input</h3>
+                    <p>User describes symptoms in simple words without medical jargon.</p>
                 </div>
-
-                <div class="step-box">
-                    <div class="step-num">2</div>
-                    <h4>Red-Flag Triage</h4>
-                    <p>Deterministic regex safety layer intercepts critical emergency keywords to alert emergency casualty units.</p>
+                <div class="card-item">
+                    <div class="card-badge-num">B</div>
+                    <h3>2. Red-Flag Check</h3>
+                    <p>Safety filter checks for acute red flags (chest pain, dyspnea, stroke signs).</p>
                 </div>
-
-                <div class="step-box">
-                    <div class="step-num">3</div>
-                    <h4>Vector Retrieval</h4>
-                    <p>Dual retrieval engine (TF-IDF sublinear search or FAISS MiniLM dense vectors) finds top-k matching clinical cases.</p>
+                <div class="card-item">
+                    <div class="card-badge-num">C</div>
+                    <h3>3. Vector Search</h3>
+                    <p>TF-IDF and FAISS dense embeddings retrieve matching clinical cases in &lt;35 ms.</p>
                 </div>
-
-                <div class="step-box">
-                    <div class="step-num">4</div>
-                    <h4>Grounded Guidance</h4>
-                    <p>Generates structured advice with source citation tags (<code>WP-SYN-XXXX</code>) and local hospital guidance.</p>
+                <div class="card-item">
+                    <div class="card-badge-num">D</div>
+                    <h3>4. Grounded Output</h3>
+                    <p>Synthesizes clear guidance with exact source tags (WP-SYN-XXXX).</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Key Features -->
-    <section class="section" id="features">
+    <!-- Warangal Localities Coverage -->
+    <section class="section-block" id="localities">
         <div class="container">
-            <div class="section-header">
-                <h2>Production-Ready Platform Features</h2>
-                <p>Engineered to international healthcare SaaS standards with rigorous role-based security.</p>
+            <div class="section-head">
+                <h2>Warangal Locality Coverage</h2>
+                <p>Verified clinical records covering 8 sub-districts and municipalities.</p>
             </div>
 
-            <div class="grid-3">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Sub-35 ms Latency</h3>
-                    <p>Optimized TF-IDF sparse matrix computation delivers instantaneous recommendations on standard CPU infrastructure without GPU requirements.</p>
+            <div class="grid-4-col">
+                <div class="loc-box">
+                    <div class="loc-name">Warangal</div>
+                    <div class="loc-detail">1,466 Records &bull; MGM Tertiary Hub</div>
                 </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🔐</div>
-                    <h3>Role-Based Security</h3>
-                    <p>Integrated SQLite database with PBKDF2 password hashing, separating standard patient sessions from the private administrator dashboard (<code>/admin</code>).</p>
+                <div class="loc-box">
+                    <div class="loc-name">Hanamkonda</div>
+                    <div class="loc-detail">1,416 Records &bull; Specialist Centers</div>
                 </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">☁️</div>
-                    <h3>Google Colab & VS Code Ready</h3>
-                    <p>Fully decoupled <code>backend.py</code> architecture allowing interactive notebook exploration in Google Colab and local VS Code development.</p>
+                <div class="loc-box">
+                    <div class="loc-name">Kazipet</div>
+                    <div class="loc-detail">1,488 Records &bull; Urban Health Post</div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Local Coverage -->
-    <section class="section" style="background: #ffffff;" id="localities">
-        <div class="container">
-            <div class="section-header">
-                <h2>Warangal District Locality Coverage</h2>
-                <p>Indexed clinical records across 8 major municipal and rural clusters.</p>
-            </div>
-
-            <div class="grid-4">
-                <div class="locality-card">
-                    <div class="locality-name">Warangal</div>
-                    <div class="locality-sub">1,466 Verified Records<br>MGM Referral Center</div>
+                <div class="loc-box">
+                    <div class="loc-name">Parkal</div>
+                    <div class="loc-detail">1,549 Records &bull; Community Health Hub</div>
                 </div>
-                <div class="locality-card">
-                    <div class="locality-name">Hanamkonda</div>
-                    <div class="locality-sub">1,416 Verified Records<br>CHC & Specialist Centers</div>
+                <div class="loc-box">
+                    <div class="loc-name">Dharmasagar</div>
+                    <div class="loc-detail">1,574 Records &bull; Primary Health Grounding</div>
                 </div>
-                <div class="locality-card">
-                    <div class="locality-name">Kazipet</div>
-                    <div class="locality-sub">1,488 Verified Records<br>Railway & Urban Health</div>
+                <div class="loc-box">
+                    <div class="loc-name">Geesugonda</div>
+                    <div class="loc-detail">1,546 Records &bull; Rural Care Network</div>
                 </div>
-                <div class="locality-card">
-                    <div class="locality-name">Parkal</div>
-                    <div class="locality-sub">1,549 Verified Records<br>Rural PHC Grounding</div>
+                <div class="loc-box">
+                    <div class="loc-name">Hasanparthy</div>
+                    <div class="loc-detail">1,505 Records &bull; Outpatient Clinics</div>
                 </div>
-                <div class="locality-card">
-                    <div class="locality-name">Dharmasagar</div>
-                    <div class="locality-sub">1,574 Verified Records<br>Community Care Centers</div>
-                </div>
-                <div class="locality-card">
-                    <div class="locality-name">Geesugonda</div>
-                    <div class="locality-sub">1,546 Verified Records<br>Maternal & General Health</div>
-                </div>
-                <div class="locality-card">
-                    <div class="locality-name">Hasanparthy</div>
-                    <div class="locality-sub">1,505 Verified Records<br>Suburban Outpatient Clinics</div>
-                </div>
-                <div class="locality-card">
-                    <div class="locality-name">Wardhannapet</div>
-                    <div class="locality-sub">1,456 Verified Records<br>Community Health Hubs</div>
+                <div class="loc-box">
+                    <div class="loc-name">Wardhannapet</div>
+                    <div class="loc-detail">1,456 Records &bull; Community Care</div>
                 </div>
             </div>
         </div>
@@ -757,44 +638,38 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <h3>🏥 Warangal HealthRAG</h3>
-                    <p>
-                        A B.Tech Final-Year Computer Science & Engineering Academic Project.<br>
-                        <strong>SR University</strong>, Ananthasagar, Warangal, Telangana, India.
+            <div class="footer-cols">
+                <div>
+                    <div class="footer-brand-title">Warangal HealthRAG Platform</div>
+                    <p style="font-size: 0.88rem; color: var(--secondary-text);">
+                        Academic Research Project, Department of Computer Science & Engineering<br>
+                        <strong>SR University</strong>, Warangal, Telangana, India.
                     </p>
-                    <p style="margin-top: 1rem; font-size: 0.9rem;">
-                        <strong>Project Researchers:</strong><br>
-                        • B. Sai Tejaswi (Roll: <code>2303A51184</code> | Email: <code>2303A51184@sru.edu.in</code>)<br>
-                        • V. Abhilash (Roll: <code>2303A51227</code> | Email: <code>2303A51227@sru.edu.in</code>)
+                    <p style="font-size: 0.85rem; color: var(--secondary-text); margin-top: 0.8rem;">
+                        <strong>Authors:</strong> B. Sai Tejaswi (2303A51184) &bull; V. Abhilash (2303A51227)
                     </p>
                 </div>
-
                 <div>
-                    <h4 style="color: white; margin-bottom: 1rem;">Platform Links</h4>
-                    <ul style="list-style: none; font-size: 0.9rem; line-height: 2;">
-                        <li><a href="http://localhost:8501" target="_blank" style="color: #94a3b8; text-decoration: none;">Launch Streamlit App</a></li>
-                        <li><a href="https://github.com/2303A51184/NLP-Project" target="_blank" style="color: #94a3b8; text-decoration: none;">GitHub Repository</a></li>
-                        <li><a href="https://colab.research.google.com/github/2303A51184/NLP-Project/blob/main/RAG_Warangal_Medical_Colab.ipynb" target="_blank" style="color: #94a3b8; text-decoration: none;">Google Colab Notebook</a></li>
-                    </ul>
+                    <h4 style="color: var(--main-text); margin-bottom: 0.8rem; font-size: 0.95rem;">Navigation</h4>
+                    <p style="font-size: 0.85rem; line-height: 2;">
+                        <a href="http://localhost:8501/?page=chat" target="_blank" style="color: var(--secondary-text); text-decoration: none;">Ask a Question</a><br>
+                        <a href="http://localhost:8501/?page=auth" target="_blank" style="color: var(--secondary-text); text-decoration: none;">Patient Sign In</a><br>
+                        <a href="https://github.com/2303A51184/NLP-Project" target="_blank" style="color: var(--secondary-text); text-decoration: none;">GitHub Repository</a>
+                    </p>
                 </div>
-
                 <div>
-                    <h4 style="color: white; margin-bottom: 1rem;">Emergency Contacts</h4>
-                    <p style="font-size: 0.88rem; line-height: 1.8;">
-                        • Ambulance: <strong>108 / 112</strong><br>
-                        • MGM Hospital: <strong>0870-2441000</strong><br>
-                        • District Hospital: <strong>0870-2577772</strong>
+                    <h4 style="color: var(--main-text); margin-bottom: 0.8rem; font-size: 0.95rem;">Emergency Help</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.8; color: var(--secondary-text);">
+                        Ambulance: <strong>108 / 112</strong><br>
+                        MGM Hospital Casualty: <strong>0870-2441000</strong><br>
+                        District Hospital: <strong>0870-2577772</strong>
                     </p>
                 </div>
             </div>
 
-            <div class="footer-bottom">
-                <p>
-                    Academic Research Disclaimer: This application is a clinical decision support prototype developed for academic demonstration. 
-                    It is not a substitute for registered clinical diagnosis. In medical emergencies, contact 108 or proceed immediately to MGM Hospital Warangal.
-                </p>
+            <div class="footer-disclaimer">
+                Academic Research Disclaimer: This clinical decision support prototype is developed for academic demonstration. 
+                It does not replace clinical consultation by a registered medical practitioner. In medical emergencies, immediately contact 108 or proceed to MGM Hospital Warangal.
             </div>
         </div>
     </footer>
