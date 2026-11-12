@@ -25,6 +25,7 @@
             --error-bg: #FFF5F5;
             --error-border: #FED7D7;
             --shadow-card: 0 1px 3px rgba(0,0,0,0.03);
+            --shadow-hover: 0 8px 24px rgba(22, 125, 131, 0.08);
         }
 
         * {
@@ -204,6 +205,7 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .brand-mark {
@@ -278,6 +280,27 @@
             font-size: 0.82rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pill-logout {
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--secondary-text);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .pill-logout:hover {
+            color: var(--error-color);
+            background: var(--error-bg);
+            border-color: var(--error-border);
         }
 
         /* Views */
@@ -662,6 +685,186 @@
             text-decoration: none;
         }
 
+        /* Authentication Page (Split-Screen SaaS Layout) */
+        .auth-container {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 2.2rem;
+            align-items: stretch;
+            margin-top: 0.5rem;
+        }
+
+        .login-brand-panel {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 2.4rem;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-brand-panel h2 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--main-text);
+            margin-bottom: 0.8rem;
+            line-height: 1.25;
+        }
+
+        .login-brand-panel h2 span {
+            color: var(--primary-teal);
+        }
+
+        .feature-point {
+            display: flex;
+            gap: 12px;
+            margin-top: 1.2rem;
+            align-items: flex-start;
+        }
+
+        .feature-point-dot {
+            width: 28px;
+            height: 28px;
+            background: var(--secondary-teal);
+            color: var(--primary-teal);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.82rem;
+            flex-shrink: 0;
+        }
+
+        .feature-point h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--main-text);
+            margin-bottom: 2px;
+        }
+
+        .feature-point p {
+            font-size: 0.84rem;
+            color: var(--secondary-text);
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .auth-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 2.2rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .auth-tabs-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.4rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+
+        .auth-tab-btn {
+            background: transparent;
+            border: none;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--secondary-text);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .auth-tab-btn.active {
+            color: var(--primary-teal);
+            background: var(--secondary-teal);
+        }
+
+        .auth-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .auth-input-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--main-text);
+            margin-bottom: 0.35rem;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .auth-input:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(22, 125, 131, 0.1);
+        }
+
+        .btn-auth-submit {
+            width: 100%;
+            background: var(--primary-teal);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            margin-top: 0.6rem;
+            transition: background 0.2s;
+        }
+
+        .btn-auth-submit:hover {
+            background: var(--primary-hover);
+        }
+
+        .quick-demo-pill {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.76rem;
+            color: var(--main-text);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+
+        .quick-demo-pill:hover {
+            background: var(--secondary-teal);
+            color: var(--primary-teal);
+            border-color: var(--primary-teal);
+        }
+
+        /* Toast notification */
+        .toast-notify {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #248A61;
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 9999;
+            animation: fadeIn 0.2s ease;
+        }
+
         /* Footer */
         .app-footer {
             margin-top: 2rem;
@@ -678,6 +881,7 @@
             .home-kpi-grid { grid-template-columns: 1fr 1fr; }
             .saas-nav { flex-direction: column; gap: 10px; align-items: stretch; }
             .nav-pills { flex-wrap: wrap; justify-content: center; }
+            .auth-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -757,7 +961,7 @@
 
         <!-- Top SaaS Navigation Bar -->
         <header class="saas-nav">
-            <div class="brand-group">
+            <div class="brand-group" onclick="navTo('chat')">
                 <div class="brand-mark">+</div>
                 <div>
                     <div class="brand-title">Warangal HealthRAG</div>
@@ -770,8 +974,19 @@
                 <button class="pill-btn active" id="btn-chat" onclick="navTo('chat')">Ask a Question</button>
                 <button class="pill-btn" id="btn-facilities" onclick="navTo('facilities')">Local Facilities</button>
                 <button class="pill-btn" id="btn-analytics" onclick="navTo('analytics')">Analytics</button>
-                <div class="pill-user">AGGADI</div>
-                <button class="pill-btn" style="border: none; color: var(--secondary-text);" onclick="navTo('home')">Logout</button>
+
+                <!-- Dynamic Auth Section -->
+                <div id="authNavWrapper" style="display: flex; align-items: center; gap: 8px;">
+                    <!-- User logged in view -->
+                    <div class="pill-user" id="userPill">
+                        <span>👤</span>
+                        <span id="userNameLabel">AGGADI</span>
+                    </div>
+                    <button class="pill-logout" id="btnLogout" onclick="performLogout()">Logout</button>
+
+                    <!-- User logged out view (hidden initially or shown when logged out) -->
+                    <button class="pill-btn" id="btnSignIn" style="display: none; border-color: var(--primary-teal); color: var(--primary-teal);" onclick="navTo('auth')">Sign In</button>
+                </div>
             </div>
         </header>
 
@@ -849,7 +1064,113 @@
             </form>
         </section>
 
-        <!-- VIEW 2: HOME DASHBOARD -->
+        <!-- VIEW 2: AUTHENTICATION / LOGIN / SIGNUP -->
+        <section id="view-auth" class="view-content">
+            <div class="auth-container">
+                <!-- Left Panel -->
+                <div class="login-brand-panel">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;">
+                        <div class="brand-mark">+</div>
+                        <span style="font-size: 1.15rem; font-weight: 800; color: var(--primary-teal);">Warangal HealthRAG</span>
+                    </div>
+                    <h2>Healthcare Information, <span>Made Simpler.</span></h2>
+                    <p style="color: var(--secondary-text); font-size: 0.95rem; margin-bottom: 1.5rem;">
+                        A specialized clinical retrieval system developed by researchers at SR University. Designed to help residents of Warangal District understand primary care guidance, verify local clinic facilities, and receive rapid emergency escalation.
+                    </p>
+
+                    <div class="feature-point">
+                        <div class="feature-point-dot">1</div>
+                        <div>
+                            <h4>Reliable Information Retrieval</h4>
+                            <p>Strictly bounded to 12,000 verified clinical cases with zero hallucination.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-point">
+                        <div class="feature-point-dot">2</div>
+                        <div>
+                            <h4>Local Healthcare Knowledge</h4>
+                            <p>Addresses specific healthcare centers across 8 sub-districts of Warangal.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-point">
+                        <div class="feature-point-dot">3</div>
+                        <div>
+                            <h4>Emergency Awareness</h4>
+                            <p>Immediate routing to MGM Hospital casualty hotlines for critical symptoms.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Sign In / Create Account Form -->
+                <div class="auth-card">
+                    <div class="auth-tabs-row">
+                        <button class="auth-tab-btn active" id="authTabSignIn" onclick="setAuthTab('signin')">Sign In</button>
+                        <button class="auth-tab-btn" id="authTabSignUp" onclick="setAuthTab('signup')">Create Patient Account</button>
+                    </div>
+
+                    <!-- Sign In Pane -->
+                    <div id="authPaneSignIn">
+                        <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--main-text); margin-bottom: 0.3rem;">Welcome Back</h3>
+                        <p style="font-size: 0.85rem; color: var(--secondary-text); margin-bottom: 1.4rem;">Sign in to access your personal health information portal.</p>
+
+                        <form onsubmit="handleLoginSubmit(event)">
+                            <div class="auth-input-group">
+                                <label for="loginUser">Email Address or Username</label>
+                                <input type="text" id="loginUser" class="auth-input" placeholder="e.g. tejaswi@sru.edu.in or aggadi" required>
+                            </div>
+                            <div class="auth-input-group">
+                                <label for="loginPass">Password</label>
+                                <input type="password" id="loginPass" class="auth-input" placeholder="Enter password" required>
+                            </div>
+
+                            <button type="submit" class="btn-auth-submit">Sign In</button>
+                        </form>
+
+                        <!-- Quick 1-Click Demo Profiles -->
+                        <div style="margin-top: 1.8rem; border-top: 1px solid var(--border-color); padding-top: 1.2rem;">
+                            <span style="font-size: 0.76rem; font-weight: 700; color: var(--secondary-text); text-transform: uppercase; letter-spacing: 0.5px;">Quick 1-Click Demo Profiles:</span>
+                            <div style="display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px;">
+                                <button class="quick-demo-pill" onclick="quickLogin('B. Sai Tejaswi (2303A51184)', 'saitejaswi@sru.edu.in')">👤 Sai Tejaswi</button>
+                                <button class="quick-demo-pill" onclick="quickLogin('V. Abhilash (2303A51227)', 'abhilash@sru.edu.in')">👤 V. Abhilash</button>
+                                <button class="quick-demo-pill" onclick="quickLogin('Dr. Rupesh Mishra (Guide)', 'rupesh.mishra@sru.edu.in')">🩺 Dr. Rupesh Mishra</button>
+                                <button class="quick-demo-pill" onclick="quickLogin('AGGADI', 'aggadi@warangal.in')">🏥 AGGADI (Patient)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Create Account Pane -->
+                    <div id="authPaneSignUp" style="display: none;">
+                        <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--main-text); margin-bottom: 0.3rem;">Create Patient Account</h3>
+                        <p style="font-size: 0.85rem; color: var(--secondary-text); margin-bottom: 1.4rem;">Join Warangal HealthRAG to save queries and consultation notes.</p>
+
+                        <form onsubmit="handleSignupSubmit(event)">
+                            <div class="auth-input-group">
+                                <label for="signupName">Full Name</label>
+                                <input type="text" id="signupName" class="auth-input" placeholder="e.g. B. Sai Tejaswi" required>
+                            </div>
+                            <div class="auth-input-group">
+                                <label for="signupEmail">Email Address</label>
+                                <input type="email" id="signupEmail" class="auth-input" placeholder="e.g. patient@warangal.in" required>
+                            </div>
+                            <div class="auth-input-group">
+                                <label for="signupPhone">Phone Number</label>
+                                <input type="text" id="signupPhone" class="auth-input" placeholder="+91 9876543210">
+                            </div>
+                            <div class="auth-input-group">
+                                <label for="signupPass">Password</label>
+                                <input type="password" id="signupPass" class="auth-input" placeholder="Minimum 6 characters" required>
+                            </div>
+
+                            <button type="submit" class="btn-auth-submit">Create Patient Account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: HOME DASHBOARD -->
         <section id="view-home" class="view-content">
             <div class="home-hero-card">
                 <span class="brand-pill" style="margin-bottom: 0.8rem;">Grounded Clinical Decision Support</span>
@@ -884,7 +1205,7 @@
             </div>
         </section>
 
-        <!-- VIEW 3: LOCAL FACILITIES -->
+        <!-- VIEW 4: LOCAL FACILITIES -->
         <section id="view-facilities" class="view-content">
             <div style="margin-bottom: 1.5rem;">
                 <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--main-text); margin-bottom: 0.3rem;">Warangal Healthcare Facilities Directory</h2>
@@ -997,7 +1318,7 @@
             </div>
         </section>
 
-        <!-- VIEW 4: ANALYTICS -->
+        <!-- VIEW 5: ANALYTICS -->
         <section id="view-analytics" class="view-content">
             <div style="margin-bottom: 1.5rem;">
                 <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--main-text); margin-bottom: 0.3rem;">Platform Analytics & Retrieval Performance</h2>
@@ -1045,6 +1366,9 @@
         </footer>
 
     </main>
+
+    <!-- Toast Notification Element -->
+    <div id="toastNotify" class="toast-notify">Logged in successfully</div>
 
     <!-- Clinical Knowledge Database & Interactive Script -->
     <script>
@@ -1128,6 +1452,102 @@
             }
         ];
 
+        // -------------------------------------------------------------
+        // Authentication System (Login & Logout with LocalStorage)
+        // -------------------------------------------------------------
+        function initAuth() {
+            const savedUser = localStorage.getItem('healthrag_current_user');
+            if (savedUser) {
+                try {
+                    const u = JSON.parse(savedUser);
+                    renderLoggedInState(u.name);
+                } catch(e) {
+                    renderLoggedInState('AGGADI');
+                }
+            } else {
+                // Default initial profile is AGGADI (as in prototype)
+                renderLoggedInState('AGGADI');
+            }
+        }
+
+        function renderLoggedInState(displayName) {
+            document.getElementById('userNameLabel').innerText = displayName.toUpperCase();
+            document.getElementById('userPill').style.display = 'flex';
+            document.getElementById('btnLogout').style.display = 'inline-block';
+            document.getElementById('btnSignIn').style.display = 'none';
+        }
+
+        function renderLoggedOutState() {
+            document.getElementById('userPill').style.display = 'none';
+            document.getElementById('btnLogout').style.display = 'none';
+            document.getElementById('btnSignIn').style.display = 'inline-block';
+        }
+
+        function performLogout() {
+            localStorage.removeItem('healthrag_current_user');
+            renderLoggedOutState();
+            showToast('You have been logged out successfully.');
+            navTo('auth');
+        }
+
+        function performLogin(name, email) {
+            const userObj = { name: name, email: email, loginTime: new Date().toISOString() };
+            localStorage.setItem('healthrag_current_user', JSON.stringify(userObj));
+            renderLoggedInState(name);
+            showToast('Welcome, ' + name + '!');
+            navTo('chat');
+        }
+
+        function quickLogin(name, email) {
+            performLogin(name, email);
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('loginUser').value.trim();
+            if (!userInput) return;
+            performLogin(userInput, userInput.includes('@') ? userInput : userInput + '@sru.edu.in');
+        }
+
+        function handleSignupSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            if (!name) return;
+            performLogin(name, email);
+        }
+
+        function setAuthTab(mode) {
+            const tabIn = document.getElementById('authTabSignIn');
+            const tabUp = document.getElementById('authTabSignUp');
+            const paneIn = document.getElementById('authPaneSignIn');
+            const paneUp = document.getElementById('authPaneSignUp');
+
+            if (mode === 'signin') {
+                tabIn.classList.add('active');
+                tabUp.classList.remove('active');
+                paneIn.style.display = 'block';
+                paneUp.style.display = 'none';
+            } else {
+                tabUp.classList.add('active');
+                tabIn.classList.remove('active');
+                paneUp.style.display = 'block';
+                paneIn.style.display = 'none';
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotify');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // -------------------------------------------------------------
+        // View Navigation Router
+        // -------------------------------------------------------------
         function navTo(viewId) {
             document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
@@ -1137,6 +1557,10 @@
 
             if (targetView) targetView.classList.add('active');
             if (targetBtn) targetBtn.classList.add('active');
+
+            if (viewId === 'auth') {
+                document.getElementById('btnSignIn').classList.add('active');
+            }
         }
 
         function clearMessages() {
@@ -1149,6 +1573,7 @@
                     </div>
                 </div>
             `;
+            showToast('Conversation cleared.');
         }
 
         function handleSend(e) {
@@ -1256,7 +1681,7 @@
         }
 
         function updateEngine(name) {
-            console.log("Switched engine to:", name);
+            showToast('Search engine set to ' + name);
         }
 
         function escapeHtml(text) {
@@ -1264,6 +1689,9 @@
                 return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
             });
         }
+
+        // Initialize Authentication on load
+        window.addEventListener('DOMContentLoaded', initAuth);
     </script>
 </body>
 </html>
