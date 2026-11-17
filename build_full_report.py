@@ -43,7 +43,7 @@ def build_report():
     doc = Document()
     apply_academic_styles(doc)
 
-    print("[1/11] Generating Preliminary Pages (Cover, Certificate, Declaration, Abstract, TOC, Lists)...")
+    print("[1/11] Generating Preliminary Pages (SRU Model: Cover, Declaration, Acknowledgement, Abstract, TOC, Lists - No Certificate)...")
     generate_preliminary_pages(doc)
 
     print("[2/11] Generating Chapter 1: Introduction...")
@@ -76,39 +76,67 @@ def build_report():
     print("[11/11] Generating Chapter 10: References (IEEE Format)...")
     generate_chapter10(doc)
 
-    docx_path = os.path.abspath("B.Tech_Project_Report_RAG_Warangal_Medical_System.docx")
-    pdf_path = os.path.abspath("B.Tech_Project_Report_RAG_Warangal_Medical_System.pdf")
+    base_name = "B.Tech_Project_Report_RAG_Warangal_Medical_System"
+    docx_path = os.path.abspath(f"{base_name}.docx")
+    pdf_path = os.path.abspath(f"{base_name}.pdf")
+    doc_path = os.path.abspath(f"{base_name}.doc")
 
     print(f"\nSaving Word Document (.docx) to: {docx_path}")
     doc.save(docx_path)
     print(" -> Microsoft Word document successfully written!")
 
-    # Convert to PDF via Word COM Automation
-    print(f"\nConverting to PDF (.pdf) via Microsoft Word COM: {pdf_path}")
+    # Convert to PDF and legacy DOC via Word COM Automation
+    print(f"\nConverting to PDF (.pdf) and DOC (.doc) via Microsoft Word COM...")
     ps_cmd = f"""
     $word = New-Object -ComObject Word.Application
     $word.Visible = $false
-    $doc = $word.Documents.Open('{docx_path}')
+    $word.DisplayAlerts = 0
+    if (Test-Path '{pdf_path}') {{ Remove-Item '{pdf_path}' -Force -ErrorAction SilentlyContinue }}
+    if (Test-Path '{doc_path}') {{ Remove-Item '{doc_path}' -Force -ErrorAction SilentlyContinue }}
+    $doc = $word.Documents.Open('{docx_path}', [ref]$false, [ref]$true)
     $wdFormatPDF = 17
     $doc.SaveAs([ref]'{pdf_path}', [ref]$wdFormatPDF)
-    $doc.Close()
+    $wdFormatDoc = 0
+    $doc.SaveAs([ref]'{doc_path}', [ref]$wdFormatDoc)
+    $doc.Close([ref]0)
     $word.Quit()
-    Write-Host 'PDF Conversion Finished Successfully!'
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($doc) | Out-Null
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($word) | Out-Null
+    [System.GC]::Collect()
+    [System.GC]::WaitForPendingFinalizers()
+    Write-Host 'PDF and DOC Conversion Finished Successfully!'
     """
     try:
         res = subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", "-Command", ps_cmd], capture_output=True, text=True)
         if res.returncode == 0:
-            print(" -> PDF version successfully created!")
+            print(" -> PDF and DOC versions successfully created!")
         else:
             print(f" -> Word COM Notice: {res.stderr}")
     except Exception as e:
-        print(f" -> PDF generation skipped: {e}")
+        print(f" -> Conversion skipped: {e}")
+
+    # Synchronize all output files to documentation folders
+    import shutil
+    sync_dirs = [
+        os.path.abspath("Project_Documentation"),
+        r"C:\Users\hp\OneDrive\Desktop\Warangal_HealthRAG_Project_Documentation"
+    ]
+    for target_dir in sync_dirs:
+        if os.path.exists(target_dir):
+            for ext in [".docx", ".doc", ".pdf"]:
+                src = os.path.abspath(f"{base_name}{ext}")
+                if os.path.exists(src):
+                    dst = os.path.join(target_dir, f"{base_name}{ext}")
+                    shutil.copy2(src, dst)
+                    print(f" -> Synchronized to: {dst}")
 
     print("\n" + "=" * 80)
     print("DOCUMENTATION GENERATION COMPLETE!")
     print(f"DOCX: {docx_path} ({os.path.getsize(docx_path) / 1024:.1f} KB)")
     if os.path.exists(pdf_path):
         print(f"PDF:  {pdf_path} ({os.path.getsize(pdf_path) / 1024:.1f} KB)")
+    if os.path.exists(doc_path):
+        print(f"DOC:  {doc_path} ({os.path.getsize(doc_path) / 1024:.1f} KB)")
     print("=" * 80)
 
 if __name__ == "__main__":

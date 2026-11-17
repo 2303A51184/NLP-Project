@@ -144,161 +144,105 @@ def add_figure_image(doc, img_path, caption, fig_num):
 
 
 # ===================================================================================
-# PRELIMINARY PAGES
+# PRELIMINARY PAGES (OFFICIAL SR UNIVERSITY MAJOR PROJECT REPORT MODEL - WITHOUT CERTIFICATE)
 # ===================================================================================
 def generate_preliminary_pages(doc):
-    # 1. Cover Page
+    # 1. Cover Page (Official SR University Model Format)
     p_inst = doc.add_paragraph()
-    p_inst.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r_inst = p_inst.add_run("SR UNIVERSITY, WARANGAL\nDEPARTMENT OF COMPUTER SCIENCE & ENGINEERING\n")
-    r_inst.font.name = "Times New Roman"
-    r_inst.font.size = Pt(14)
+    p_inst.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r_inst = p_inst.add_run("SR UNIVERSITY")
+    r_inst.font.name = 'Times New Roman'
+    r_inst.font.size = Pt(20)
     r_inst.font.bold = True
-    r_inst.font.color.rgb = RGBColor(0x16, 0x7D, 0x83)
+    r_inst.font.color.rgb = RGBColor(15, 23, 42)
     
-    p_gap = doc.add_paragraph()
-    p_gap.paragraph_format.space_before = Pt(36)
-    
-    p_title = doc.add_paragraph()
-    p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r_title = p_title.add_run("RAG-BASED MEDICAL INFORMATION SYSTEM FOR WARANGAL PATIENTS\n")
-    r_title.font.name = "Times New Roman"
-    r_title.font.size = Pt(19)
-    r_title.font.bold = True
-    r_title.font.color.rgb = RGBColor(0x16, 0x7D, 0x83)
-
-    r_sub = p_title.add_run("A Grounded Clinical Decision Support and Emergency Triage Platform Using Dual-Engine Vector Retrieval\n")
-    r_sub.font.name = "Times New Roman"
-    r_sub.font.size = Pt(12.5)
-    r_sub.font.italic = True
-    r_sub.font.color.rgb = RGBColor(0x64, 0x74, 0x8B)
-
-    p_deg = doc.add_paragraph()
-    p_deg.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_deg.paragraph_format.space_before = Pt(36)
-    r_deg = p_deg.add_run(
-        "A Project Report Submitted in Partial Fulfillment of the Requirements\n"
-        "for the Award of the Degree of\n\n"
-        "BACHELOR OF TECHNOLOGY\nIN\nCOMPUTER SCIENCE AND ENGINEERING\n"
-    )
-    r_deg.font.name = "Times New Roman"
-    r_deg.font.size = Pt(12)
-    r_deg.font.bold = True
-
-    p_auth = doc.add_paragraph()
-    p_auth.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_auth.paragraph_format.space_before = Pt(30)
-    r_by = p_auth.add_run("Submitted by:\n")
-    r_by.font.name = "Times New Roman"
-    r_by.font.size = Pt(11.5)
-    r_by.font.italic = True
-
-    r_names = p_auth.add_run(
-        "B. SAI TEJASWI  (Roll No: 2303A51184)\n"
-        "V. ABHILASH  (Roll No: 2303A51227)\n\n"
-    )
-    r_names.font.name = "Times New Roman"
-    r_names.font.size = Pt(13)
-    r_names.font.bold = True
-    r_names.font.color.rgb = RGBColor(0x26, 0x37, 0x46)
-
-    p_guide = doc.add_paragraph()
-    p_guide.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_guide.paragraph_format.space_before = Pt(18)
-    r_g1 = p_guide.add_run("Under the Esteemed Guidance of:\n")
-    r_g1.font.name = "Times New Roman"
-    r_g1.font.size = Pt(11.5)
-    r_g1.font.italic = True
-    r_g2 = p_guide.add_run("Dr. RUPESH MISHRA\n")
-    r_g2.font.name = "Times New Roman"
-    r_g2.font.size = Pt(13)
-    r_g2.font.bold = True
-    r_g2.font.color.rgb = RGBColor(0x16, 0x7D, 0x83)
-    r_g3 = p_guide.add_run("Department of Computer Science & Engineering\n")
-    r_g3.font.name = "Times New Roman"
-    r_g3.font.size = Pt(11)
-    r_g3.font.color.rgb = RGBColor(0x64, 0x74, 0x8B)
-
     p_loc = doc.add_paragraph()
-    p_loc.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_loc.paragraph_format.space_before = Pt(30)
-    r_loc = p_loc.add_run(
-        "SCHOOL OF COMPUTER SCIENCE & ARTIFICIAL INTELLIGENCE\n"
-        "SR UNIVERSITY\n"
-        "Ananthasagar, Hasanparthy, Warangal, Telangana – 506371\n"
-        "ACADEMIC YEAR: 2025–2026\n"
-    )
-    r_loc.font.name = "Times New Roman"
+    p_loc.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_loc.paragraph_format.space_after = Pt(24)
+    r_loc = p_loc.add_run("Ananthasagar, Warangal, Telangana – 506371\nDEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING")
+    r_loc.font.name = 'Times New Roman'
     r_loc.font.size = Pt(11)
     r_loc.font.bold = True
-    r_loc.font.color.rgb = RGBColor(0x64, 0x74, 0x8B)
+    r_loc.font.color.rgb = RGBColor(71, 85, 105)
+    
+    p_proj = doc.add_paragraph()
+    p_proj.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_proj.paragraph_format.space_after = Pt(18)
+    r_proj = p_proj.add_run("A MAJOR PROJECT REPORT ON\n\n")
+    r_proj.font.name = 'Times New Roman'
+    r_proj.font.size = Pt(12)
+    r_proj.font.bold = True
+    
+    r_title = p_proj.add_run("“RAG-BASED MEDICAL INFORMATION SYSTEM FOR WARANGAL PATIENTS”\n")
+    r_title.font.name = 'Times New Roman'
+    r_title.font.size = Pt(15)
+    r_title.font.bold = True
+    r_title.font.color.rgb = RGBColor(22, 125, 131)
 
-    doc.add_page_break()
-
-    # 2. Certificate
-    add_chapter_heading(doc, "CERTIFICATE")
-    p_cert = doc.add_paragraph()
-    p_cert.paragraph_format.space_before = Pt(16)
-    p_cert.add_run(
-        "This is to certify that the project report entitled "
-        "\"RAG-Based Medical Information System for Warangal Patients\", submitted by "
-        "B. Sai Tejaswi (Roll No: 2303A51184) and V. Abhilash (Roll No: 2303A51227) "
-        "in partial fulfillment of the requirements for the award of the degree of "
-        "Bachelor of Technology in Computer Science and Engineering from SR University, Warangal, "
-        "is a record of bonafide academic work carried out by them under my supervision and guidance.\n\n"
-        "The results embodied in this project report have not been submitted to any other university or "
-        "institution for the award of any degree or diploma.\n"
+    r_sub = p_proj.add_run("A Grounded Clinical Decision Support and Emergency Triage Platform Using Dual-Engine Vector Retrieval")
+    r_sub.font.name = 'Times New Roman'
+    r_sub.font.size = Pt(11)
+    r_sub.font.italic = True
+    r_sub.font.color.rgb = RGBColor(100, 116, 139)
+    
+    p_deg = doc.add_paragraph()
+    p_deg.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_deg.paragraph_format.space_after = Pt(36)
+    r_deg = p_deg.add_run(
+        "Submitted in partial fulfillment of the requirements for the award of the degree of\n"
+        "BACHELOR OF TECHNOLOGY\nIN\nCOMPUTER SCIENCE AND ENGINEERING\n\n"
+        "Academic Year: 2025 – 2026"
     )
-
-    # Signature Table
-    p_gap = doc.add_paragraph()
-    p_gap.paragraph_format.space_before = Pt(40)
+    r_deg.font.name = 'Times New Roman'
+    r_deg.font.size = Pt(11.5)
+    r_deg.font.bold = True
     
-    t_sig = doc.add_table(rows=2, cols=3)
-    t_sig.alignment = WD_TABLE_ALIGNMENT.CENTER
-    t_sig.autofit = False
-    for i in range(3):
-        t_sig.columns[i].width = Inches(2.09)
+    meta_table = doc.add_table(rows=1, cols=2)
+    meta_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    cell_l, cell_r = meta_table.rows[0].cells
+    cell_l.width = Inches(3.2); cell_r.width = Inches(3.2)
     
-    c1 = t_sig.cell(0, 0); c2 = t_sig.cell(0, 1); c3 = t_sig.cell(0, 2)
-    c1.text = "____________________\nDr. Rupesh Mishra\nInternal Guide / Supervisor\nDept. of CSE, SR University"
-    c2.text = "____________________\nHead of the Department\nDept. of CSE, SR University"
-    c3.text = "____________________\nExternal Examiner\nExternal Examination Board"
+    p_l = cell_l.paragraphs[0]; p_l.paragraph_format.line_spacing = 1.3
+    p_l.add_run("Submitted By:\n").bold = True
+    p_l.add_run("1. B. SAI TEJASWI (2303A51184)\n2. V. ABHILASH (2303A51227)\nB.Tech CSE Final Year")
+    for r in p_l.runs:
+        r.font.name = 'Times New Roman'; r.font.size = Pt(11)
+    p_l.runs[0].font.bold = True
     
-    for row in t_sig.rows:
-        for cell in row.cells:
-            for p in cell.paragraphs:
-                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                for r in p.runs:
-                    r.font.name = "Times New Roman"
-                    r.font.size = Pt(10)
-                    r.font.bold = True
-
+    p_r = cell_r.paragraphs[0]; p_r.paragraph_format.line_spacing = 1.3; p_r.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    p_r.add_run("Under the Guidance of:\n").bold = True
+    p_r.add_run("DR. RUPESH MISHRA\nAssociate Professor, Dept. of CSE\nSR University, Warangal")
+    for r in p_r.runs:
+        r.font.name = 'Times New Roman'; r.font.size = Pt(11)
+    p_r.runs[0].font.bold = True
+    
     doc.add_page_break()
 
-    # 3. Declaration
-    add_chapter_heading(doc, "CANDIDATE'S DECLARATION")
+    # 2. Candidate's Declaration of Originality
+    add_chapter_heading(doc, "CANDIDATE'S DECLARATION OF ORIGINALITY")
     p_decl = doc.add_paragraph()
     p_decl.paragraph_format.space_before = Pt(16)
     p_decl.add_run(
-        "We, B. Sai Tejaswi (Roll No: 2303A51184) and V. Abhilash (Roll No: 2303A51227), students of the "
-        "Department of Computer Science & Engineering, SR University, Warangal, hereby declare that the project work "
-        "entitled \"RAG-Based Medical Information System for Warangal Patients\" is our original work conducted "
-        "during the academic year 2025–2026.\n\n"
-        "We confirm that this report represents our own work, has been written in our own words, and where others' ideas "
-        "or code libraries have been included, we have adequately cited and referenced the original sources according to standard academic practices. "
-        "We further declare that this report has not been submitted previously to this or any other institution for the award "
-        "of any degree, diploma, or associateship.\n\n\n"
+        "We hereby declare that the work presented in this major project report entitled "
+        "“RAG-BASED MEDICAL INFORMATION SYSTEM FOR WARANGAL PATIENTS” submitted to SR University, Warangal, "
+        "Telangana, is an authentic record of our own research and development work carried out under the esteemed supervision "
+        "and guidance of Dr. Rupesh Mishra, Associate Professor, Department of Computer Science and Engineering.\n\n"
+        "We further declare that this report represents our original intellectual effort. All secondary literature, "
+        "standard reference datasets, algorithms, and research publications utilized during the conceptualization, "
+        "design, and implementation phases of this system have been scrupulously cited and acknowledged in compliance with "
+        "international academic integrity standards. This work has not been previously submitted to any other educational "
+        "institution for any degree, diploma, or academic fellowship.\n\n\n"
     )
 
-    t_dec = doc.add_table(rows=2, cols=2)
+    t_dec = doc.add_table(rows=1, cols=2)
     t_dec.alignment = WD_TABLE_ALIGNMENT.CENTER
-    t_dec.columns[0].width = Inches(3.13)
-    t_dec.columns[1].width = Inches(3.13)
+    t_dec.columns[0].width = Inches(3.2)
+    t_dec.columns[1].width = Inches(3.2)
     
     c_d1 = t_dec.cell(0, 0); c_d2 = t_dec.cell(0, 1)
-    c_d1.text = "Place: Warangal, Telangana\nDate: 11th November 2026"
-    c_d2.text = "B. Sai Tejaswi (2303A51184)\nV. Abhilash (2303A51227)"
+    c_d1.text = "Place: Warangal, Telangana\nDate: Academic Year 2025–2026"
+    c_d2.text = "Submitted By:\n1. B. SAI TEJASWI (2303A51184)\n2. V. ABHILASH (2303A51227)\nB.Tech CSE Final Year"
+    c_d2.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.RIGHT
     
     for row in t_dec.rows:
         for cell in row.cells:
@@ -310,25 +254,35 @@ def generate_preliminary_pages(doc):
 
     doc.add_page_break()
 
-    # 4. Acknowledgement
+    # 3. Acknowledgement
     add_chapter_heading(doc, "ACKNOWLEDGEMENT")
     p_ack = doc.add_paragraph()
     p_ack.paragraph_format.space_before = Pt(16)
     p_ack.add_run(
-        "The completion of this final-year B.Tech project would not have been possible without the collective "
-        "guidance, constructive criticism, and encouragement of numerous individuals.\n\n"
-        "First and foremost, we express our profound gratitude to our project guide, Dr. Rupesh Mishra, for his invaluable guidance, "
-        "technical mentorship, and continuous encouragement throughout the conception, system design, retrieval optimization, "
-        "and evaluation phases of this research project.\n\n"
-        "We express our heartfelt thanks to the Head of the Department of Computer Science & Engineering, SR University, "
-        "for providing state-of-the-art computational infrastructure and laboratories that facilitated this implementation.\n\n"
-        "We extend our gratitude to the Dean and Faculty members of the School of Computer Science & Artificial Intelligence "
-        "for their insightful feedback during departmental reviews. Lastly, we owe our deepest gratitude to our parents, "
-        "families, and fellow peers who provided unconditional moral support throughout this academic endeavor.\n"
+        "We express our deepest gratitude and sincere respect to our revered project guide and mentor, "
+        "Dr. Rupesh Mishra, Department of Computer Science and Engineering, SR University, for his exemplary "
+        "intellectual guidance, continuous inspiration, critical evaluations, and unwavering support throughout the lifecycle "
+        "of this capstone research project. His insightful perspectives in Clinical Natural Language Processing, "
+        "Vector Information Retrieval, and RAG architectures played a pivotal role in formulating the methodology and algorithmic framework.\n\n"
+        "We extend our heartfelt thanks to Dr. V. Mahesh, Dean and Head of the Department of Computer Science and Engineering, "
+        "for fostering an encouraging academic environment and for providing the necessary infrastructural and laboratory "
+        "resources required to conduct compute-intensive language modeling, corpus processing, and web server deployments.\n\n"
+        "We express our gratitude to Prof. Dr. Deepak Garg, Vice-Chancellor, SR University, for his visionary leadership, "
+        "institutional support, and dedication toward research and innovation excellence.\n\n"
+        "We also wish to thank the esteemed members of the Academic Project Review Committee and faculty members of the "
+        "Department of Computer Science and Engineering for their constructive feedback during project milestone evaluations.\n\n"
+        "Finally, we express our profound gratitude to our parents, family members, and peers for their constant moral encouragement, "
+        "patience, and unceasing belief in our potential throughout our undergraduate education at SR University.\n\n"
     )
+    p_acksig = doc.add_paragraph()
+    p_acksig.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    r_acksig = p_acksig.add_run("B. SAI TEJASWI (2303A51184)\nV. ABHILASH (2303A51227)")
+    r_acksig.font.name = "Times New Roman"
+    r_acksig.font.size = Pt(11)
+    r_acksig.font.bold = True
     doc.add_page_break()
 
-    # 5. Abstract
+    # 4. Abstract
     add_chapter_heading(doc, "ABSTRACT")
     p_abs = doc.add_paragraph()
     p_abs.paragraph_format.space_before = Pt(16)
@@ -336,23 +290,26 @@ def generate_preliminary_pages(doc):
         "Access to accurate, timely, and locally relevant primary medical information remains a formidable challenge in "
         "tier-2 urban and semi-urban districts across India. In the Warangal district of Telangana, patients frequently experience "
         "prolonged travel times, specialist shortages, and overcrowding at regional tertiary facilities such as the Mahatma Gandhi "
-        "Memorial (MGM) Hospital. While modern generative Artificial Intelligence and Large Language Models (LLMs) offer intuitive natural "
-        "language interfaces, their practical deployment in healthcare is severely constrained by artificial hallucinations, fabricated medical "
-        "guidance, lack of local hospital context, and an alarming inability to triage life-threatening medical emergencies.\n\n"
-        "To overcome these critical limitations, this project presents the design, mathematical formulation, and full-stack software implementation "
-        "of the \"RAG-Based Medical Information System for Warangal Patients\" (Warangal HealthRAG). The platform introduces a strictly grounded "
-        "Retrieval-Augmented Generation architecture operating over a verified repository of 12,000 localized clinical records spanning eight key "
-        "specialties (General Medicine, Cardiology, Pediatrics, Pulmonology, Gastroenterology, Dermatology, Orthopedics, and ENT) and eight geographical "
-        "localities across Warangal district (Hanamkonda, Kazipet, Parkal, Dharmasagar, Geesugonda, Hasanparthy, Wardhannapet, and Central Warangal).\n\n"
-        "The system deploys a Dual-Core Retrieval Engine combining (1) a sublinear Term Frequency-Inverse Document Frequency (TF-IDF) sparse vectorizer "
-        "achieving ultra-low latency (<35 ms) keyword matching, and (2) a dense semantic search pipeline based on Facebook AI Similarity Search (FAISS) "
-        "and SentenceTransformers (all-MiniLM-L6-v2) embedding models. Prior to retrieval, incoming queries pass through an automated Pre-Retrieval "
-        "Emergency Red-Flag Triage Guardrail that detects life-threatening indicators (e.g., myocardial infarction, acute respiratory distress, acute stroke) "
-        "and immediately surfaces direct telephone hotlines for the Telangana 108 Emergency Ambulance Service and MGM Hospital Casualty (0870-2441000). "
-        "A Grounded Evidence Inspector exposes the mathematical similarity scores and synthetic record IDs (WP-SYN-XXXX) of all retrieved chunks, "
-        "ensuring clinical transparency. Experimental evaluation demonstrates a Mean Reciprocal Rank (MRR) of 0.91 for dense semantic retrieval, "
-        "0.86 for sparse lexical retrieval, a Recall@5 of 94.6%, and 100% emergency detection sensitivity across critical clinical queries. The platform "
-        "is packaged in an enterprise-grade light SaaS web architecture built using Python and Streamlit.\n\n"
+        "Memorial (MGM) Hospital and Kakatiya Medical College (KMC). Furthermore, general-purpose commercial search engines and "
+        "unconstrained large language models frequently suffer from hallucinations, lack geo-spatial locality awareness, and fail "
+        "to identify critical medical emergencies requiring immediate physical intervention.\n\n"
+        "To overcome these critical limitations, this B.Tech capstone project presents 'Warangal HealthRAG', an end-to-end, "
+        "dual-engine Retrieval-Augmented Generation (RAG) platform tailored specifically to the regional healthcare landscape of "
+        "Warangal. The system operates on a curated clinical repository comprising 12,000 synthetic patient consultation records, "
+        "spanning eight core clinical specialties (General Medicine, Cardiology, Pediatrics, Pulmonology, Gastroenterology, Dermatology, "
+        "Orthopedics, and ENT) and eight geographical localities across Warangal district (Hanamkonda, Kazipet, Parkal, Dharmasagar, "
+        "Geesugonda, Hasanparthy, Wardhannapet, and Central Warangal).\n\n"
+        "The system deploys a Dual-Core Retrieval Engine combining (1) a sublinear Term Frequency-Inverse Document Frequency (TF-IDF) "
+        "sparse vectorizer achieving ultra-low latency (<35 ms) keyword matching, and (2) a dense semantic search pipeline based on "
+        "Facebook AI Similarity Search (FAISS) and SentenceTransformers (all-MiniLM-L6-v2) embedding models. Prior to retrieval, "
+        "incoming queries pass through an automated Pre-Retrieval Emergency Red-Flag Triage Guardrail that detects life-threatening "
+        "indicators (e.g., myocardial infarction, acute respiratory distress, acute stroke) and immediately surfaces direct telephone "
+        "hotlines for the Telangana 108 Emergency Ambulance Service and MGM Hospital Casualty (0870-2441000). "
+        "A Grounded Evidence Inspector exposes the mathematical similarity scores and synthetic record IDs (WP-SYN-XXXX) of all "
+        "retrieved chunks, ensuring clinical transparency. Experimental evaluation demonstrates a Mean Reciprocal Rank (MRR) of 0.91 "
+        "for dense semantic retrieval, 0.86 for sparse lexical retrieval, a Recall@5 of 94.6%, and 100% emergency detection sensitivity "
+        "across critical clinical queries. The platform is packaged in an enterprise-grade light SaaS web architecture built using "
+        "Python and Streamlit.\n\n"
     )
     p_kw = doc.add_paragraph()
     r_kw_title = p_kw.add_run("Keywords: ")
@@ -363,7 +320,7 @@ def generate_preliminary_pages(doc):
     )
     doc.add_page_break()
 
-    # 6. Table of Contents
+    # 5. Table of Contents (WITHOUT CERTIFICATE)
     add_chapter_heading(doc, "TABLE OF CONTENTS")
     
     t_toc = doc.add_table(rows=1, cols=3)
@@ -385,13 +342,12 @@ def generate_preliminary_pages(doc):
             r.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
     toc_items = [
-        ("", "Certificate", "ii"),
-        ("", "Candidate's Declaration", "iii"),
-        ("", "Acknowledgement", "iv"),
-        ("", "Abstract", "v"),
-        ("", "List of Figures", "viii"),
-        ("", "List of Tables", "ix"),
-        ("", "List of Abbreviations", "x"),
+        ("", "Candidate's Declaration of Originality", "ii"),
+        ("", "Acknowledgement", "iii"),
+        ("", "Abstract", "iv"),
+        ("", "List of Figures", "vii"),
+        ("", "List of Tables", "viii"),
+        ("", "List of Abbreviations", "ix"),
         ("1", "INTRODUCTION", "1"),
         ("1.1", "Introduction to Healthcare Information Systems", "1"),
         ("1.2", "Background of the Project", "2"),
@@ -491,7 +447,7 @@ def generate_preliminary_pages(doc):
     set_table_borders(t_toc)
     doc.add_page_break()
 
-    # 7. List of Figures
+    # 6. List of Figures
     add_chapter_heading(doc, "LIST OF FIGURES")
     figures_list = [
         ("Figure 5.1", "Grounded Medical RAG Platform Architecture", "31"),
@@ -531,7 +487,7 @@ def generate_preliminary_pages(doc):
     set_table_borders(t_lof)
     doc.add_page_break()
 
-    # 8. List of Tables
+    # 7. List of Tables
     add_chapter_heading(doc, "LIST OF TABLES")
     tables_list = [
         ("Table 4.1", "Minimum and Recommended Hardware Specifications", "24"),
@@ -573,7 +529,7 @@ def generate_preliminary_pages(doc):
     set_table_borders(t_lot)
     doc.add_page_break()
 
-    # 9. List of Abbreviations
+    # 8. List of Abbreviations
     add_chapter_heading(doc, "LIST OF ABBREVIATIONS")
     abbrs = [
         ("AI", "Artificial Intelligence"),
